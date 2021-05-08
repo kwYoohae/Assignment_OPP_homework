@@ -1,0 +1,21 @@
+Brownie,2500
+Macaroon,2500
+Bagel,3000
+Earlgray Black Tea,3500
+Espresso,4000
+Americano,4200
+Jasmine Tea,4700
+Cappuccino,4800
+Choco Smoothie,4800
+Grapefruit Tea,4800
+Carmel Macchiato,4900
+Yogurt Smoothie,4900
+ColdBrew,5000
+Horney Bread,5000
+Mango Smoothie,5000
+Greentea Smoothie,5400
+Grapefruit Ade,5500
+Lemon Ade,5500
+Orange Ade,5500
+Lime Tea,5600
+Strawberry Ade,5700

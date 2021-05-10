@@ -152,7 +152,6 @@ void deck::hit_player(player* Player, Dealer* dealer, discard* Discard) { //play
 		Player->setTail(pNew); // Player의 Tail값을 새로운 노드로 결정
 		pNew->setCard(pTemp->getCard()); // 새로운 노드의 카드 값을 덱에서 가져옴(pTemp)
 		pHead = pHead->getNext(); // pHead는 그다음 값으로 옮김
-		Discard->insert(pTemp); // 쓰고 값이 버려지기 때문에 버려진 값으로도 이동
 		delete pTemp; // pTemp노드를 동적할당 해제
 		
 	}
@@ -161,7 +160,6 @@ void deck::hit_player(player* Player, Dealer* dealer, discard* Discard) { //play
 		Player->getTail()->setNext(pNew); // Tail의 다음 값을 pNew로 설정 (queue)
 		Player->setTail(pNew); // Tail을 새로운 객체로 설정
 		pHead = pHead->getNext(); // 덱의 Head를 그 다음 값으로 변경
-		Discard->insert(pTemp); // 버리는 카드에도 값 저장
 		delete pTemp; // pTemp는 메모리 할당 해제
 	}
 }
@@ -174,7 +172,6 @@ void deck::hit_Dealer(player* Player, Dealer* dealer, discard* Discard) { // Dea
 		dealer->setTail(pNew); // dealer의 Tail를 새로운 노드로 설정
 		pNew->setCard(pTemp->getCard()); // 새로운 노드의 값을 pTemp(deck)의 카드 값으로 설정
 		pHead = pHead->getNext(); // deck의 헤드 값을 다음 값으로 변경
-		Discard->insert(pTemp); //discard_tray에 쓰여진 값 추가
 		delete pTemp; // pTemp의 값 삭제
 
 
@@ -184,7 +181,6 @@ void deck::hit_Dealer(player* Player, Dealer* dealer, discard* Discard) { // Dea
 		dealer->getTail()->setNext(pNew); // 딜러의 tail의 Next값을 새로운 노드로 설정
 		dealer->setTail(pNew); // dealer의 tail값을 새로운 노드로 설정
 		pHead = pHead->getNext(); // deck의 head값을 다음값으로 설정
-		Discard->insert(pTemp); // discard_tray에 pTemp값이 게임에 쓰여졌으므로 삽입
 		delete pTemp; // pTemp노드를 메모리할당 해제
 	}
 }
@@ -208,4 +204,17 @@ void deck::delete_deck() { // deck에 있는 카드를 전부 삭제
 	}
 	pHead = nullptr; // 모든 값을 지우면 pHead는 nullptr로 초기화
 	pTail = nullptr; // 모든 값을 지우면 pTail은 nullptr로 초기화
+}
+
+void deck::move_PD(discard* Discard, player* Player, Dealer* dealer) {
+	node* pTemp = Player->getHead();
+	while (pTemp) {
+		Discard->insert(pTemp);
+		pTemp = pTemp->getNext();
+	}
+	pTemp = dealer->getHead();
+	while (pTemp) {
+		Discard->insert(pTemp);
+		pTemp = pTemp->getNext();
+	}
 }

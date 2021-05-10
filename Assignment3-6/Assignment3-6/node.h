@@ -6,9 +6,6 @@ private:
 	char name[5];
 	Node* pNext;
 	Node* pPrev;
-	 
-	<Templatet> *data;
-	<Templatet>** data;
 
 public:
 	char* getName() {

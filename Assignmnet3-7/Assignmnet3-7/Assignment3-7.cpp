@@ -40,7 +40,7 @@ int main() {
 		for (int i = 0; i <= strlen(str); i++ , len++) {
 			name[i]= str[len+1];
 		}
-		data.Insert(Id, major, name);
+		//data.Insert(Id, major, name);
 	}
 	while (end) {
 		cout << "1. Print File" << endl;
@@ -51,7 +51,7 @@ int main() {
 		cout << "CMD>> ";
 		cin >> command;
 		if (command == 1) {
-			data.print();
+			//data.print();
 		}
 	}
 

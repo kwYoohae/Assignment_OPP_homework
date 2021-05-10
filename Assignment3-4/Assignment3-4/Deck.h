@@ -25,4 +25,6 @@ public:
 	void hit_player(player* Player, Dealer* dealer, discard* Discard);
 	void hit_Dealer(player* Player, Dealer* dealer, discard* Discard);
 	int deck_count();
+
+	void move_PD(discard* Discard, player* Player, Dealer* dealer);
 };

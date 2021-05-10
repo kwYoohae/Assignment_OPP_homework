@@ -37,6 +37,7 @@ int main() {
 	bool bet = false; // bet을 시작하는지 판단하는 bool형 변수
 	bool stand = false; // stand를 하는지 판단하는 bool형 변수
 	while (end) {
+		cout << "Deck count : " << Deck.deck_count() << endl;
 		if (!game) { // game이 false(시작안했을 때)
 			cout << "Command list(game/shuffle/exit)" << endl;
 			cout << "CMD>> ";
@@ -64,7 +65,7 @@ int main() {
 			}
 		}
 		else {	
-			if (!bet) { // bet이 false일때
+			if(!bet) { // bet이 false일때
 				cout << "Command list(bet/end)" << endl;
 				cout << "CMD>> ";
 				cin >> command; //명령어 입력
@@ -89,43 +90,44 @@ int main() {
 				
 			}
 			else {
-				if (!stand) { // stand가 false일 때(스탠드를 안했을 때)
-					dealer.print(stand); // dealer의 카드 출력(stand가 false 일 경우에는 첫번 째 카드를 빼고 출력
-					Player.print(); // 플레이어의 카드 출력
-				}
-				else { // stand를 외쳤을 때
-					dealer.print(stand); // 딜러의 카드 출력 (stand가 true 일 때는 모든 카드를 출력)
-					Player.print(); // 플레이어의 카드 출력
-					who_is_winner(Player.sum(), dealer.sum()); //누가 이겼는지 판단
-					if (Deck.deck_count() <= 13) { // 만약 덱에 남은 카드가 13개 이하면 
-						cout << "Not Enough Card" << endl; // Not Enough Card 출력
-						dealer.delete_card(); // 딜러의 카드 삭제
-						Player.delete_card(); // 플레이어의 카드 삭제
-						bet = false; // 베팅 종료
-						game = false; // 게임 종료
+				while (bet) {
+					if (!stand) { // stand가 false일 때(스탠드를 안했을 때)
+						dealer.print(stand); // dealer의 카드 출력(stand가 false 일 경우에는 첫번 째 카드를 빼고 출력
+						Player.print(); // 플레이어의 카드 출력
 					}
-					bet = false; // 아닐경우 배팅만 종료
-				}
-				if (bet) { // 배팅을 할 때
-					cout << "Command list(hit/stand)" << endl; 
-					cout << "CMD>> ";
-					cin >> command; // 커맨드 입력
-				}
-				if (strcmp(command, "hit") == 0) { // command가 hit일 때는
-					Deck.hit_player(&Player, &dealer, &Discard); // 덱에서 플레이어에게 카드를 준다
-					if (Player.sum() > 21) { // 플레이어의 카드가 21보다 클 때
-						stand = true; // 강제적으로 stand를 한다.
+					else { // stand를 외쳤을 때
+						dealer.print(stand); // 딜러의 카드 출력 (stand가 true 일 때는 모든 카드를 출력)
+						Player.print(); // 플레이어의 카드 출력
+						who_is_winner(Player.sum(), dealer.sum()); //누가 이겼는지 판단
+						if (Deck.deck_count() <= 13) { // 만약 덱에 남은 카드가 13개 이하면 
+							cout << "Not Enough Card" << endl; // Not Enough Card 출력
+							bet = false; // 베팅 종료
+							game = false; // 게임 종료
+						}
+						bet = false; // 아닐경우 배팅만 종료
+					}
+					if (bet) { // 배팅을 할 때
+						cout << "Command list(hit/stand)" << endl;
+						cout << "CMD>> ";
+						cin >> command; // 커맨드 입력
+					}
+					if (strcmp(command, "hit") == 0) { // command가 hit일 때는
+						Deck.hit_player(&Player, &dealer, &Discard); // 덱에서 플레이어에게 카드를 준다
+						if (Player.sum() > 21) { // 플레이어의 카드가 21보다 클 때
+							stand = true; // 강제적으로 stand를 한다.
+						}
+					}
+					else if (strcmp(command, "stand") == 0) { // 커맨드가 stand인지 확인
+						if (dealer.sum() <= 16) { // 딜러의 카드의 합이 16이하 일때는 카드를 받는다.
+							Deck.hit_Dealer(&Player, &dealer, &Discard); // 덱에서 딜러에게 카드를 주는 매소드 호출
+						}
+						stand = true; // 딜러가 카드를 다받았으면 비교를 위해 stand를 한다.
+					}
+					else {
+						cout << "Wrong Command!" << endl; // 명령어를 잘못입력 했을 시
 					}
 				}
-				else if (strcmp(command, "stand") == 0) { // 커맨드가 stand인지 확인
-					if (dealer.sum() <= 16) { // 딜러의 카드의 합이 16이하 일때는 카드를 받는다.
-						Deck.hit_Dealer(&Player, &dealer, &Discard); // 덱에서 딜러에게 카드를 주는 매소드 호출
-					}
-					stand = true; // 딜러가 카드를 다받았으면 비교를 위해 stand를 한다.
-				}
-				else {
-					cout << "Wrong Command!" << endl; // 명령어를 잘못입력 했을 시
-				}
+				Deck.move_PD(&Discard,&Player,&dealer);
 			}
 		}
 	}

@@ -6,8 +6,8 @@ private:
 	char Student_Id[100];
 	char Major[100];
 	char Name[100];
-	char First_Alphabet[0];
-	char Convert_Id[10];
+	char First_Alphabet;
+	int Convert_Id;
 
 	Student_Node* pNext;
 	Student_Node* pNext_ID;
@@ -20,7 +20,8 @@ public:
 		memset(Student_Id, NULL, 100);
 		memset(Major, NULL, 100);
 		memset(Name, NULL, 100);
-		memset(Convert_Id, NULL, 10);
+		Convert_Id = 0;
+		First_Alphabet;
 		pNext = nullptr;
 		pNext_ID = nullptr;
 		pNext_Name = nullptr;
@@ -29,9 +30,11 @@ public:
 
 	void setStudentId(char* temp) {
 		strcpy_s(Student_Id, temp);
-		for (int i = 0; i < 4; i++) {
-			Convert_Id[i] = Student_Id[i];
+		for (int i = 0; i < 3; i++) {
+			Convert_Id += temp[i] - '0';
+			Convert_Id *= 10;
 		}
+		Convert_Id += temp[3] - '0';
 	}
 
 	void setMajor(char* temp) {
@@ -39,7 +42,7 @@ public:
 	}
 	void setName(char* temp) {
 		strcpy_s(Name, temp);
-		First_Alphabet[0] = Name[0];
+		First_Alphabet = Name[0];
 	}
 
 	void setNext(Student_Node *pTemp) {
@@ -62,11 +65,11 @@ public:
 		return Student_Id;
 	}
 	
-	char* getAlphabet() {
+	char getAlphabet() {
 		return First_Alphabet;
 	}
 
-	char* getConvet() {
+	int getConvet() {
 		return Convert_Id;
 	}
 

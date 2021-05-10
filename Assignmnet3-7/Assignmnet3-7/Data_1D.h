@@ -2,69 +2,32 @@
 #include "Student_Node.h"
 #include <iostream>
 
+template<typename T>
 class Data_1D {
 private:
 	Student_Node* pHead;
 	Student_Node* pTail;
 
-	char name[100];
-	char major[100];
-	char student_id[100];
-	char first_name[1];
-	char year[5];
+	T data;
 
 public:
 	Data_1D() {
 		pHead = nullptr;
 		pTail = nullptr;
-		memset(name, NULL, 100);
-		memset(major, NULL, 100);
-		memset(student_id, NULL, 100);
-		memset(first_name, NULL, 1);
-		memset(year, NULL, 5);
+
+		*pNext = nullptr;
 	}
 
-	~Data_1D() {
+	~Data_1D<T>() {
 
 	}
 
-	char* getName() {
-		return name;
+	T getData() {
+		return data;
 	}
 
-	char* getMajor() {
-		return major;
-	}
-
-	char* getId() {
-		return student_id;
-	}
-
-	char* getFirst_name() {
-		return first_name;
-	}
-
-	char* getyear() {
-		return year;
-	}
-
-	void setName(char *temp) {
-		strcpy_s(name, temp);
-		if (temp[0] >= 'a' && temp[0] <= 'z')
-			first_name[0] = temp[0] - 32;
-		else
-			first_name[0] = temp[0];
-	}
-
-	void setMajor(char* temp) {
-		strcpy_s(major, temp);
-	}
-
-	void setId(char* temp) {
-		strcpy_s(student_id, temp);
-		for (int i = 0; i < 4;i++) {
-			student_id[i] = temp[i];
-		}
+	Data_1D<T>* getNext() {
+		return pNext;
 	}
 
 	Student_Node* getHead() {
@@ -80,6 +43,22 @@ public:
 
 	void setTail(Student_Node* pTemp) {
 		pTail = pTemp;
+	}
+
+	void setData(int temp) {
+		data = temp;
+	}
+
+	void setData(char* temp) {
+		strcpy_s(data, temp);
+	}
+	
+	void setData(char temp) {
+		data = temp;
+	}
+
+	void setNext(Data<T> *temp) {
+		pNext = temp;
 	}
 
 	void Insert_input(char* ID, char* major, char* name) {

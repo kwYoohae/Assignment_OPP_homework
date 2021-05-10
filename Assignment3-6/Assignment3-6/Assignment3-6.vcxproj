@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="Board_Node.h" />
     <ClInclude Include="node.h" />
+    <ClInclude Include="Board.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

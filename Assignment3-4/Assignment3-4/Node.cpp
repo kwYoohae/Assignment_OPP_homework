@@ -4,10 +4,15 @@
 node::node() {
 	memset(card, NULL, 5);
 	pNext = nullptr;
+	pPrev = nullptr;
 }
 
 node::~node() {
 
+}
+
+node* node::getPrev() {
+	return pPrev;
 }
 
 node* node::getNext() {
@@ -27,4 +32,7 @@ void node::setNext(node* pTemp) {
 	pNext = pTemp;
 }
 
+void node::setPrev(node* pTemp) {
+	pPrev = pTemp;
+}
 

@@ -1,71 +1,72 @@
-#include "Deck.h"
+ï»¿#include "Deck.h"
 #include <iostream>
 
-deck::deck() { // deckÀÇ »ı¼ºÀÚ
-	pHead = nullptr; // pheadÃÊ±âÈ­
-	pTail = nullptr; // pTailÃÊ±âÈ­
-	char card[5]; // Ä«µå º¯¼ö »ı¼º
-	for (int i = 0; i < 4; i++) { // ½ºÆäÀÌµå, Å¬·Î¹ö, ÇÏÆ®, ´ÙÀÌ¾Æ¸óµå¸¦ ÀÔ·ÂÇØ¾ß ÇÔÀ¸·Î 4¹ø ¹İº¹¹®À» ½ÇÇà
-		for (int j = 1; j <= 13; j++) { // ÃÑ 13ÀåÀÇ Ä«µå ÀÌ¹Ç¿ä 13¹øÀ» µ·´Ù
-			memset(card, NULL, 5); // cardº¯¼ö ÃÊ±âÈ­
-			if (i == 0) //Ä«µå ¹«´Ì °áÁ¤
+deck::deck() { // deckì˜ ìƒì„±ì
+	pHead = nullptr; // pheadì´ˆê¸°í™”
+	pTail = nullptr; // pTailì´ˆê¸°í™”
+	char card[5]; // ì¹´ë“œ ë³€ìˆ˜ ìƒì„±
+	for (int i = 0; i < 4; i++) { // ìŠ¤í˜ì´ë“œ, í´ë¡œë²„, í•˜íŠ¸, ë‹¤ì´ì•„ëª¬ë“œë¥¼ ì…ë ¥í•´ì•¼ í•¨ìœ¼ë¡œ 4ë²ˆ ë°˜ë³µë¬¸ì„ ì‹¤í–‰
+		for (int j = 1; j <= 13; j++) { // ì´ 13ì¥ì˜ ì¹´ë“œ ì´ë¯€ìš” 13ë²ˆì„ ëˆë‹¤
+			memset(card, NULL, 5); // cardë³€ìˆ˜ ì´ˆê¸°í™”
+			if (i == 0) //ì¹´ë“œ ë¬´ëŠ¬ ê²°ì •
 				card[0] = 'C';
-			if (i == 1)//Ä«µå ¹«´Ì °áÁ¤
+			if (i == 1)//ì¹´ë“œ ë¬´ëŠ¬ ê²°ì •
 				card[0] = 'S';
-			if (i == 2)//Ä«µå ¹«´Ì °áÁ¤
+			if (i == 2)//ì¹´ë“œ ë¬´ëŠ¬ ê²°ì •
 				card[0] = 'D';
-			if (i == 3)//Ä«µå ¹«´Ì °áÁ¤
+			if (i == 3)//ì¹´ë“œ ë¬´ëŠ¬ ê²°ì •
 				card[0] = 'H';
-			if (j == 1) // 1ÀÏ ¶§ 'A'ÀÔ·Â
+			if (j == 1) // 1ì¼ ë•Œ 'A'ì…ë ¥
 				card[1] = 'A';
-			else if (j == 10) { // 10ÀÏ ‹š '1', '0' Â÷·Ê·ÎÀÔ·Â
+			else if (j == 10) { // 10ì¼ ë–„ '1', '0' ì°¨ë¡€ë¡œì…ë ¥
 				card[1] = '1';
 				card[2] = '0';
 			}
-			else if (j == 11) { // 11ÀÏ ¶§ JÀÔ·Â
+			else if (j == 11) { // 11ì¼ ë•Œ Jì…ë ¥
 				card[1] = 'J';
 			}
-			else if (j == 12) { // 12ÀÏ ¶§ QÀÔ·Â
+			else if (j == 12) { // 12ì¼ ë•Œ Qì…ë ¥
 				card[1] = 'Q';
 			}
-			else if (j == 13) { // 13ÀÏ ¶§ KÀÔ·Â
+			else if (j == 13) { // 13ì¼ ë•Œ Kì…ë ¥
 				card[1] = 'K';
 			} 
-			else { // ³ª¸ÓÁöÀÏ ‹š´Â ±×³É ¼ıÀÚÀÌ¹Ç·Î j¿¡¼­ '0'À» ´õÇÑ°ª ÀÔ·Â
+			else { // ë‚˜ë¨¸ì§€ì¼ ë–„ëŠ” ê·¸ëƒ¥ ìˆ«ìì´ë¯€ë¡œ jì—ì„œ '0'ì„ ë”í•œê°’ ì…ë ¥
 				card[1] = j + '0';
 			}
-			node* pNew = new node; // node»ı¼º
-			pNew->setCard(card); // Ä«µåÀÇ °© ¼³Á¤
-			if (i == 0 && j == 1) { // Ã¹¹øÂ° ³ëµå´Â pHead¿Í pTailÀ» °¡Áü
+			node* pNew = new node; // nodeìƒì„±
+			pNew->setCard(card); // ì¹´ë“œì˜ ê°‘ ì„¤ì •
+			if (i == 0 && j == 1) { // ì²«ë²ˆì§¸ ë…¸ë“œëŠ” pHeadì™€ pTailì„ ê°€ì§
 				pHead = pNew;
 				pTail = pNew;
 			}
-			else {// µÎ¹øÂ° ³ëµå ºÎÅÍ´Â pHead¸¸ ¿òÁ÷ÀÓ (stack)
-				pNew->setNext(pHead); // »õ·Î¿î ³ëµå´Â pHead¸¦ Next·Î °¡¸®Å´
-				pHead = pNew; // »õ·Î¿î ³ëµå°¡ Head°¡ µÊ
+			else {// ë‘ë²ˆì§¸ ë…¸ë“œ ë¶€í„°ëŠ” pHeadë§Œ ì›€ì§ì„ (stack)
+				pHead->setPrev(pNew);
+				pNew->setNext(pHead); // ìƒˆë¡œìš´ ë…¸ë“œëŠ” pHeadë¥¼ Nextë¡œ ê°€ë¦¬í‚´
+				pHead = pNew; // ìƒˆë¡œìš´ ë…¸ë“œê°€ Headê°€ ë¨
 			}
 		}
 	}
 	
 }
 
-deck::~deck() { // ¼Ò¸êÀÚ
+deck::~deck() { // ì†Œë©¸ì
 
 }
 
-void deck::setHead(node* pTemp) { //HeadÀÇ °ªÀ» ¹Ù²Ù´Â ¸Å¼Òµå
+void deck::setHead(node* pTemp) { //Headì˜ ê°’ì„ ë°”ê¾¸ëŠ” ë§¤ì†Œë“œ
 	pHead = pTemp;
 }
 
-void deck::setTail(node* pTemp) { //TailÀÇ °ªÀ» ¹Ù²Ù´Â ¸Å¼Òµå
+void deck::setTail(node* pTemp) { //Tailì˜ ê°’ì„ ë°”ê¾¸ëŠ” ë§¤ì†Œë“œ
 	pTail = pTemp;
 }
 
-node* deck::getHead() { // HeadÀÇ °ªÀ» ¹İÈ¯ÇÏ´Â ¸Å¼Òµå
+node* deck::getHead() { // Headì˜ ê°’ì„ ë°˜í™˜í•˜ëŠ” ë§¤ì†Œë“œ
 	return pHead;
 }
 
-node* deck::getTail(){ //TailÀÇ °ªÀ» ¹İÈ¯ÇÏ´Â ¸Å¼Òµå
+node* deck::getTail(){ //Tailì˜ ê°’ì„ ë°˜í™˜í•˜ëŠ” ë§¤ì†Œë“œ
 	return pTail;
 }
 
@@ -80,130 +81,160 @@ void deck::print() {
 	std::cout << "count : " << count << '\n';
 }
 
-void deck::shuffle(int number, player *Player, discard *Discard) { //µ¦À» ¼¯´Â ¸Å¼Òµå
-	srand(time(NULL)); // ½Ã°£ ½Ãµå´Â ÇöÀç½Ã°£À¸·Î
-		node* discard_head = Discard->getHead(); // discardÀÇ Head¸¦ °¡¸®Å°´Â ³ëµå
-		while (discard_head) { // discard_headº¯¼ö°¡ nullÀÏ¶§±îÁö
-			node* pNew = new node; // »õ·Î¿î ³ëµå »ı¼º
-			pNew->setCard(discard_head->getCard()); // »õ·Î¿î ³ëµå¿¡ discard_headÀÇ µ¥ÀÌÅÍ¸¦ ÀúÀå
-			pNew->setNext(pHead); // µ¦¿¡ »õ·Î¿î ³ëµå¸¦ ½×À½ (»õ·Î¿î³ëµå´Â µ¦ÀÇ head¸¦ °¡¸®Å´)
-			pHead = pNew; // µ¦¿¡ »õ·Î¿î ³ëµå¸¦ ½×À½ (»õ·Î¿î ³ëµå´Â head°¡ µÈ´Ù)
-			discard_head = discard_head->getNext(); // discard_head´Â ´ÙÀ½ ³ëµå·Î ÀÌµ¿
+void deck::shuffle(int number, player* Player, discard* Discard) { //ë±ì„ ì„ëŠ” ë§¤ì†Œë“œ
+	srand(time(NULL)); // ì‹œê°„ ì‹œë“œëŠ” í˜„ì¬ì‹œê°„ìœ¼ë¡œ
+	player player_temp;
+	node* discard_head = Discard->getHead(); // discardì˜ Headë¥¼ ê°€ë¦¬í‚¤ëŠ” ë…¸ë“œ
+	while (discard_head) { // discard_headë³€ìˆ˜ê°€ nullì¼ë•Œê¹Œì§€
+		node* pNew = new node; // ìƒˆë¡œìš´ ë…¸ë“œ ìƒì„±
+		pNew->setCard(discard_head->getCard()); // ìƒˆë¡œìš´ ë…¸ë“œì— discard_headì˜ ë°ì´í„°ë¥¼ ì €ì¥
+		pNew->setNext(pHead); // ë±ì— ìƒˆë¡œìš´ ë…¸ë“œë¥¼ ìŒ“ìŒ (ìƒˆë¡œìš´ë…¸ë“œëŠ” ë±ì˜ headë¥¼ ê°€ë¦¬í‚´)
+		pHead = pNew; // ë±ì— ìƒˆë¡œìš´ ë…¸ë“œë¥¼ ìŒ“ìŒ (ìƒˆë¡œìš´ ë…¸ë“œëŠ” headê°€ ëœë‹¤)
+		discard_head = discard_head->getNext(); // discard_headëŠ” ë‹¤ìŒ ë…¸ë“œë¡œ ì´ë™
+	}
+	Discard->delete_card(); // ëª¨ë“  ê°’ì„ ë±ì— ë³µì‚¬í•œ ë’¤ëŠ” discard_headì— ìŒ“ì˜€ë˜ ì¹´ë“œë“¤ì„ ì œê±°
+	for (int i = 0; i < number; i++) {
+		player_temp.delete_card();
+		Player->delete_card();
+		int count = 0; // randomìœ¼ë¡œ ë³µì‚¬í•œ ê°’ì´ ì–¼ë§ˆë‚˜ë˜ëŠ”ì§€ë¥¼ countí•´ì£¼ëŠ” ë³€ìˆ˜
+		int rand_num = rand() % 52;
+		//std::cout << '\n' << "rand_num : " << rand_num << '\n';
+		node* pTemp = pHead;
+		for (int i = 0; i < rand_num; i++) {
+			pTemp = pTemp->getNext();
 		}
-		Discard->delete_card(); // ¸ğµç °ªÀ» µ¦¿¡ º¹»çÇÑ µÚ´Â discard_head¿¡ ½×¿´´ø Ä«µåµéÀ» Á¦°Å
-		for (int i = 0; i < number; i++) {
-			int count = 0; // randomÀ¸·Î º¹»çÇÑ °ªÀÌ ¾ó¸¶³ªµÇ´ÂÁö¸¦ countÇØÁÖ´Â º¯¼ö
-			Player->delete_card(); // PlayerÀÇ Ä«µå¸¦ »èÁ¦
-			node* pTemp = pHead; // pTemp³ëµå´Â pHead¸¦ °¡¸®Å´
-			node* pNew = new node; // »õ·Î¿î ³ëµå »ı¼º
-			player player_temp; // player °´Ã¼ »ı¼º
-			node* pPlayer; // pPlayer³ëµå »ı¼º
-			player_temp.delete_card(); // playet_temp°´Ã¼¿¡ ÀÖ´Â ¸ğµç Ä«µåµéÀ» »èÁ¦
-			pNew->setCard(pTemp->getCard()); // »õ·Î¿î °´Ã¼´Â ÇöÀç µ¦¿¡ pTemp°¡ °¡¸®Å°°í ÀÖ´Â ³ëµåÀÇ µ¥ÀÌÅÍ °ªÀ» ÀúÀå
-			player_temp.setHead(pNew); // player_temp´Â »èÁ¦ÇØ¼­ head¿Í tailÀÌ ¾øÀ¸¹Ç·Î »õ·Î¿î ³ëµå·Î ¼³Á¤
-			player_temp.setTail(pNew); // tail ³ëµå ¼³Á¤
-			pTemp = pTemp->getNext(); // pTemp´Â ´ÙÀ½À» °¡¸®Å°´Â ³ëµå·Î ÀÌµ¿
-			while (pTemp) { // pTemp°¡ nullptrÀ» ¸¸³¯ ¶§ ±îÁö
-				int random_number = rand() % 53; // ·£´ıÀ¸·Î ‹¢ ¼ıÀÚ °áÁ¤
-				for (int j = 0; j < random_number; j++) {
-					if (!pTemp) // pTemp°¡ nullptr°ªÀÌ¸é ¹İº¹¹® Á¾·á
-						break;
-					pNew = new node; // »õ·Î¿î °´Ã¼ »ı¼º
-					pNew->setCard(pTemp->getCard()); // »õ·Î¿î °´Ã¼¿¡ pTemp°¡ °¡¸®Å°°í ÀÖ´Â ³ëµåÀÇ µ¥ÀÌÅÍ °ªÀ» ÀúÀå
-					pNew->setNext(player_temp.getHead()); // »õ·Î¿î °´Ã¼ÀÇ °¡¸®Å°´Â ³ëµå ¼³Á¤
-					pTemp = pTemp->getNext(); // pTemp´Â ±×´ÙÀ½ ³ëµå·Î ÀÌµ¿
-					player_temp.setHead(pNew); //player_tempÀÇ ÇØµå¸¦ »õ·Î¿î °´Ã¤·Î º¯°æ
-					count++; //¾ó¸¶³ª ÀúÀåÇß´ÂÁö count
-				}
-				pPlayer = player_temp.getHead();// pPlayer´Â player_tempÀÇ ÇØµå¸¦ °¡¸®Å´
-				if (Player->getHead() == nullptr) { // ¸¸¾à PlayerÀÇ Çìµå°¡ nullptr°ªÀÌ¸é head¸¦ ¼³Á¤ÇØÁÜ
-					pNew = new node; //»õ·Î¿î ³ëµå »ı¼º
-					pNew->setCard(pPlayer->getCard()); // player_temp¿¡ ÀÖ´Â pPlayer°¡ °¡¸®Å°´Â °´Ã¼°ªÀ» »õ·Î¿î ³ëµå¿¡ ÀúÀå
-					Player->setHead(pNew); // PlayerÀÇ head°ªÀÌ ¾øÀ¸¹Ç·Î »õ·Î¿î °´Ã¼·Î ÁöÁ¤
-					Player->setTail(pNew); // PlayerÀÇ tail°ªÀÌ ¾øÀ¸¹Ç·Î »õ·Î¿î °´Ã¼·Î ÁöÁ¤ 
-					pPlayer = pPlayer->getNext(); // pPlayer´Â ´ÙÀ½ °¡¸®Å°´Â °÷À¸·Î ÀÌµ¿
-				}
-				for (int j = 0; j < count; j++) {
-					pNew = new node; // »õ·Î¿î °´Ã¼ »ı¼º
-					pNew->setCard(pPlayer->getCard()); // pPlayer³ëµå°¡ °¡Áö°í ÀÖ´Â µ¥ÀÌÅÍ °ªÀ» »õ·Î¿î ³ëµå¿¡ ÀúÀå
-					pNew->setNext(Player->getHead()); // »õ·Î¿î ³ëµåÀÇ ´ÙÀ½ °ªÀ» ¼³Á¤
-					pPlayer = pPlayer->getNext(); // pPlayer´Â ´ÙÀ½ °ªÀ¸·Î ÀÌµ¿ 
-					Player->setHead(pNew); // PlayerÀÇ Head¸¦ »õ·Î¿î °´Ã¼·Î º¯°æ
-				}
-				count = 0; // count°ª ÃÊ±âÈ­
-				player_temp.delete_card(); //player_temp¿¡ ÀÖ´Â ¸ğµç °ª »èÁ¦
+		pTail = pTemp;
+		pTemp = pTemp->getNext();
+		pTail->setNext(nullptr);
+		node* pDel = pTemp;
+		while (pTemp) {
+			node* pNew = new node;
+			if (Player->getHead() == nullptr) {
+				pNew->setCard(pTemp->getCard());
+				Player->setHead(pNew);
+				Player->setTail(pNew);
 			}
-			pTemp = pHead; //pTemp´Â µ¦ÀÇ pHead¸¦ °¡¸®Å´
-			pPlayer = Player->getHead(); // pPlayer´Â PlayerÀÇ pHead¸¦ °¡¸®Å´
-			while(pTemp) { // pTemp°¡ nullptrÀÏ ¶§ ±îÁö
-				pTemp->setCard(pPlayer->getCard()); // µ¦¿¡ pPlayerÀÇ Ä«µå°ªÀ» ÀúÀå
-				pTemp = pTemp->getNext(); // pTemp´Â ´ÙÀ½°ªÀ¸·Î ÀÌµ¿
-				pPlayer = pPlayer->getNext(); // pPlayerµµ ´ÙÀ½°ªÀ¸·Î ÀÌµ¿
+			else {
+				pNew->setCard(pTemp->getCard());
+				Player->getTail()->setNext(pNew);
+				pNew->setPrev(Player->getTail());
+				Player->setTail(pNew);
 			}
-			player_temp.delete_card(); //player_temp¿¡ ÀÖ´Â ¸ğµç °ª »èÁ¦
+			pTemp = pTemp->getNext();
+			delete pDel;
+			pDel = pTemp;
+			count++;
 		}
+		pTemp = Player->getHead();
+		while (pTemp) {
+			//std::cout<< '\n' << "Deck" << '\n';
+			//print();
+			int num = rand() % count;
+			for (int i = 0; i <= num; i++) {
+				if (!pTemp) {
+					Player->delete_card();
+					break;
+				}
+				if (player_temp.getHead() == nullptr) {
+					node* pNew = new node();
+					pNew->setCard(pTemp->getCard());
+					player_temp.setHead(pNew);
+					player_temp.setTail(pNew);
+				}
+				else {
+					node* pNew = new node;
+					pNew->setCard(pTemp->getCard());
+					pNew->setNext(player_temp.getHead());
+					player_temp.getHead()->setPrev(pNew);
+					player_temp.setHead(pNew);
+				}
+				pTemp = pTemp->getNext();
+			}
+			//std::cout<< '\n' << "Player" << '\n';
+			//Player->print_check();
+			node* temp_head = player_temp.getHead();
+			while (temp_head) {
+				node* pNew = new node;
+				if (player_temp.getHead() == nullptr) {
+					pNew->setCard(temp_head->getCard());
+					pHead = pNew;
+					pTail = pNew;
+				}
+				else {
+					pNew->setCard(temp_head->getCard());
+					pNew->setNext(pHead);
+					pHead->setPrev(pNew);
+					pHead = pNew;
+				}
+				temp_head = temp_head->getNext();
+			}
+ 			//std::cout<< '\n' << "player_temp" << '\n';
+			//player_temp.print_check();
+			player_temp.delete_card();
+		}
+	}
 }
 
-void deck::hit_player(player* Player, Dealer* dealer, discard* Discard) { //player¿¡°Ô Ä«µå¸¦ ÁÖ´Â ¸Å¼Òµå
-	node* pTemp = pHead; // pHead¸¦ °¡¸®Å°´Â ³ëµå »ı¼º
-	node* pNew = new node; // »õ·Î¿î ³ëµå »ı¼º
-	if (Player->getHead() == nullptr) { // ¸¸¾à Player°¡ ¾Æ¹«·± Ä«µåµµ °¡Áö°í ÀÖÁö ¾ÊÀ» ¶§
-		Player->setHead(pNew); // PlayerÀÇ head°ªÀ» »õ·Î¿î ³ëµå·Î °áÁ¤
-		Player->setTail(pNew); // PlayerÀÇ Tail°ªÀ» »õ·Î¿î ³ëµå·Î °áÁ¤
-		pNew->setCard(pTemp->getCard()); // »õ·Î¿î ³ëµåÀÇ Ä«µå °ªÀ» µ¦¿¡¼­ °¡Á®¿È(pTemp)
-		pHead = pHead->getNext(); // pHead´Â ±×´ÙÀ½ °ªÀ¸·Î ¿Å±è
-		delete pTemp; // pTemp³ëµå¸¦ µ¿ÀûÇÒ´ç ÇØÁ¦
+void deck::hit_player(player* Player, Dealer* dealer, discard* Discard) { //playerì—ê²Œ ì¹´ë“œë¥¼ ì£¼ëŠ” ë§¤ì†Œë“œ
+	node* pTemp = pHead; // pHeadë¥¼ ê°€ë¦¬í‚¤ëŠ” ë…¸ë“œ ìƒì„±
+	node* pNew = new node; // ìƒˆë¡œìš´ ë…¸ë“œ ìƒì„±
+	if (Player->getHead() == nullptr) { // ë§Œì•½ Playerê°€ ì•„ë¬´ëŸ° ì¹´ë“œë„ ê°€ì§€ê³  ìˆì§€ ì•Šì„ ë•Œ
+		Player->setHead(pNew); // Playerì˜ headê°’ì„ ìƒˆë¡œìš´ ë…¸ë“œë¡œ ê²°ì •
+		Player->setTail(pNew); // Playerì˜ Tailê°’ì„ ìƒˆë¡œìš´ ë…¸ë“œë¡œ ê²°ì •
+		pNew->setCard(pTemp->getCard()); // ìƒˆë¡œìš´ ë…¸ë“œì˜ ì¹´ë“œ ê°’ì„ ë±ì—ì„œ ê°€ì ¸ì˜´(pTemp)
+		pHead = pHead->getNext(); // pHeadëŠ” ê·¸ë‹¤ìŒ ê°’ìœ¼ë¡œ ì˜®ê¹€
+		delete pTemp; // pTempë…¸ë“œë¥¼ ë™ì í• ë‹¹ í•´ì œ
 		
 	}
 	else {
-		pNew->setCard(pTemp->getCard()); //»õ·Î¿î °´Ã¼ÀÇ °ªÀ» µ¦¿¡¼­ °¡Á®¿È(pTemp)
-		Player->getTail()->setNext(pNew); // TailÀÇ ´ÙÀ½ °ªÀ» pNew·Î ¼³Á¤ (queue)
-		Player->setTail(pNew); // TailÀ» »õ·Î¿î °´Ã¼·Î ¼³Á¤
-		pHead = pHead->getNext(); // µ¦ÀÇ Head¸¦ ±× ´ÙÀ½ °ªÀ¸·Î º¯°æ
-		delete pTemp; // pTemp´Â ¸Ş¸ğ¸® ÇÒ´ç ÇØÁ¦
+		pNew->setCard(pTemp->getCard()); //ìƒˆë¡œìš´ ê°ì²´ì˜ ê°’ì„ ë±ì—ì„œ ê°€ì ¸ì˜´(pTemp)
+		Player->getTail()->setNext(pNew); // Tailì˜ ë‹¤ìŒ ê°’ì„ pNewë¡œ ì„¤ì • (queue)
+		Player->setTail(pNew); // Tailì„ ìƒˆë¡œìš´ ê°ì²´ë¡œ ì„¤ì •
+		pHead = pHead->getNext(); // ë±ì˜ Headë¥¼ ê·¸ ë‹¤ìŒ ê°’ìœ¼ë¡œ ë³€ê²½
+		delete pTemp; // pTempëŠ” ë©”ëª¨ë¦¬ í• ë‹¹ í•´ì œ
 	}
 }
 
-void deck::hit_Dealer(player* Player, Dealer* dealer, discard* Discard) { // Dealer¿¡°Ô Ä«µå¸¦ ÁÖ´Â ¸Å¼Òµå
-	node* pTemp = pHead; // pTemp´Â pHead¸¦ °¡¸®Å´
-	node* pNew = new node; // »õ·Î¿î ³ëµå »ı¼º
-	if (dealer->getHead() == nullptr) { // dealerÀÇ Head°¡ ºñ¾îÀÖÀ» ¶§ 
-		dealer->setHead(pNew); // dealerÀÇ Head¸¦ »õ·Î¿î ³ëµå·Î ¼³Á¤
-		dealer->setTail(pNew); // dealerÀÇ Tail¸¦ »õ·Î¿î ³ëµå·Î ¼³Á¤
-		pNew->setCard(pTemp->getCard()); // »õ·Î¿î ³ëµåÀÇ °ªÀ» pTemp(deck)ÀÇ Ä«µå °ªÀ¸·Î ¼³Á¤
-		pHead = pHead->getNext(); // deckÀÇ Çìµå °ªÀ» ´ÙÀ½ °ªÀ¸·Î º¯°æ
-		delete pTemp; // pTempÀÇ °ª »èÁ¦
+void deck::hit_Dealer(player* Player, Dealer* dealer, discard* Discard) { // Dealerì—ê²Œ ì¹´ë“œë¥¼ ì£¼ëŠ” ë§¤ì†Œë“œ
+	node* pTemp = pHead; // pTempëŠ” pHeadë¥¼ ê°€ë¦¬í‚´
+	node* pNew = new node; // ìƒˆë¡œìš´ ë…¸ë“œ ìƒì„±
+	if (dealer->getHead() == nullptr) { // dealerì˜ Headê°€ ë¹„ì–´ìˆì„ ë•Œ 
+		dealer->setHead(pNew); // dealerì˜ Headë¥¼ ìƒˆë¡œìš´ ë…¸ë“œë¡œ ì„¤ì •
+		dealer->setTail(pNew); // dealerì˜ Tailë¥¼ ìƒˆë¡œìš´ ë…¸ë“œë¡œ ì„¤ì •
+		pNew->setCard(pTemp->getCard()); // ìƒˆë¡œìš´ ë…¸ë“œì˜ ê°’ì„ pTemp(deck)ì˜ ì¹´ë“œ ê°’ìœ¼ë¡œ ì„¤ì •
+		pHead = pHead->getNext(); // deckì˜ í—¤ë“œ ê°’ì„ ë‹¤ìŒ ê°’ìœ¼ë¡œ ë³€ê²½
+		delete pTemp; // pTempì˜ ê°’ ì‚­ì œ
 
 
 	}
 	else {
-		pNew->setCard(pTemp->getCard()); // »õ·Î¿î ³ëµå¿¡ deckÀÇ ¸ÇÀ§ Ä«µå °ªÀ» °ªÀ» ¤Ç¼³Á¤
-		dealer->getTail()->setNext(pNew); // µô·¯ÀÇ tailÀÇ Next°ªÀ» »õ·Î¿î ³ëµå·Î ¼³Á¤
-		dealer->setTail(pNew); // dealerÀÇ tail°ªÀ» »õ·Î¿î ³ëµå·Î ¼³Á¤
-		pHead = pHead->getNext(); // deckÀÇ head°ªÀ» ´ÙÀ½°ªÀ¸·Î ¼³Á¤
-		delete pTemp; // pTemp³ëµå¸¦ ¸Ş¸ğ¸®ÇÒ´ç ÇØÁ¦
+		pNew->setCard(pTemp->getCard()); // ìƒˆë¡œìš´ ë…¸ë“œì— deckì˜ ë§¨ìœ„ ì¹´ë“œ ê°’ì„ ê°’ì„ ã…—ì„¤ì •
+		dealer->getTail()->setNext(pNew); // ë”œëŸ¬ì˜ tailì˜ Nextê°’ì„ ìƒˆë¡œìš´ ë…¸ë“œë¡œ ì„¤ì •
+		dealer->setTail(pNew); // dealerì˜ tailê°’ì„ ìƒˆë¡œìš´ ë…¸ë“œë¡œ ì„¤ì •
+		pHead = pHead->getNext(); // deckì˜ headê°’ì„ ë‹¤ìŒê°’ìœ¼ë¡œ ì„¤ì •
+		delete pTemp; // pTempë…¸ë“œë¥¼ ë©”ëª¨ë¦¬í• ë‹¹ í•´ì œ
 	}
 }
 
-int deck::deck_count() { // µ¦ÀÇ Ä«µå ¼ıÀÚ¸¦ ¼¼¾îÁÖ´Â ¸Å¼Òµå
-	int count = 0; // Ä«¿îÆ®ÇÏ´Â º¯¼ö »ı¼º
-	node* pTemp = pHead; // pTemp´Â pHead¸¦ °¡¸®Å´
-	while (pTemp) { // pTemp°¡ nullptr ÀÏ¶§±îÁö
-		pTemp = pTemp->getNext(); //pTemp´Â Next°ªÀ¸·Î ÀÌµ¿
-		count++; // count¸¦ ´õÇØÁÜ
+int deck::deck_count() { // ë±ì˜ ì¹´ë“œ ìˆ«ìë¥¼ ì„¸ì–´ì£¼ëŠ” ë§¤ì†Œë“œ
+	int count = 0; // ì¹´ìš´íŠ¸í•˜ëŠ” ë³€ìˆ˜ ìƒì„±
+	node* pTemp = pHead; // pTempëŠ” pHeadë¥¼ ê°€ë¦¬í‚´
+	while (pTemp) { // pTempê°€ nullptr ì¼ë•Œê¹Œì§€
+		pTemp = pTemp->getNext(); //pTempëŠ” Nextê°’ìœ¼ë¡œ ì´ë™
+		count++; // countë¥¼ ë”í•´ì¤Œ
 	}
-	return count; // Ä«µå¸¦ ´õÇÑ °ªÀ» ¹İÈ¯
+	return count; // ì¹´ë“œë¥¼ ë”í•œ ê°’ì„ ë°˜í™˜
 }
 
-void deck::delete_deck() { // deck¿¡ ÀÖ´Â Ä«µå¸¦ ÀüºÎ »èÁ¦
-	node* pTemp; // node Æ÷ÀÎÅÍ º¯¼ö »ı¼º
-	while (pHead) { // pHead°¡ nullptrÀÏ ¶§±îÁö
-		pTemp = pHead; // pTemp´Â pHead¸¦ °¡¸®Å´
-		pHead = pHead->getNext(); // pHead´Â ´ÙÀ½ °ªÀ¸·Î ÀÌµ¿
-		delete pTemp;//pTempÀÇ ¸Ş¸ğ¸® ÇÒ´ç ÇØÁ¦
+void deck::delete_deck() { // deckì— ìˆëŠ” ì¹´ë“œë¥¼ ì „ë¶€ ì‚­ì œ
+	node* pTemp; // node í¬ì¸í„° ë³€ìˆ˜ ìƒì„±
+	while (pHead) { // pHeadê°€ nullptrì¼ ë•Œê¹Œì§€
+		pTemp = pHead; // pTempëŠ” pHeadë¥¼ ê°€ë¦¬í‚´
+		pHead = pHead->getNext(); // pHeadëŠ” ë‹¤ìŒ ê°’ìœ¼ë¡œ ì´ë™
+		delete pTemp;//pTempì˜ ë©”ëª¨ë¦¬ í• ë‹¹ í•´ì œ
 	}
-	pHead = nullptr; // ¸ğµç °ªÀ» Áö¿ì¸é pHead´Â nullptr·Î ÃÊ±âÈ­
-	pTail = nullptr; // ¸ğµç °ªÀ» Áö¿ì¸é pTailÀº nullptr·Î ÃÊ±âÈ­
+	pHead = nullptr; // ëª¨ë“  ê°’ì„ ì§€ìš°ë©´ pHeadëŠ” nullptrë¡œ ì´ˆê¸°í™”
+	pTail = nullptr; // ëª¨ë“  ê°’ì„ ì§€ìš°ë©´ pTailì€ nullptrë¡œ ì´ˆê¸°í™”
 }
 
 void deck::move_PD(discard* Discard, player* Player, Dealer* dealer) {

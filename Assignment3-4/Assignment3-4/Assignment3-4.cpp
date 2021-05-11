@@ -38,6 +38,7 @@ int main() {
 	bool stand = false; // stand를 하는지 판단하는 bool형 변수
 	while (end) {
 		cout << "Deck count : " << Deck.deck_count() << endl;
+		Deck.print();
 		if (!game) { // game이 false(시작안했을 때)
 			cout << "Command list(game/shuffle/exit)" << endl;
 			cout << "CMD>> ";

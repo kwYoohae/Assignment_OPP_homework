@@ -8,5 +8,5 @@
 2015001047,Computer Science,Hubert
 2016001032,Computer Science,Fernando
 2019003077,Chemistry,Salvatore
-2019002059,Information Convergenve,Jenifer
-2016004024,Mathmatics,June
+2019002059,Information Convergence,Jenifer
+2016004024,Mathematics,June

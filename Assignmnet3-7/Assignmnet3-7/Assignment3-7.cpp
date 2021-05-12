@@ -4,6 +4,7 @@
 #include "Data_1D.h"
 #include "Data_2D.h"
 #include "Student_Node.h"
+#include <crtdbg.h>
 
 using namespace std;
 
@@ -51,7 +52,8 @@ int main() {
 		pNew->setName(name);
 		data_1d.Insert_input<Student_Node>(pNew);
 		name_2d.Insert<char>(pNew);
-		
+		major_2d.Insert<char*>(pNew);
+		year_2d.Insert<int>(pNew);
 	}
 	//name_2d.Insert(&data_1d);
 	//major_2d.Insert<char*>(&data_1d);
@@ -67,14 +69,25 @@ int main() {
 			data_1d.print();
 		}
 		else if (command == 2) {
-			name_2d.print_char();
+			name_2d.print<char>();
 		}
 		else if (command == 3) {
-			//major_2d.print<char*>();
+			major_2d.print<char*>();
 		}
 		else if (command == 4) {
-			//name_2d.print<char>();
+			year_2d.print<int>();
+		}
+		else if(command == 5){
+			end = false;
+			major_2d.delete_data<char*>();
+			major_2d.Remove_data<char*>();
+			year_2d.Remove_data<int>();
+			name_2d.Remove_data<char>();
+			data_1d.Remove_1d();
+		}
+		else {
+			cout << "wrong input" << endl;
 		}
 	}
-
+	return 0;
 }

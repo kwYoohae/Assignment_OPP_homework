@@ -72,11 +72,6 @@ Node* LL::getHead() {
 int LL::shoot() {
 	bool is_bullet = pHead->getData();
 	Node* pTemp = pHead;
-	if (pTemp->getShot()) {
-		while (pTemp->getShot())
-			pTemp = pTemp->getNext();
-	}
-	pTemp->setShot(true);
 	pHead = pHead->getNext();
 	return is_bullet;
 }
@@ -86,5 +81,14 @@ void LL::rotate() {
 	int number = rand() % 6;
 	for (int i = 0; i <= number; i++) {
 		pHead = pHead->getNext();
+	}
+}
+
+void LL::print() {
+	Node* pTemp = pHead->getNext();
+	std::cout << pHead->getData() << '\n';
+	while (pTemp != pHead) {
+		std::cout << pTemp->getData() << '\n';
+		pTemp = pTemp->getNext();
 	}
 }

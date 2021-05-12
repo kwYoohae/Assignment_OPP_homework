@@ -24,6 +24,7 @@ int main() {
 		else if (strcmp(command, "rotate") == 0) {
 			roulette.rotate();
 			system("cls");
+			//roulette.print();
 			cout << "Command list(shoot/rotate)" << endl;
 		}
 		else {

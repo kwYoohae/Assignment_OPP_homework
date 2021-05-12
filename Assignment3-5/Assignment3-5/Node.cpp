@@ -5,7 +5,6 @@ Node::Node() {
 	data = 0;
 	pNext = nullptr;
 	pPrev = nullptr;
-	shot = false;
 }
 
 Node::~Node() {
@@ -24,10 +23,6 @@ Node* Node::getPrev() {
 	return pPrev;
 }
 
-bool Node::getShot() {
-	return shot;
-}
-
 void Node::setData(int _Data) {
 	data = _Data;
 }
@@ -38,8 +33,4 @@ void Node::setNext(Node* pTemp) {
 
 void Node::setPrev(Node* pTemp) {
 	pPrev = pTemp;
-}
-
-void Node::setShot(bool temp) {
-	shot = temp;
 }

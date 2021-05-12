@@ -12,6 +12,7 @@ public:
 
 	int shoot();
 	void rotate();
+	void print();
 
 private:
 	Node* pHead;

@@ -8,8 +8,10 @@
 using namespace std;
 
 int main() {
-	Data_1D data_1d;
-	Data_2D data_2d;
+	Data_1D<char> data_1d;
+	Data_2D<int> year_2d;
+	Data_2D<char> name_2d;
+	Data_2D<char*> ID_2d;
 	bool end = true;
 	int command;
 	char str[100];
@@ -45,7 +47,7 @@ int main() {
 		}
 		data_1d.Insert_input(Id, major, name);
 	}
-	data_2d.Insert(&data_1d);
+	name_2d.Insert(&data_1d);
 	while (end) {
 		cout << "1. Print File" << endl;
 		cout << "2. Print by ID" << endl;
@@ -55,7 +57,10 @@ int main() {
 		cout << "CMD>> ";
 		cin >> command;
 		if (command == 1) {
-			data_2d.print_char();
+			data_1d.print();
+		}
+		else if (command == 2) {
+			name_2d.print_char();
 		}
 	}
 

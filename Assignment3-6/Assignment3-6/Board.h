@@ -1,78 +1,33 @@
 #pragma once
+#include "block.h"
 
-#include "Board_Node.h"
-
-class Board {
+class board{
 private:
-	Board_Node* pHead;
-
+	block* pHead;
+	block* pTail;
 public:
-
-	Board() {
-		pHead = nullptr;
-		make_board();
-	}
-
-	Board_Node* getHead() {
-		return pHead;
-	}
-
-	void setHead(Board_Node* pTemp) {
-		pHead = pTemp;
-	}
-
-	void make_board() {
-		Board_Node* pTail;
-		int count = 1;
-		for (int i = 0; i < 5; i++) {
-			Board_Node* pNew = new Board_Node;
-			if (i == 0) {
-				pNew->setPos(count);
+	board() {
+		for (int i = 0; i < 6; i++) {
+			if (!pHead) {
+				block* pNew = new block;
 				pHead = pNew;
 				pTail = pNew;
-				pNew->setFinsh(true);
 			}
 			else {
-				pNew->setPos(count);
+				block* pNew = new block;
+				pNew->setPrev(pTail);
 				pTail->setNext(pNew);
 				pTail = pNew;
+				if (i == 5) {
+					board* pNewB = new board;
+					for (int j = 0; j < 6; j++) {
+						block* pNew = new block;
+						pNew->setShortCut(pNew);
+						
+					}
+				}
 			}
-		}
-		for (int i = 0; i < 5; i++) {
-			Board_Node* pNew = new Board_Node;
-			pNew->setPos(count);
-			if (i == 0) {
-				pNew->setRight_up(true);
-			}
-			pTail->setNext(pNew);
-			pTail = pNew;
-		}
-		for (int i = 0; i < 5; i++) {
-			Board_Node* pNew = new Board_Node;
-			pNew->setPos(count);
-			if (i == 0) {
-				pNew->setLeft_up(true);
-			}
-			pTail->setNext(pNew);
-			pTail = pNew;
-		}
-		for (int i = 0; i < 5; i++) {
-			Board_Node* pNew = new Board_Node;
-			pNew->setPos(count);
-			if (i == 0) {
-				pNew->setLeft_down(true);
-			}
-			pTail->setNext(pNew);
-			pTail = pNew;
-		}
-		for (int i = 0; i < 5; i++) {
-			Board_Node* pNew = new Board_Node;
-			pNew->setPos(count);
-			if (i == 2) {
-				pNew->setCenter(true);
-			}
-			pTail->setNext(pNew);
-			pTail = pNew;
 		}
 	}
-}
+
+};

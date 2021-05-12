@@ -7,22 +7,23 @@ class Data_1D {
 private:
 	Student_Node* pHead;
 	Student_Node* pTail;
-	Data_1D* pNext;
+	Data_1D<T>* pNext;
 	
 	T data;
-
+	 
 public:
 	Data_1D() {
 		pHead = nullptr;
 		pTail = nullptr;
 		pNext = nullptr;
+		data = NULL;
 	}
 
 	~Data_1D() {
 
 	}
 
-	Data_1D* getNext() {
+	Data_1D<T>* getNext() {
 		return pNext;
 	}
 
@@ -57,22 +58,48 @@ public:
 		pTail = pTemp;
 	}
 
-	void setNext(Data_1D *temp) {
+	void setNext(Data_1D<T> *temp) {
 		pNext = temp;
 	}
 
-	void Insert_input(char* ID, char* major, char* name) {
-		Student_Node* pNew = new Student_Node;
-		pNew->setStudentId(ID);
-		pNew->setMajor(major);
-		pNew->setName(name);
+	template<typename T>
+	void Insert_input(Student_Node* node) {
 		if (!pHead) {
-			pHead = pNew;
-			pTail = pNew;
+			pHead = node;
+			pTail = node;
 		}
 		else {
-			pTail->setNext(pNew);
-			pTail = pNew;
+			pTail->setNext(node);
+			pTail = node;
+		}
+	}
+
+	template<>
+	void Insert_input<char>(Student_Node* node) {
+		Student_Node* pTemp = getHead();
+		if (!pHead) {
+			pHead = node;
+		}
+		else {
+			Student_Node* pPrev = pTemp;
+			while (pTemp) {
+				if (Compare(pTemp->getName(), node->getName()) == 1) {
+					if (pTemp == pHead) {
+						node->setNext_Name(pTemp);
+						pHead = node;
+					}
+					else {
+						pPrev->setNext_Name(node);
+						node->setNext_Name(pTemp);
+					}
+				}
+				pPrev = pTemp;
+				pTemp = pTemp->getNext_Name();
+				if (!pTemp) {
+					pPrev->setNext_Name(node);
+				}
+			}
+
 		}
 	}
 
@@ -89,5 +116,14 @@ public:
 			pTemp = pTemp->getNext();
 		}
 		std::cout << "=========================================================================" << '\n';
+	}
+
+	template<typename T>
+	int Compare(T temp1, T temp2) {
+		if (temp1 > temp2)
+			return 1;
+		else if (temp1 == temp2)
+			return 0;
+		return -1;
 	}
 };

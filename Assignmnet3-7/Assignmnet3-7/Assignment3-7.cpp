@@ -11,7 +11,7 @@ int main() {
 	Data_1D<char> data_1d;
 	Data_2D<int> year_2d;
 	Data_2D<char> name_2d;
-	Data_2D<char*> ID_2d;
+	Data_2D<char*> major_2d;
 	bool end = true;
 	int command;
 	char str[100];
@@ -45,9 +45,16 @@ int main() {
 		for (int i = 0; i <= strlen(str); i++ , len++) {
 			name[i]= str[len+1];
 		}
-		data_1d.Insert_input(Id, major, name);
+		Student_Node* pNew = new Student_Node;
+		pNew->setMajor(major);
+		pNew->setStudentId(Id);
+		pNew->setName(name);
+		data_1d.Insert_input<Student_Node>(pNew);
+		name_2d.Insert<char>(pNew);
+		
 	}
-	name_2d.Insert(&data_1d);
+	//name_2d.Insert(&data_1d);
+	//major_2d.Insert<char*>(&data_1d);
 	while (end) {
 		cout << "1. Print File" << endl;
 		cout << "2. Print by ID" << endl;
@@ -61,6 +68,12 @@ int main() {
 		}
 		else if (command == 2) {
 			name_2d.print_char();
+		}
+		else if (command == 3) {
+			//major_2d.print<char*>();
+		}
+		else if (command == 4) {
+			//name_2d.print<char>();
 		}
 	}
 

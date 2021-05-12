@@ -1,11 +1,12 @@
 #pragma once
 #include "Data_1D.h"
+#include <iostream>
 
 class Data_2D {
 private:
-	Data_1D<int>* pHead_year;
-	Data_1D<char>* pHead_alphabet;
-	Data_1D<char*>* pHead_major;
+	Data_1D *pHead_year;
+	Data_1D *pHead_alphabet;
+	Data_1D* pHead_major;
 
 public:
 	Data_2D() {
@@ -17,30 +18,31 @@ public:
 		
 	}
 
-	Data_1D<int> *getHead_year() {
+	Data_1D *getHead_year() {
 		return pHead_year;
 	}
-	Data_1D<char> *getHead_alphabet() {
+	Data_1D *getHead_alphabet() {
 		return pHead_alphabet;
 	}
 
-	Data_1D<char*> *getHead_major() {
+	Data_1D *getHead_major() {
 		return pHead_major;
 	}
 
-	void setHead_year(Data_1D<int> *pTemp) {
+	void setHead_year(Data_1D *pTemp) {
 		pHead_year = pTemp;
 	}
 
-	void setHead_alphabet(Data_1D<char> *pTemp) {
+	void setHead_alphabet(Data_1D *pTemp) {
 		pHead_alphabet = pTemp;
 	}
 
-	void setHead_name(Data_1D<char*> *pTemp) {
+	void setHead_name(Data_1D *pTemp) {
 		pHead_major = pTemp;
 	}
 
-	int Compare(int temp1, int temp2) {
+	template <typename T>
+	int Compare(T temp1, T temp2) {
 		if (temp1 > temp2)
 			return 1;
 		else if (temp1 == temp2)
@@ -49,7 +51,8 @@ public:
 			return -1;
 	}
 
-	int Compare(char temp1, char temp2) {
+	template<>
+	int Compare<char>(char temp1, char temp2) {
 		if (temp1 >= 'A' && temp1 <= 'Z')
 			temp1 += 'a' - 'A';
 		if (temp2 >= 'A' && temp2 <= 'Z')
@@ -60,8 +63,9 @@ public:
 			return 0;
 		return -1;
 	}
-
-	int Compare(char* temp1, char* temp2) {
+	
+	template<>
+	int Compare<char *>(char* temp1, char* temp2) {
 		char T_temp1[100];
 		char T_temp2[100];
 		for (int i = 0; i <= strlen(temp1); i++) {
@@ -80,48 +84,120 @@ public:
 	}
 
 	bool find_same(char data) {
-		Data_1D<char> *pTemp = pHead_alphabet;
+		Data_1D *pTemp = pHead_alphabet;
 		while (pTemp) {
-			if (pTemp->getData() == data)
+			if (pTemp->getName() == data)
 				return false;
 			pTemp = pTemp->getNext();
 		}
 		return true;
 	}
 
-	void Insert_alphabet(Data_1D<char> *data) {
-		Student_Node* pTemp = data->getHead();
-		Data_1D<char>* pTail = pHead_alphabet;
-		while (pTemp) {
-			if (pHead_alphabet == nullptr) {
-				Data_1D<char> *pNew = new Data_1D<char>;
-				pNew->setData(pTemp->getAlphabet());
-				pHead_alphabet = pNew;
-				pTail = pNew;
+	void Insert(Data_1D *data) {
+		Student_Node* head_1d = data->getHead();
+		while (head_1d) {
+			if (!pHead_alphabet) {
+				Data_1D* pNew_1d = new Data_1D;
+				pNew_1d->setName(head_1d->getName()[0]);
+				pHead_alphabet = pNew_1d;
 			}
 			else {
-				if (find_same(pTemp->getAlphabet())) {
-					Data_1D<char>* pNew = new Data_1D<char>;
-					pNew->setData(pTemp->getAlphabet());
-					pTail->setNext(pNew);
-					pTail = pNew;
+				Data_1D* temp_1d = pHead_alphabet;
+				Data_1D* pPrev = temp_1d;
+				while (temp_1d) {
+					if (Compare(temp_1d->getName(), head_1d->getName()[0]) == 1) {
+						if (temp_1d == pHead_alphabet) {
+							Data_1D* pNew_1d = new Data_1D;
+							pNew_1d->setName(head_1d->getName()[0]);
+							pNew_1d->setNext(pHead_alphabet);
+							pHead_alphabet = pNew_1d;
+						}
+						else {
+							Data_1D* pNew_1d = new Data_1D;
+							pNew_1d->setName(head_1d->getName()[0]);
+							pPrev->setNext(pNew_1d);
+							pNew_1d->setNext(temp_1d);
+						}
+						break;
+					}
+					else if (Compare(temp_1d->getName(), head_1d->getName()[0]) == 0)
+						break;
+					pPrev = temp_1d;
+					temp_1d = temp_1d->getNext();
+					if (!temp_1d) {
+						Data_1D* pNew_1d = new Data_1D;
+						pNew_1d->setName(head_1d->getName()[0]);
+						pPrev->setNext(pNew_1d);
+						break;
+					}
 				}
 			}
-			pTemp = pTemp->getNext();
+			head_1d = head_1d->getNext();
 		}
-		pTemp = data->getHead();
-		while (pTemp) {
-			Data_1D<char>* pTemp_1d = pHead_alphabet;
-			while (pTemp_1d->getData() != pTemp->getAlphabet())
-				pTemp_1d = pTemp_1d->getNext();
-			if (pTemp_1d->getHead() == nullptr) {
-				pTemp_1d->setHead(pTemp);
-				pTemp_1d->setTail(pTemp);
+		head_1d = data->getHead();
+		while (head_1d) {
+			Data_1D* temp_1d = pHead_alphabet;
+			while (temp_1d) {
+				if (Compare<char>(temp_1d->getName(), head_1d->getName()[0]) == 0) {
+					if (!temp_1d->getHead()) {
+						temp_1d->setHead(head_1d);
+						break;
+					}
+					else {
+						Student_Node* temp = temp_1d->getHead();
+						Student_Node* pPrev = temp;
+						while (temp) {
+							if (Compare<char*>(temp->getName(), head_1d->getName()) == 1) {
+								if (temp == temp_1d->getHead()) {
+									head_1d->setNext_Name(temp_1d->getHead());
+									temp_1d->setHead(head_1d);
+								}
+								else {
+									pPrev->setNext_Name(head_1d);
+									head_1d->setNext_Name(temp);
+								}
+								break;
+							}
+							pPrev = temp;
+							temp = temp->getNext_Name();
+							if (!temp) {
+								pPrev->setNext_Name(head_1d);
+								break;
+							}
+						}
+					}
+				}
+				//print_char();
+				temp_1d = temp_1d->getNext();
 			}
-			else {
-
-			}
+			head_1d = head_1d->getNext();
 		}
 	}
 
+
+	void print_char() {
+		Data_1D* pTemp = pHead_alphabet;
+		std::cout << "Print File" << '\n';
+		std::cout << "=========================================================================" << '\n';
+		while (pTemp) {
+			std::cout << pTemp->getName() << '\n';
+			Student_Node* temp = pTemp->getHead();
+			std::cout << "StudentID";
+			std::cout.width(30);
+			std::cout << "Major" << '\t' << '\t';
+			std::cout.width(10);
+			std::cout << "Name" << '\n';
+			while (temp) {
+				std::cout << temp->getStudentId();
+				std::cout.width(30);
+				std::cout << temp->getMajor() << '\t' << '\t';
+				std::cout.width(10);
+				std::cout << temp->getName() << '\n';
+				temp = temp->getNext_Name();
+			}
+			pTemp = pTemp->getNext();
+		}
+		std::cout << '\n';
+		std::cout << "=========================================================================" << '\n';
+	}
 };

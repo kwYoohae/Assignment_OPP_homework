@@ -1,12 +1,15 @@
 #include <iostream>
 #include <fstream>
 #include "Data_1D.h"
+#include "Data_1D.h"
 #include "Data_2D.h"
 #include "Student_Node.h"
 
 using namespace std;
 
 int main() {
+	Data_1D data_1d;
+	Data_2D data_2d;
 	bool end = true;
 	int command;
 	char str[100];
@@ -40,8 +43,9 @@ int main() {
 		for (int i = 0; i <= strlen(str); i++ , len++) {
 			name[i]= str[len+1];
 		}
-		//data.Insert(Id, major, name);
+		data_1d.Insert_input(Id, major, name);
 	}
+	data_2d.Insert(&data_1d);
 	while (end) {
 		cout << "1. Print File" << endl;
 		cout << "2. Print by ID" << endl;
@@ -51,7 +55,7 @@ int main() {
 		cout << "CMD>> ";
 		cin >> command;
 		if (command == 1) {
-			//data.print();
+			data_2d.print_char();
 		}
 	}
 

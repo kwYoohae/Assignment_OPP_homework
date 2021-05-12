@@ -1,4 +1,3 @@
-StudentID,Major,Name
 2015001093,Computer Science,Jack
 2017003089,Chemistry,John
 2017001066,Computer Science,Steven

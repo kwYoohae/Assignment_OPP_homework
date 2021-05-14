@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{4c61b9df-786c-4db5-8a62-66a0baf7498f}</ProjectGuid>
+    <ProjectGuid>{2b25b0fd-b2d6-48e5-a5dd-ffddfdb86254}</ProjectGuid>
     <RootNamespace>Assignment36</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -139,14 +139,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="assignment3-6.cpp" />
+    <ClCompile Include="Assignment3-6.cpp" />
+    <ClCompile Include="move.cpp" />
+    <ClCompile Include="yut.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="block.h" />
-    <ClInclude Include="board.h" />
-    <ClInclude Include="horse.h" />
+    <ClInclude Include="block_horse.h" />
+    <ClInclude Include="board1D.h" />
     <ClInclude Include="move.h" />
-    <ClInclude Include="node.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Yut.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

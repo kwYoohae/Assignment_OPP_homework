@@ -1,7 +1,16 @@
 #pragma once
 
-class move{
+class moving {
 private:
-	int setp;
-	move* pNext;
+	int step;
+	moving* pNext;
+public:
+	moving();
+	~moving();
+	int getStep();
+	moving* getNext();
+
+	void setStep(int temp);
+	void setNext(moving* pTemp);
+
 };

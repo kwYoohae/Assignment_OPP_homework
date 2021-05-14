@@ -15,24 +15,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="assignment3-6.cpp">
+    <ClCompile Include="Assignment3-6.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="yut.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="move.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="node.h">
+    <ClInclude Include="block_horse.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="horse.h">
+    <ClInclude Include="board1D.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="block.h">
+    <ClInclude Include="Player.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Yut.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="move.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="board.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

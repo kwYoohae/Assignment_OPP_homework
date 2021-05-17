@@ -18,4 +18,5 @@ public:
 	bool Throw_yut();
 	void delete_yut(int num);
 	void print_yut();
+	void yut_delete_all();
 };

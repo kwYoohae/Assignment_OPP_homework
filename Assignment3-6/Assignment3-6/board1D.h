@@ -92,7 +92,7 @@ public:
 
 	void Print(board* short1, board* short2) {
 		block* pTemp = short2->getHead()->getPrev();
-		block* pTemp1 = short1->getHead()->getPrev();
+		block* pTemp1 = short1->getHead()->getPrev()->getPrev();
 		block* pShort1 = short1->getHead();
 		block* pShort2 = short2->getHead();
 		for (int i = 0; i < 6; i++) {
@@ -103,7 +103,7 @@ public:
 			pTemp = pTemp->getPrev();
 		}
 		std::cout << '\n' << '\n';
-		pTemp = pShort2;
+		pTemp = pShort2->getPrev()->getNext();
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 4; j++) {
 				if (j == 0) {
@@ -111,7 +111,7 @@ public:
 					pTemp = pTemp->getNext();
 					if (i == 0)
 						std::cout.width(5);
-					else
+					else-
 						std::cout.width(10);
 				}
 				else if (j == 1) {
@@ -124,7 +124,7 @@ public:
 				}
 				else if (j == 2) {
 					Print_Check(pShort1);
-					pShort1 = pShort2->getNext();
+					pShort1 = pShort1->getNext();
 					if (i == 0)
 						std::cout.width(5);
 					else
@@ -162,16 +162,16 @@ public:
 						std::cout.width(10);
 				}
 				else if (j == 1) {
-					Print_Check(pShort2);
-					pShort2 = pShort2->getNext();
+					Print_Check(pShort1);
+					pShort1 = pShort1->getNext();
 					if (i == 1)
 						std::cout.width(20);
 					else
 						std::cout.width(10);
 				}
 				else if (j == 2) {
-					Print_Check(pShort1);
-					pShort1 = pShort2->getNext();
+					Print_Check(pShort2);
+					pShort2 = pShort2->getNext();
 					if (i == 1)
 						std::cout.width(5);
 					else

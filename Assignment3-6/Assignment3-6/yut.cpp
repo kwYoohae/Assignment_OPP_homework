@@ -47,7 +47,6 @@ bool yut::Throw_yut() {
 		pTail = pNew;
 	}
 	if (count == 0) {
-		moving* pNew = new moving;
 		pNew->setStep(5);
 		std::cout << "Result is mo" << '\n';
 		return true;
@@ -81,7 +80,7 @@ bool yut::Throw_yut() {
 void yut::delete_yut(int num) {
 	moving* pTemp = pHead;
 	moving* pPrev = pTemp;
-	for (int i = 0; i < num; i++) {
+	for (int i = 1; i < num; i++) {
 		pPrev = pTemp;
 		pTemp = pTemp->getNext();
 	}
@@ -119,4 +118,15 @@ void yut::print_yut() {
 		count++;
 	}
 	std::cout << '\n';
+}
+
+void yut::yut_delete_all() {
+	moving* pTemp = pHead;
+	while (pTemp) {
+		pHead = pHead->getNext();
+		delete pTemp;
+		pTemp = pHead;
+	}
+	pHead = nullptr;
+	pTail = nullptr;
 }

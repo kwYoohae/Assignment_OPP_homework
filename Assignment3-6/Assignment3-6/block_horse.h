@@ -52,15 +52,24 @@ private:
 	horse* pNext;
 	horse* pCarry;
 	block* pPos;
+	bool start;
+	bool short_cut1;
+	bool short_cut2;
 	char name[5];
 public:
 	horse() {
 		pNext = nullptr;
 		pCarry = nullptr;
 		pPos = nullptr;
+		start = false;
+		short_cut1 = false;
+		short_cut2 = false;
 		memset(name, NULL, 5);
 	}
 
+	bool getStart() {
+		return start;
+	}
 	horse* getNext() {
 		return pNext;
 	}
@@ -86,4 +95,8 @@ public:
 	void setPos(block* pTemp) {
 		pPos = pTemp;
 	}
+	void setStart(bool temp) {
+		start = temp;
+	}
+
 };

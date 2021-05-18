@@ -4,7 +4,7 @@ moving::moving() {
 	pNext = nullptr;
 }
 moving::~moving() {
-
+	
 }
 
 int moving::getStep() {

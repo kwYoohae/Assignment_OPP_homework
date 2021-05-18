@@ -15,7 +15,15 @@ public:
 	}
 
 	~board() {
-
+		pTail->setNext(nullptr);
+		block* pTemp = pHead;
+		while (pTemp) {
+			pHead = pHead->getNext();
+			delete pTemp;
+			pTemp = pHead;
+		}
+		pHead = nullptr;
+		pTail = nullptr;
 	}
 
 	block* getHead() {

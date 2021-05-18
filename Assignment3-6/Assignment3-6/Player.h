@@ -48,7 +48,7 @@ public:
 			}
 		}
 	}
-	
+
 	void print_horse() {
 		int count = 1;
 		horse* pTemp = pHead;
@@ -71,7 +71,7 @@ public:
 		std::cout << '\n';
 	}
 
-	int is_exisist(block* pBoard , horse* pHorse ,block *short_center1, block *short_center2) {
+	int is_exisist(block* pBoard, horse* pHorse, block* short_center1, block* short_center2) {
 		if (short_center1 == pBoard || short_center2 == pBoard) {
 			if (!short_center1->getOn() && !short_center2->getOn())
 				return 0;
@@ -158,12 +158,12 @@ public:
 
 	}
 
-	int move_horse(int move_number, int select_number, yut* Yut, board *Board , board *Board_short1, board *Board_short2) {
+	int move_horse(int move_number, int select_number, yut* Yut, board* Board, board* Board_short1, board* Board_short2) {
 		if (!pHead) {
 			Yut->yut_delete_all();
 			return 0;
 		}
-		int return_number = 0; 
+		int return_number = 0;
 		moving* yut_temp = Yut->getHead(); // 윳을 던진 값의 haed값을 불러옴
 		horse* horse_temp = pHead; // 말의 haed값을 불러옴
 		for (int i = 1; i < move_number; i++) {
@@ -193,11 +193,15 @@ public:
 					else if (return_number == 4)
 						pTemp = Board_short1->getCenter();
 					caught_horse(pTemp, horse_temp);
+					if (run == 4 || run == 5) {
+						Yut->delete_yut(move_number);
+						return 7;
+					}
 				}
 				else if (return_number == 1 || return_number == 5 || return_number == 6) {
 					if (return_number == 5)
 						pTemp = Board_short2->getCenter();
-					else if(return_number == 6)
+					else if (return_number == 6)
 						pTemp = Board_short1->getCenter();
 					horse_temp->insert_carry(pTemp->getOn());
 					run_horse(pTemp, horse_temp);
@@ -212,7 +216,7 @@ public:
 			else if (run == -1) { // 빽도일 때는
 				block* pTemp = horse_temp->getPos()->getPrev();
 				if (horse_temp->getPos() != Board->getHead()) {
-					return_number = is_exisist(horse_temp->getPos()->getPrev(), horse_temp,Board_short1->getCenter(), Board_short2->getCenter());
+					return_number = is_exisist(horse_temp->getPos()->getPrev(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
 				}
 				else {
 					if (Board_short2->getCenter()->getShortcut() == horse_temp->getPos()) {
@@ -245,6 +249,10 @@ public:
 					else if (return_number == 4)
 						pTemp = Board_short1->getCenter();
 					caught_horse(pTemp, horse_temp);
+					if (run == 5 || run == 4) {
+						Yut->delete_yut(move_number);
+						return 7;
+					}
 				}
 				else if (return_number == 1 || return_number == 5 || return_number == 6) {
 					if (return_number == 5)
@@ -309,6 +317,10 @@ public:
 					else if (return_number == 4)
 						pRun_horse = Board_short1->getCenter();
 					caught_horse(pRun_horse, horse_temp);
+					if (run == 5 || run == 4) {
+						Yut->delete_yut(move_number);
+						return 7;
+					}
 				}
 				else {
 					if (return_number == 5) {
@@ -325,7 +337,7 @@ public:
 		return return_number;
 	}
 
-	void horse_delete(horse *pHorse) {
+	void horse_delete(horse* pHorse) {
 		horse* pTemp = pHead;
 		horse* pPrev = pTemp;
 		horse* pCarry = pHorse->getCarry();
@@ -355,7 +367,7 @@ public:
 			delete pTemp;
 		}
 	}
-	
+
 	bool is_hand() {
 		horse* pTemp = pHead;
 		while (pTemp) {

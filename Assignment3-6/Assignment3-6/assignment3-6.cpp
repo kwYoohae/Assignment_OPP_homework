@@ -61,8 +61,8 @@ int main() {
 					if (happen == 2 || happen == 3 || happen == 4) { // happen 2, 3, 4일때는 상대말을 잡았으므로 한번더 던지기 위해서 예외처리
 						break;
 					}
-					Board.Print(&Board_short1, &Board_short2);
-					Yut.print_yut();
+					Board.Print(&Board_short1, &Board_short2); // Board를 print하는 매소드 호출
+					Yut.print_yut(); // 윷
 					cout << "Select move: ";
 					cin >> select_move;
 					if (turn % 2 == 0)
@@ -100,6 +100,8 @@ int main() {
 			cout << "wrong command!" << endl;
 		}
 	}
+	Player1.delete_player();
+	Player2.delete_player();
 	return 0;
 	_CrtDumpMemoryLeaks();
 }

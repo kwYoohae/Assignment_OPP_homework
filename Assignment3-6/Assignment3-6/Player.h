@@ -377,4 +377,13 @@ public:
 		}
 		return true;
 	}
+
+	void delete_player() {
+		horse* pTemp = pHead;
+		while (pTemp) {
+			pHead = pHead->getNext();
+			delete pTemp;
+			pTemp = pHead;
+		}
+	}
 };

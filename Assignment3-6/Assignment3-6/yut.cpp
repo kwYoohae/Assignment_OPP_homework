@@ -50,7 +50,7 @@ bool yut::Throw_yut() {
 		pTemp->setNext(pNew);
 		pTemp = pNew;
 	}
-	if (count == 0) {
+	/*if (count == 0) {
 		pNew->setStep(5);
 		std::cout << "Result is mo" << '\n';
 		return true;
@@ -78,14 +78,14 @@ bool yut::Throw_yut() {
 		std::cout << "Result is yut" << '\n';
 		return true;
 	}
-	return false;
-	/*int num = 0;
+	return false;*/
+	int num = 0;
 	std::cout << "À·ÀÔ·Â : " ;
 	std::cin >> num;
 	pNew->setStep(num);
 	if (num == 5 || num == 4)
 		return true;
-	return false;*/
+	return false;
 }
 
 void yut::delete_yut(int num) {

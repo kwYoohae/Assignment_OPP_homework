@@ -26,7 +26,7 @@ int main() {
 	int happen = 0;
 	while (end) {
 		Board.Print(&Board_short1, &Board_short2);
-		if (happen == 2) {
+		if (happen == 2 || happen==3 || happen==4) {
 			turn--;
 			cout << "You caught opponent's horse!" << endl;
 		}
@@ -56,7 +56,7 @@ int main() {
 			if (end) {
 				happen = 0;
 				while (Yut.getHead()) {
-					if (happen == 2) {
+					if (happen == 2 || happen == 3 || happen == 4) {
 						break;
 					}
 					Board.Print(&Board_short1, &Board_short2);

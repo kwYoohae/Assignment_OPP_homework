@@ -43,8 +43,12 @@ bool yut::Throw_yut() {
 		pTail = pNew;
 	}
 	else {
-		pTail->setNext(pNew);
-		pTail = pNew;
+		moving* pTemp = pHead;
+		while (pTemp->getNext()) {
+			pTemp = pTemp->getNext();
+		}
+		pTemp->setNext(pNew);
+		pTemp = pNew;
 	}
 	if (count == 0) {
 		pNew->setStep(5);
@@ -75,6 +79,13 @@ bool yut::Throw_yut() {
 		return true;
 	}
 	return false;
+	/*int num = 0;
+	std::cout << "À·ÀÔ·Â : " ;
+	std::cin >> num;
+	pNew->setStep(num);
+	if (num == 5 || num == 4)
+		return true;
+	return false;*/
 }
 
 void yut::delete_yut(int num) {

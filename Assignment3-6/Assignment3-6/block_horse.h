@@ -56,6 +56,7 @@ private:
 	bool short_cut1;
 	bool short_cut2;
 	char name[5];
+	bool now_carry;
 public:
 	horse() {
 		pNext = nullptr;
@@ -65,8 +66,12 @@ public:
 		short_cut1 = false;
 		short_cut2 = false;
 		memset(name, NULL, 5);
+		now_carry = false;
 	}
 
+	int getNow_carry() {
+		return now_carry;
+	}
 	bool getStart() {
 		return start;
 	}
@@ -81,6 +86,12 @@ public:
 	}
 	char* getName() {
 		return name;
+	}
+	bool getShortCut1() {
+		return short_cut1;
+	}
+	bool getShortCut2() {
+		return short_cut2;
 	}
 
 	void setName(char* temp) {
@@ -98,5 +109,20 @@ public:
 	void setStart(bool temp) {
 		start = temp;
 	}
+	void setShrotCut1(bool temp) {
+		short_cut1 = temp;
+	}
+	void setShrotCut2(bool temp) {
+		short_cut2 = temp;
+	}
+	void setNow_carry(int temp) {
+		now_carry = temp;
+	}
 
+	void insert_carry(horse* pTemp) {
+		if (!pCarry) {
+			pTemp->setNow_carry(true);
+			this->setCarry(pTemp);
+		}
+	}
 };

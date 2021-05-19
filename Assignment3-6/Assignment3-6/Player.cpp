@@ -1,0 +1,390 @@
+#include "Player.h"
+
+player::player() {
+	pHead = nullptr; // pHead의 초기화
+	pTail = nullptr; // pTail의 초기화
+}
+player::~player() {
+
+}
+
+horse* player::getHead() {
+	return pHead; // pHead의 값을 반환하는 매소드
+}
+horse* player::getTail() {
+	return pTail; // pTail의 값을 반환하는 매소드
+}
+
+void player::setHead(horse* pTemp) {
+	pHead = pTemp; // pHead의 값을 반환하는 매소드
+}
+void player::setTail(horse* pTemp) {
+	pTail = pTemp; // pTail의 값을 반환하는 매소드
+}
+
+void player::inster_name(char ch) {
+	char name[5]; //name을 결정하는 char형 배열 
+	memset(name, NULL, 5); // name의 값을 초기화
+	for (int i = 0; i < 4; i++) { 
+		name[0] = ch; // 인자의 값을 name에 저장
+		name[1] = '1' + i; // 인자의 값옆에 숫자를 저장
+		horse* pNew = new horse; // 새로운 horse객체 생성
+		if (!pHead) { // pHead가 비어있을 때
+			pHead = pNew; // 새로운 horse값을 pHead로
+			pTail = pNew; // 새로운 horse값을 pTail로
+			pNew->setName(name); // horse에 name을 저장
+		}
+		else {
+			pTail->setNext(pNew); // pTail의 다음 값을 설정
+			pTail = pNew; // pTail의 값은 새로 생성한 horse객체
+			pNew->setName(name); // 새로운 객체에 name값 저장
+		}
+	}
+}
+
+void player::print_horse() {
+	int count = 1; // horse를 세기 위해서 count 변수 생성
+	horse* pTemp = pHead; // pTemp는 pHead를 가리킴
+	while (pTemp) {
+		if (!pTemp->getPos()) { // pTemp의 값이 비어있을 때 horse가 안움직였을 때 hand를 출력하기 위한 if문
+			if (!pTemp->getNow_carry()) { // 업힌 말인지 확인
+				std::cout << count << ". " << "Hand"; // 아니면 hand출력
+				std::cout.width(4);
+			}
+		}
+		else {
+			if (!pTemp->getNow_carry()) { // 업힌 말이 아니면
+				std::cout << count << ". " << pTemp->getName(); //그말의 이름을 출력
+				std::cout.width(4);
+			}
+		}
+		pTemp = pTemp->getNext(); //pTemp의 값은 그다음 값으로
+		count++; // count를 올림
+	}
+	std::cout << '\n';
+}
+
+int player::is_exisist(block* pBoard, horse* pHorse, block* short_center1, block* short_center2) { //말이 들어갈 값을 확인
+	if (short_center1 == pBoard || short_center2 == pBoard) {  // 첫번째 지름길의 중앙이거나 두번째 지름길의 중앙일 때
+		if (!short_center1->getOn() && !short_center2->getOn()) // 이동할 값이 비어있을 때
+			return 0; // 0을반환
+		else {
+			if (short_center2->getOn()) { // 두번째 지름길의 값에 말이 있을 때
+				if (short_center2->getOn()->getName()[0] != pHorse->getName()[0])  { //상대의 말이면
+					return 3; //3을 반환
+				}
+				else
+					return 5; // 같은편 말일 때 5를 반환
+			}
+			else {
+				if (short_center1->getOn()->getName()[0] != pHorse->getName()[0]) { // 첫번쨰 지름길의 값에 말이 있을 때
+					return 4; // 4를 반환
+				}
+				else
+					return 6; // 같은편 말일 때 6을 반환
+			}
+		}
+	}
+	else {
+		if (!pBoard->getOn()) { // 이동할 곳에 말이 없을 때
+			return 0; // 0을 반환
+		}
+		else if (pBoard->getOn()) { // 이동할 곳에 말이 있을 떄
+			if (pBoard->getOn()->getName()[0] != pHorse->getName()[0]) { //같은편 말이 아니면
+				return 2; // 2를 반환
+			}
+			else
+				return 1; // 같은편 말이면 1을 반환
+		}
+	}
+}
+
+void player::caught_horse(block* pTemp, horse* pHorse) { //말의 이동지점에 상대편 말이있을 경우 잡는 매소드
+	horse* temp_horse = pTemp->getOn(); // temp_horse는 도착지점에 있는 말
+	horse* carry = temp_horse->getCarry(); // carry는 temp_horse에 업혀있는 말
+	while (temp_horse) { //업힌말이 없을 때 까지
+		temp_horse->setStart(false); // 말의 start값 false로 초기화
+		temp_horse->setShrotCut1(false); // 말의 지름길값 false로 초기화
+		temp_horse->setShrotCut2(false); // 말의 지름길값 false로 초기화
+		temp_horse->setPos(nullptr); // 말이 Pos값을 초기화
+		temp_horse->setNow_carry(false); // 말의 now_carry값을 초기화
+		temp_horse->setCarry(nullptr); // 말의 carry값을 초기화
+		temp_horse = carry; // 말은 업힌말로
+		if (!carry)
+			break; // carry가 비어있을 때 반복문 종료
+		carry = carry->getCarry(); // carry는 다음 carry값으로
+	}
+	if (pHorse->getPos()) {// 현재 말의 위치에 자신이 있을 때(말이 판에 있었을 때)
+		pHorse->getPos()->setOn(nullptr); // 자신의 값을 초기화
+	}
+	pHorse->setPos(pTemp); // pTemp로 말을 옮김
+	pTemp->setOn(pHorse); // pTemp에 말이 있다고 알림
+}
+
+void player::run_horse(block* pBlock, horse* pHorse) { // 말을 이동시킬 때
+	if (!pHorse->getPos()) { // 말이 처음 나갈 때
+		pHorse->setPos(pBlock); // pHorse의 위치값을 설정
+		pBlock->setOn(pHorse); // pBlock에 말의 설정
+	}
+	else {
+		pHorse->getPos()->setOn(nullptr); // 원래 있던 자리의 값을 삭제
+		pHorse->setPos(pBlock); // 말이 갈 블럭의 위치를 저장
+		pBlock->setOn(pHorse); // 블럭에 말의 위치를 저장
+	}
+	pHorse->setStart(true); // 출발 했다고 start값을 true로
+}
+
+void player::finished_horse(block* pBlock, horse* pHorse) { // 말이 완주했을 때
+	horse* carry = pHorse->getCarry(); // 말의 carry값을 carry변수에 저장
+	std::cout << "Finishted the horse"; 
+	while (pHorse) { // 말이 비었을 때까지 반복문돌림
+		pHorse->getPos()->setOn(nullptr); //말의 현재block에서의 말의 저장을 삭제
+		pHorse->setPos(nullptr); // 말이 저장된 값을 삭제
+		std::cout << " " << pHorse->getName(); // 말의 이름을 출력
+		horse_delete(pHorse); // 말을 삭제하는 매소드 호출
+		pHorse = carry; // 말에 carry값을 넣어줌
+		if (!carry) // carry가 없을 때는 반복문종료
+			break;
+		carry = carry->getCarry(); // carry는 다음값으로 이동
+	}
+	std::cout << "!" << '\n';
+
+}
+
+int player::move_horse(int move_number, int select_number, yut* Yut, board* Board, board* Board_short1, board* Board_short2) {
+	if (!pHead) { //만약 모든말이 가서 Player의 말이 비어있을 때
+		Yut->yut_delete_all(); //모든 윷 삭제
+		return 0; // 0값 반환
+	} 
+	int return_number = 0; // 말이 존재하는지 안하는지 확인 매소드의 확인후 실행할 커맨드를 받는 변수
+	moving* yut_temp = Yut->getHead(); // 윳을 던진 값의 haed값을 불러옴
+	horse* horse_temp = pHead; // 말의 haed값을 불러옴
+	for (int i = 1; i < move_number; i++) {
+		yut_temp = yut_temp->getNext(); // 내가 선택한 윷을 던진 값까지 감
+	}
+	for (int i = 1; i < select_number; i++) {
+		horse_temp = horse_temp->getNext(); // 내가 선택한 말의 값까지 감
+	}
+	if (!yut_temp || !horse_temp) {
+		return -1; // 매소드 반환하여 종료
+	}
+	else {
+		int run = yut_temp->getStep(); // yut이 저장하고 있던 step값을 불러온다.
+		if (run == -1 && is_hand() == true && Yut->getHead()->getNext() == nullptr) { //윷이 빽도인데 진출한 말이 없을 때는
+			Yut->delete_yut(move_number); // 윷을 삭제후
+			return -2; // -2를 반환
+		}
+		if (!horse_temp->getPos()) { // 만약 말이 진출하지 않아서 비어있을 때는
+			block* pTemp = Board->getHead(); //Board의 head값을 가리킴
+			for (int i = 0; i < run; i++) {
+				pTemp = pTemp->getNext(); //이동할 만큼 이동
+			}
+			return_number = is_exisist(pTemp, horse_temp, Board_short1->getCenter(), Board_short2->getCenter()); //도착할 위치에 무슨 일이 일어날지 확인 후 커맨드 값 반환
+			if (return_number == 2 || return_number == 3 || return_number == 4) { // 반환값이 2,3,4일때는 상대편말이 있는경우
+				if (return_number == 3)
+					pTemp = Board_short2->getCenter(); // short2에 상대편말이 있기 때문에 그곳으로 이동
+				else if (return_number == 4)
+					pTemp = Board_short1->getCenter(); // short1에 상대편말이 있기 때문에 그곳으로 이동
+				caught_horse(pTemp, horse_temp); // 말을 잡는 매소드를 호출
+				if (run == 4 || run == 5) { // 만약 윷이거나 모면 잡아도 한번더 하지 않기 위한 조건문
+					Yut->delete_yut(move_number); // 윷을 삭제
+					return 7; // 7을 반환
+				}
+			}
+			else if (return_number == 1 || return_number == 5 || return_number == 6) { // 반환값이 1,5,6일 때는 같은편 말이 있는경우
+				if (return_number == 5) // 만약 반환값이 5일 때는 short2에 우리편말이 있으므로
+					pTemp = Board_short2->getCenter(); // pTemp는 short2의 센터로
+				else if (return_number == 6) // 만약 반환값이 6일 때는 short1에 우리편말이 있으므로
+					pTemp = Board_short1->getCenter(); // pTemp는 short1의 센터로
+				horse_temp->insert_carry(pTemp->getOn()); // horse_temp는 말을 업게함
+				run_horse(pTemp, horse_temp); //  말을 달리게 하는 매소드 호출
+			}
+			else {
+				horse_temp->setPos(pTemp); // 말을 이동위치로 이동한다.
+				horse_temp->getPos()->setOn(horse_temp); // 말이 이동할 block에 말을 설정
+				horse_temp->setStart(true); // 말이 출발을 시작했다고 start를
+			}
+			Yut->delete_yut(move_number);
+		}
+		else if (run == -1) { // 빽도일 때는
+			block* pTemp = horse_temp->getPos()->getPrev();
+			if (horse_temp->getPos() != Board->getHead()) {
+				if (Board_short1->getTail()->getNext() == horse_temp->getPos()) {
+					if (horse_temp->getShortCut1() || horse_temp->getShortCut2()) {
+						return_number = is_exisist(Board_short1->getTail(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
+						pTemp = Board_short1->getTail();
+					}
+					else {
+						return_number = is_exisist(horse_temp->getPos()->getPrev(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
+						pTemp = horse_temp->getPos()->getPrev();
+					}
+				}
+				else
+					return_number = is_exisist(horse_temp->getPos()->getPrev(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
+			}
+			else {
+				if (Board_short2->getCenter()->getShortcut() == horse_temp->getPos()) {
+					if (horse_temp->getShortCut1()) {
+						return_number = is_exisist(Board_short2->getCenter()->getPrev(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
+						pTemp = Board_short2->getCenter()->getPrev();
+					}
+					else {
+						return_number = is_exisist(horse_temp->getPos()->getPrev(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
+						pTemp = horse_temp->getPos()->getPrev();
+					}
+				}
+				else if (Board->getHead() == horse_temp->getPos()) {
+					if (horse_temp->getShortCut1() || horse_temp->getShortCut2()) {
+						return_number = is_exisist(Board_short2->getTail(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
+						pTemp = Board_short2->getTail();
+						std::cout << Board_short2->getTail() << '\n';
+					}
+					else {
+						return_number = is_exisist(Board->getTail(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
+						pTemp = Board->getTail();
+					}
+				}
+			}
+			if (return_number == 2 || return_number == 3 || return_number == 4) {
+				if (return_number == 3)
+					pTemp = Board_short2->getCenter();
+				else if (return_number == 4)
+					pTemp = Board_short1->getCenter();
+				caught_horse(pTemp, horse_temp);
+				if (run == 5 || run == 4) {
+					Yut->delete_yut(move_number);
+					return 7;
+				}
+			}
+			else if (return_number == 1 || return_number == 5 || return_number == 6) {
+				if (return_number == 5)
+					pTemp = Board_short2->getCenter();
+				else if (return_number == 6)
+					pTemp = Board_short1->getCenter();
+				horse_temp->insert_carry(pTemp->getOn());
+				run_horse(pTemp, horse_temp);
+
+			}
+			else {
+				run_horse(pTemp, horse_temp);
+			}
+			Yut->delete_yut(move_number); // 이동횟수를 썼기 때문에 삭제
+			return return_number;
+		}
+		else {
+			block* pRun_horse = horse_temp->getPos();
+			if (!pRun_horse->getShortcut()) {
+				for (int i = 0; i < run; i++) {
+					if (pRun_horse == Board->getHead() && horse_temp->getStart() == true) {
+						finished_horse(pRun_horse, horse_temp);
+						if (!pHead)
+							Yut->yut_delete_all();
+						else
+							Yut->delete_yut(move_number);
+						return 0;
+					}
+					pRun_horse = pRun_horse->getNext();
+				}
+				return_number = is_exisist(pRun_horse, horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
+			}
+			else {
+				if (pRun_horse == Board_short1->getHead()->getPrev()) {
+					horse_temp->setShrotCut1(true);
+				}
+				else if (pRun_horse == Board_short2->getHead()->getPrev()) {
+					horse_temp->setShrotCut2(true);
+				}
+				for (int i = 0; i < run; i++) {
+					if (pRun_horse == Board->getHead() && horse_temp->getStart() == true) {
+						finished_horse(pRun_horse, horse_temp);
+						if (!pHead)
+							Yut->yut_delete_all();
+						else
+							Yut->delete_yut(move_number);
+						return 0;
+					}
+					if (i == 0)
+						pRun_horse = pRun_horse->getShortcut();
+					else
+						pRun_horse = pRun_horse->getNext();
+				}
+				return_number = is_exisist(pRun_horse, horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
+			}
+			if (return_number == 0) {
+				run_horse(pRun_horse, horse_temp);
+			}
+			else if (return_number == 2 || return_number == 3 || return_number == 4) {
+				if (return_number == 3)
+					pRun_horse = Board_short2->getCenter();
+				else if (return_number == 4)
+					pRun_horse = Board_short1->getCenter();
+				caught_horse(pRun_horse, horse_temp);
+				if (run == 5 || run == 4) {
+					Yut->delete_yut(move_number);
+					return 7;
+				}
+			}
+			else {
+				if (return_number == 5) {
+					pRun_horse = Board_short2->getCenter();
+				}
+				else if (return_number == 6)
+					pRun_horse = Board_short1->getCenter();
+				horse_temp->insert_carry(pRun_horse->getOn());
+				run_horse(pRun_horse, horse_temp);
+			}
+			Yut->delete_yut(move_number);
+		}
+	}
+	return return_number;
+}
+
+void player::horse_delete(horse* pHorse) {
+	horse* pTemp = pHead;
+	horse* pPrev = pTemp;
+	horse* pCarry = pHorse->getCarry();
+	while (pTemp) {
+		if (pTemp == pHorse)
+			break;
+		pPrev = pTemp;
+		pTemp = pTemp->getNext();
+	}
+	if (pTemp == pHead) {
+		if (pHead->getNext() == nullptr) {
+			delete pTemp;
+			pHead = nullptr;
+			pTail = nullptr;
+		}
+		else {
+			pHead = pHead->getNext();
+			delete pTemp;
+		}
+	}
+	else if (pTemp == pTail) {
+		pPrev->setNext(nullptr);
+		delete pTemp;
+	}
+	else {
+		pPrev->setNext(pTemp->getNext());
+		delete pTemp;
+	}
+}
+
+bool player::is_hand() {
+	horse* pTemp = pHead;
+	while (pTemp) {
+		if (pTemp->getPos())
+			return false;
+		pTemp = pTemp->getNext();
+	}
+	return true;
+}
+
+void player::delete_player() {
+	horse* pTemp = pHead;
+	while (pTemp) {
+		pHead = pHead->getNext();
+		delete pTemp;
+		pTemp = pHead;
+	}
+}

@@ -140,7 +140,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Assignment3-6.cpp" />
+    <ClCompile Include="block_horse.cpp" />
+    <ClCompile Include="board1D.cpp" />
     <ClCompile Include="move.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="yut.cpp" />
   </ItemGroup>
   <ItemGroup>

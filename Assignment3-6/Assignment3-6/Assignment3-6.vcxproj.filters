@@ -24,6 +24,15 @@
     <ClCompile Include="move.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="block_horse.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="board1D.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block_horse.h">

@@ -79,6 +79,10 @@ bool yut::Throw_yut() { //윷을 던지는 매소드
 		return true; //한번더 던지기 위해서 true값 반환
 	}
 	return false; // 한번더 던지지 않는 경우는 false를 반환
+	/*int number;
+	std::cin >> number;
+	pNew->setStep(number);
+	return false;*/
 }
 
 void yut::delete_yut(int num) { // 던진 윷을 삭제하기 위한 매소드

@@ -207,117 +207,121 @@ int player::move_horse(int move_number, int select_number, yut* Yut, board* Boar
 			Yut->delete_yut(move_number);
 		}
 		else if (run == -1) { // 빽도일 때는
-			block* pTemp = horse_temp->getPos()->getPrev();
-			if (horse_temp->getPos() != Board->getHead()) {
-				if (Board_short1->getTail()->getNext() == horse_temp->getPos()) {
-					if (horse_temp->getShortCut1() || horse_temp->getShortCut2()) {
-						return_number = is_exisist(Board_short1->getTail(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
-						pTemp = Board_short1->getTail();
+			block* pTemp = horse_temp->getPos()->getPrev(); // pTemp는 기본적으로 자기의 이전block을 가리킨다.
+			if (possible_backdo()) {
+				if (!horse_temp->getPos()) {
+					return -3;
+				}
+			}
+			if (horse_temp->getPos() != Board->getHead()) { // 말이 도착점에 도착하지 않았을 때
+				if (Board_short1->getTail()->getNext() == horse_temp->getPos()) { // Board에서  15번의 위치해 있을 때
+					if (horse_temp->getShortCut1() || horse_temp->getShortCut2()) { // 지름길을 한번이라도 지나서 왔을 경우
+						return_number = is_exisist(Board_short1->getTail(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter()); // return_number로 상태를 확인한다.
+						pTemp = Board_short1->getTail(); // pTemp는 지름길의 Tail값으로 설정한다.
 					}
 					else {
-						return_number = is_exisist(horse_temp->getPos()->getPrev(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
-						pTemp = horse_temp->getPos()->getPrev();
+						return_number = is_exisist(horse_temp->getPos()->getPrev(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter()); // 지름길로 안왔을 경우에는 return_number로 상태를 확인한다.
+						pTemp = horse_temp->getPos()->getPrev(); // pTemp는 현재위치의 이전값으로 설정한다.
+					}
+				}
+				else if (Board_short2->getCenter() == horse_temp->getPos() || Board_short1->getCenter() == horse_temp->getPos()) { //만약 2번쨰 지름길의 4번째 자리에 있을 때
+					if (horse_temp->getShortCut1()) { // 만약 shortcut1을 지나서 왔을경우 shortcut1쪽으로 뒤로감
+						return_number = is_exisist(Board_short1->getCenter()->getPrev(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());  // return_number로 상태를 확인한다/
+						pTemp = Board_short1->getCenter()->getPrev();
+					}
+					else { // 아닌경우는 shortcut2쪽으로 왔음
+						return_number = is_exisist(horse_temp->getPos()->getPrev(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter()); // return_number로 상태를 확인한다.
+						pTemp = horse_temp->getPos()->getPrev(); // 이전값으로 이동
 					}
 				}
 				else
-					return_number = is_exisist(horse_temp->getPos()->getPrev(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
+					return_number = is_exisist(horse_temp->getPos()->getPrev(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter()); //retrun_number로 상태를 확인한다.
 			}
 			else {
-				if (Board_short2->getCenter()->getShortcut() == horse_temp->getPos()) {
-					if (horse_temp->getShortCut1()) {
-						return_number = is_exisist(Board_short2->getCenter()->getPrev(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
-						pTemp = Board_short2->getCenter()->getPrev();
+				if (Board->getHead() == horse_temp->getPos()) { // 만약 도착점 위치일때
+					if (horse_temp->getShortCut1() || horse_temp->getShortCut2()) { //지름길론 온적이 있는경우는
+						return_number = is_exisist(Board_short2->getTail(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter()); //return_number로 상태를 확인후
+						pTemp = Board_short2->getTail(); // 지름길의 tail부분으로 위치시킴
 					}
 					else {
-						return_number = is_exisist(horse_temp->getPos()->getPrev(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
-						pTemp = horse_temp->getPos()->getPrev();
-					}
-				}
-				else if (Board->getHead() == horse_temp->getPos()) {
-					if (horse_temp->getShortCut1() || horse_temp->getShortCut2()) {
-						return_number = is_exisist(Board_short2->getTail(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
-						pTemp = Board_short2->getTail();
-						std::cout << Board_short2->getTail() << '\n';
-					}
-					else {
-						return_number = is_exisist(Board->getTail(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
-						pTemp = Board->getTail();
+						return_number = is_exisist(Board->getTail(), horse_temp, Board_short1->getCenter(), Board_short2->getCenter()); // 아닌경우는 return_number로 상태를 확인 후
+						pTemp = Board->getTail(); // pTemp는 바로 뒤에 값을 가리킴
 					}
 				}
 			}
-			if (return_number == 2 || return_number == 3 || return_number == 4) {
-				if (return_number == 3)
-					pTemp = Board_short2->getCenter();
-				else if (return_number == 4)
-					pTemp = Board_short1->getCenter();
-				caught_horse(pTemp, horse_temp);
-				if (run == 5 || run == 4) {
-					Yut->delete_yut(move_number);
-					return 7;
+			if (return_number == 2 || return_number == 3 || return_number == 4) { //return_number가 2,3,4여서 각각 상대팀 마을 잡았을 경우에
+				if (return_number == 3) //board_short2의 센터 노드에서 잡혔을 경우
+					pTemp = Board_short2->getCenter(); // pTemp를 board_short2의 센터로 가리킴
+				else if (return_number == 4) // board_short1의 센터 노드에서 잡혔을 경우
+					pTemp = Board_short1->getCenter(); //pTemp를 board_short1의 센터로 가리킴
+				caught_horse(pTemp, horse_temp); // 상대말을 잡는 매소드 호출
+				if (run == 5 || run == 4) { // 윷이거나 모인경우네는 한번더 하지 않기위해서 호출
+					Yut->delete_yut(move_number); // 쓴 윷 삭제
+					return 7; // 7을반환
 				}
 			}
-			else if (return_number == 1 || return_number == 5 || return_number == 6) {
-				if (return_number == 5)
-					pTemp = Board_short2->getCenter();
-				else if (return_number == 6)
-					pTemp = Board_short1->getCenter();
-				horse_temp->insert_carry(pTemp->getOn());
-				run_horse(pTemp, horse_temp);
+			else if (return_number == 1 || return_number == 5 || return_number == 6) { //return_number가 1,5,6이여서 각각 우리팀 말에 업힐때
+				if (return_number == 5) // 5일경우 Board_short2의 센터에서 말을 업음
+					pTemp = Board_short2->getCenter(); // pTemp는 BOard_short2의 센터를 가리킴
+				else if (return_number == 6) // 6일경우 Board_short1의 센터에서 말을 업음
+					pTemp = Board_short1->getCenter(); // pTemp는 Board_short1의 센터를 가리킴
+				horse_temp->insert_carry(pTemp->getOn()); // 말을 업는 매소드를 호출
+				run_horse(pTemp, horse_temp); // 말을 이동시키는 매소드를 호출
 
 			}
 			else {
-				run_horse(pTemp, horse_temp);
+				run_horse(pTemp, horse_temp); // 말을 이동시키는 매소드를 호출
 			}
 			Yut->delete_yut(move_number); // 이동횟수를 썼기 때문에 삭제
-			return return_number;
+			return return_number; // return_number를 반환
 		}
 		else {
-			block* pRun_horse = horse_temp->getPos();
-			if (!pRun_horse->getShortcut()) {
-				for (int i = 0; i < run; i++) {
-					if (pRun_horse == Board->getHead() && horse_temp->getStart() == true) {
-						finished_horse(pRun_horse, horse_temp);
-						if (!pHead)
-							Yut->yut_delete_all();
+			block* pRun_horse = horse_temp->getPos(); // pRun_horse는 말의 현재 위치를 가리킴 
+			if (!pRun_horse->getShortcut()) { // 만약 short_cut이 있는 경우에
+				for (int i = 0; i < run; i++) { 
+					if (pRun_horse == Board->getHead() && horse_temp->getStart() == true) { //만약 도착점에 들어갈경우
+						finished_horse(pRun_horse, horse_temp); // 도착점처리를 해주는 매소드를 호출
+						if (!pHead) // 모든 말이 들어가 pHead가 null일 경우
+							Yut->yut_delete_all(); // 모든 윺 삭제
 						else
-							Yut->delete_yut(move_number);
-						return 0;
+							Yut->delete_yut(move_number); //아니리경우 현재윷만 삭제
+						return 0; // 0을반환
 					}
-					pRun_horse = pRun_horse->getNext();
+					pRun_horse = pRun_horse->getNext(); //pRun_horse는 다음값을 가리킴
 				}
-				return_number = is_exisist(pRun_horse, horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
+				return_number = is_exisist(pRun_horse, horse_temp, Board_short1->getCenter(), Board_short2->getCenter()); // return_number을 결정
 			}
 			else {
-				if (pRun_horse == Board_short1->getHead()->getPrev()) {
-					horse_temp->setShrotCut1(true);
+				if (pRun_horse == Board_short1->getHead()->getPrev()) { // pRun_horse가 shortCut1으로 들어가는 지점일 경우
+					horse_temp->setShrotCut1(true); // short_cut1으로 들어갔다고 true로 설정
 				}
-				else if (pRun_horse == Board_short2->getHead()->getPrev()) {
-					horse_temp->setShrotCut2(true);
+				else if (pRun_horse == Board_short2->getHead()->getPrev()) { // pRun_horse가 shortCut2로 들어가는 경우
+					horse_temp->setShrotCut2(true); // short_cut2로 들어갔다고 true로 설정
 				}
 				for (int i = 0; i < run; i++) {
-					if (pRun_horse == Board->getHead() && horse_temp->getStart() == true) {
-						finished_horse(pRun_horse, horse_temp);
-						if (!pHead)
-							Yut->yut_delete_all();
+					if (pRun_horse == Board->getHead() && horse_temp->getStart() == true) { // 도착점을 지나는 경우
+						finished_horse(pRun_horse, horse_temp); // 완주하는 매소드 호출
+						if (!pHead) // 모든 말이 완주할 때
+							Yut->yut_delete_all(); // 모든 윷 삭제
 						else
-							Yut->delete_yut(move_number);
-						return 0;
+							Yut->delete_yut(move_number); // 아닐경우 현재 윷만 삭제
+						return 0; // 0반환
 					}
 					if (i == 0)
-						pRun_horse = pRun_horse->getShortcut();
+						pRun_horse = pRun_horse->getShortcut(); // 처음에 shortcut으로 이동
 					else
-						pRun_horse = pRun_horse->getNext();
+						pRun_horse = pRun_horse->getNext(); // 그후는 다음값으로 이동
 				}
-				return_number = is_exisist(pRun_horse, horse_temp, Board_short1->getCenter(), Board_short2->getCenter());
+				return_number = is_exisist(pRun_horse, horse_temp, Board_short1->getCenter(), Board_short2->getCenter()); //return_number값 결정
 			}
-			if (return_number == 0) {
-				run_horse(pRun_horse, horse_temp);
+			if (return_number == 0) { // 도착지점에 아무말도 없는경우
+				run_horse(pRun_horse, horse_temp); // 말을이동시킴
 			}
-			else if (return_number == 2 || return_number == 3 || return_number == 4) {
-				if (return_number == 3)
-					pRun_horse = Board_short2->getCenter();
-				else if (return_number == 4)
-					pRun_horse = Board_short1->getCenter();
+			else if (return_number == 2 || return_number == 3 || return_number == 4) { // 상대말을 잡았을경우
+				if (return_number == 3) // Board_short2에서 잡았을 경우
+					pRun_horse = Board_short2->getCenter();  //pRun_horse를 Short2의 센터로 설정
+				else if (return_number == 4) // Board_short1에서 잡았을 경우
+					pRun_horse = Board_short1->getCenter(); // 
 				caught_horse(pRun_horse, horse_temp);
 				if (run == 5 || run == 4) {
 					Yut->delete_yut(move_number);
@@ -387,4 +391,14 @@ void player::delete_player() {
 		delete pTemp;
 		pTemp = pHead;
 	}
+}
+
+bool player::possible_backdo() {
+	horse* pTemp = pHead;
+	while (pHead) {
+		if (pTemp->getPos())
+			return true;
+		pTemp = pHead->getNext();
+	}
+	return false;
 }

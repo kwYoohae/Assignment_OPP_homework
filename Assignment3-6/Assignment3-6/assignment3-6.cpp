@@ -19,7 +19,6 @@ int main() {
 	Player1.inster_name('A'); // Player의 각 말에 이름 붙여주는 매소드 호출
 	Player2.inster_name('B');// Player의 각 말에 이름 붙여주는 매소드 호출
 	make_board(&Board, &Board_short1, &Board_short2); // 보드 생성하는 함수 호출
-	cout << "Board Tail : " << Board_short2.getTail() << endl;
 	int turn = 0; // 누구의 턴인지 확인하는 변수
 	bool end = true; // 게임을 계속 시작하는지 확인 하는 변수
 	char command[20]; // Command입력을 받는 변수
@@ -34,6 +33,10 @@ int main() {
 		}
 		else if (happen == -2) { // happen == -2일 때는 아무말도 안나왔는데 뺵도인 상황
 			cout << "Horses in the hand are impossible to 'back do'" << endl;
+		}
+		else if (happen == -3) {
+			cout << "you must choose start horse" << '\n';
+			turn--;
 		}
 		cout << "Player "<< turn % 2 + 1 <<" trun!(throw/exit)" << '\n'; 
 		cout << "CMD>> ";

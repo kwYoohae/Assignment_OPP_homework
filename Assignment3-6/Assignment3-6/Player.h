@@ -31,4 +31,5 @@ public:
 	bool is_hand();
 
 	void delete_player();
+	bool possible_backdo();
 };

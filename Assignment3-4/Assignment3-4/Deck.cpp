@@ -70,8 +70,8 @@ node* deck::getTail(){ //Tail의 값을 반환하는 매소드
 	return pTail;
 }
 
-void deck::print() { 
-	int count = 0;
+void deck::print() {  // deck을 프린트하는 매소드
+ 	int count = 0;
 	node* pTemp = pHead;
 	while (pTemp) {
 		std::cout << pTemp->getCard() << '\n';
@@ -83,7 +83,7 @@ void deck::print() {
 
 void deck::shuffle(int number, player* Player, discard* Discard) { //덱을 섞는 매소드
 	srand(time(NULL)); // 시간 시드는 현재시간으로
-	player player_temp;
+	player player_temp; // 플레이어의 손을 하나더 생성
 	node* discard_head = Discard->getHead(); // discard의 Head를 가리키는 노드
 	while (discard_head) { // discard_head변수가 null일때까지
 		node* pNew = new node; // 새로운 노드 생성
@@ -94,73 +94,68 @@ void deck::shuffle(int number, player* Player, discard* Discard) { //덱을 섞�
 	}
 	Discard->delete_card(); // 모든 값을 덱에 복사한 뒤는 discard_head에 쌓였던 카드들을 제거
 	for (int i = 0; i < number; i++) {
-		player_temp.delete_card();
-		Player->delete_card();
+		player_temp.delete_card();  // 플레이어의 다른 손에 있는 카드 모두 삭제
+		Player->delete_card(); //플레이어가 가진 모든카드 삭제
 		int count = 0; // random으로 복사한 값이 얼마나되는지를 count해주는 변수
-		int rand_num = rand() % 52;
-		//std::cout << '\n' << "rand_num : " << rand_num << '\n';
+		int rand_num = rand() % 52; // 0~51만큼의 카드를 랜덤으로 때기위한 변수
 		node* pTemp = pHead;
-		for (int i = 0; i < rand_num; i++) {
+		for (int i = 0; i < rand_num; i++) { // 카드를 땔만큼 개수를 찾음
 			pTemp = pTemp->getNext();
 		}
-		pTail = pTemp;
-		pTemp = pTemp->getNext();
-		pTail->setNext(nullptr);
+		pTail = pTemp; // 카드를 밑에서 때가서 pTail을 다시설정
+		pTemp = pTemp->getNext(); // pTail의 다음값으로 카드를 땜
+		pTail->setNext(nullptr); // pTail은 카드를 떄서 없으므로 값을 변경
 		node* pDel = pTemp;
 		while (pTemp) {
 			node* pNew = new node;
-			if (Player->getHead() == nullptr) {
-				pNew->setCard(pTemp->getCard());
+			if (Player->getHead() == nullptr) { // 플레이어가 빈손일 떄 카드를 받고 pHead pTail을 정해줌
+				pNew->setCard(pTemp->getCard()); 
 				Player->setHead(pNew);
 				Player->setTail(pNew);
 			}
-			else {
+			else { // 빈손이아니라 카드가 있을때 서로 Next와 Tail을 정해줌
 				pNew->setCard(pTemp->getCard());
 				Player->getTail()->setNext(pNew);
 				pNew->setPrev(Player->getTail());
 				Player->setTail(pNew);
 			}
 			pTemp = pTemp->getNext();
-			delete pDel;
+			delete pDel; // Player에게 넘긴 값은 덱에서 삭제
 			pDel = pTemp;
-			count++;
+			count++; // 넘기는 숫자를 카운트
 		}
-		pTemp = Player->getHead();
-		while (pTemp) {
-			//std::cout<< '\n' << "Deck" << '\n';
-			//print();
-			int num = rand() % count;
-			for (int i = 0; i <= num; i++) {
-				if (!pTemp) {
-					Player->delete_card();
-					break;
+		pTemp = Player->getHead(); 
+ 		while (pTemp) { // Player의 카드를 Player의 다른손에 넘기고 덱에 올려주는 반복문
+			int num = rand() % count; // 랜덤카드 생성
+			for (int i = 0; i <= num; i++) { // 랜덤값만큼 반복
+				if (!pTemp) { // Player의 카드가 비었을때
+					Player->delete_card(); //Player손의 카드를 삭제
+					break; // 반복문종료
 				}
-				if (player_temp.getHead() == nullptr) {
+				if (player_temp.getHead() == nullptr) { //Player의 다른손에 카드가 하나도 없을 때 pTail, pHead설정
 					node* pNew = new node();
 					pNew->setCard(pTemp->getCard());
 					player_temp.setHead(pNew);
 					player_temp.setTail(pNew);
 				}
-				else {
+				else { // Player의 다른손에 카드가 하나라도 있을 때 Tail과 다음값 이전값 설정
 					node* pNew = new node;
 					pNew->setCard(pTemp->getCard());
 					pNew->setNext(player_temp.getHead());
 					player_temp.getHead()->setPrev(pNew);
-					player_temp.setHead(pNew);
+					player_temp.setHead(pNew); 
 				}
-				pTemp = pTemp->getNext();
+				pTemp = pTemp->getNext(); // pTemp는 계속다음값으로
 			}
-			//std::cout<< '\n' << "Player" << '\n';
-			//Player->print_check();
 			node* temp_head = player_temp.getHead();
-			while (temp_head) {
+			while (temp_head) { // Player의 다른손에 있는 카드를 모두 덱으로 옮길 때 까지
 				node* pNew = new node;
-				if (player_temp.getHead() == nullptr) {
-					pNew->setCard(temp_head->getCard());
+				if (player_temp.getHead() == nullptr) { // player의 다른손의 카드가 모두 비었을 때
+					pNew->setCard(temp_head->getCard()); // deck으로 올릴 노드 생성후 카드값 가져옴
 					pHead = pNew;
 					pTail = pNew;
 				}
-				else {
+				else { // 카드가 남아있을 경우 덱으로 옮겨주고 카드의 Next Prev와 Deck의 Head를 설정해줌
 					pNew->setCard(temp_head->getCard());
 					pNew->setNext(pHead);
 					pHead->setPrev(pNew);
@@ -168,9 +163,7 @@ void deck::shuffle(int number, player* Player, discard* Discard) { //덱을 섞�
 				}
 				temp_head = temp_head->getNext();
 			}
- 			//std::cout<< '\n' << "player_temp" << '\n';
-			//player_temp.print_check();
-			player_temp.delete_card();
+			player_temp.delete_card(); // 모든카드를 옮기고 Player의 다른손에 있는 카드 삭제
 		}
 	}
 }
@@ -237,14 +230,14 @@ void deck::delete_deck() { // deck에 있는 카드를 전부 삭제
 	pTail = nullptr; // 모든 값을 지우면 pTail은 nullptr로 초기화
 }
 
-void deck::move_PD(discard* Discard, player* Player, Dealer* dealer) {
-	node* pTemp = Player->getHead();
-	while (pTemp) {
+void deck::move_PD(discard* Discard, player* Player, Dealer* dealer) { // Player와 Dealer의 카드를 discard_tray로 옮기는 매소드
+	node* pTemp = Player->getHead(); 
+	while (pTemp){ // 플레이어의 카드를 옮김 
 		Discard->insert(pTemp);
 		pTemp = pTemp->getNext();
 	}
 	pTemp = dealer->getHead();
-	while (pTemp) {
+	while (pTemp) { // 딜러의 카드를 옮김
 		Discard->insert(pTemp);
 		pTemp = pTemp->getNext();
 	}

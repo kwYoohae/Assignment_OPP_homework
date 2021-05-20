@@ -14,7 +14,7 @@ private:
 
 public:
 
-	Student_Node() {
+	Student_Node() { // 생성자
 		memset(Student_Id, NULL, 100);
 		memset(Major, NULL, 100);
 		memset(Name, NULL, 100);
@@ -24,58 +24,62 @@ public:
 		pNext_Major = nullptr;
 	}
 
-	void setStudentId(char* temp) {
+	~Student_Node() {
+
+	}
+
+	void setStudentId(char* temp) { // 값을 변경하는매소드
 		strcpy_s(Student_Id, temp);
 	}
 
-	void setMajor(char* temp) {
+	void setMajor(char* temp) {// 값을 변경하는매소드
 		strcpy_s(Major, temp);
 	}
-	void setName(char* temp) {
+	void setName(char* temp) {// 값을 변경하는매소드
 		strcpy_s(Name, temp);
 	}
 
-	void setNext(Student_Node *pTemp) {
+	void setNext(Student_Node *pTemp) {// 값을 변경하는매소드
 		pNext = pTemp;
 	}
 
-	void setNext_ID(Student_Node* pTemp) {
+	void setNext_ID(Student_Node* pTemp) {// 값을 변경하는매소드
 		pNext_ID = pTemp;
 	}
 
-	void setNext_Major(Student_Node* pTemp) {
+	void setNext_Major(Student_Node* pTemp) {// 값을 변경하는매소드
 		pNext_Major = pTemp;
 	}
 
-	void setNext_Name(Student_Node* pTemp) {
+	void setNext_Name(Student_Node* pTemp) {// 값을 변경하는매소드
 		pNext_Name = pTemp;
 	}
 
-	char* getStudentId() {
+	char* getStudentId() { // 값을 반환하는 매소드
 		return Student_Id;
 	}
 
-	char* getMajor() {
+	char* getMajor() {// 값을 반환하는 매소드
 		return Major;
 	}
 
-	char* getName() {
+	char* getName() {// 값을 반환하는 매소드
 		return Name;
 	}
 
-	Student_Node* getNext() {
+	Student_Node* getNext() {// 값을 반환하는 매소드
 		return pNext;
 	}
 
-	Student_Node* getNext_ID() {
+	Student_Node* getNext_ID() {// 값을 반환하는 매소드
 		return pNext_ID;
 	}
 
-	Student_Node* getNext_Name() {
+	Student_Node* getNext_Name() {// 값을 반환하는 매소드
 		return pNext_Name;
 	}
 
-	Student_Node* getNext_Major() {
+	Student_Node* getNext_Major() {// 값을 반환하는 매소드
 		return pNext_Major;
 	}
 	

@@ -37,8 +37,8 @@ int main() {
 	bool bet = false; // bet을 시작하는지 판단하는 bool형 변수
 	bool stand = false; // stand를 하는지 판단하는 bool형 변수
 	while (end) {
-		cout << "Deck count : " << Deck.deck_count() << endl;
-		Deck.print();
+		//cout << "Deck count : " << Deck.deck_count() << endl;
+		//Deck.print();
 		if (!game) { // game이 false(시작안했을 때)
 			cout << "Command list(game/shuffle/exit)" << endl;
 			cout << "CMD>> ";
@@ -120,7 +120,8 @@ int main() {
 					}
 					else if (strcmp(command, "stand") == 0) { // 커맨드가 stand인지 확인
 						if (dealer.sum() <= 16) { // 딜러의 카드의 합이 16이하 일때는 카드를 받는다.
-							Deck.hit_Dealer(&Player, &dealer, &Discard); // 덱에서 딜러에게 카드를 주는 매소드 호출
+							while (dealer.sum() <= 16)// 덱에서 딜러에게 카드를 주는 매소드 호출
+								Deck.hit_Dealer(&Player, &dealer, &Discard);
 						}
 						stand = true; // 딜러가 카드를 다받았으면 비교를 위해 stand를 한다.
 					}
@@ -128,7 +129,7 @@ int main() {
 						cout << "Wrong Command!" << endl; // 명령어를 잘못입력 했을 시
 					}
 				}
-				Deck.move_PD(&Discard,&Player,&dealer);
+				Deck.move_PD(&Discard,&Player,&dealer); // 딜러와 플레이어의 카드를 discard_tray로 옮기는 매소드호출
 			}
 		}
 	}

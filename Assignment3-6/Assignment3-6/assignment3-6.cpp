@@ -34,10 +34,6 @@ int main() {
 		else if (happen == -2) { // happen == -2일 때는 아무말도 안나왔는데 뺵도인 상황
 			cout << "Horses in the hand are impossible to 'back do'" << endl;
 		}
-		else if (happen == -3) {
-			cout << "you must choose start horse" << '\n';
-			turn--;
-		}
 		cout << "Player "<< turn % 2 + 1 <<" trun!(throw/exit)" << '\n'; 
 		cout << "CMD>> ";
 		cin >> command; // command입력을 받음

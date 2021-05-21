@@ -174,6 +174,12 @@ int player::move_horse(int move_number, int select_number, yut* Yut, board* Boar
 			Yut->delete_yut(move_number); // 윷을 삭제후
 			return -2; // -2를 반환
 		}
+		if (run == -1 &&possible_backdo()) { //빽도에서 나가지 Hand에 있는 말을 골랐는지확인
+			if (!horse_temp->getPos()) { //horse_temp가 출발했는지 안했는지 확인
+				std::cout << "you must choose start horse" << '\n';
+				return -3; // -3값 반환
+			}
+		}
 		if (!horse_temp->getPos()) { // 만약 말이 진출하지 않아서 비어있을 때는
 			block* pTemp = Board->getHead(); //Board의 head값을 가리킴
 			for (int i = 0; i < run; i++) {
@@ -208,11 +214,6 @@ int player::move_horse(int move_number, int select_number, yut* Yut, board* Boar
 		}
 		else if (run == -1) { // 빽도일 때는
 			block* pTemp = horse_temp->getPos()->getPrev(); // pTemp는 기본적으로 자기의 이전block을 가리킨다.
-			if (possible_backdo()) {
-				if (!horse_temp->getPos()) {
-					return -3;
-				}
-			}
 			if (horse_temp->getPos() != Board->getHead()) { // 말이 도착점에 도착하지 않았을 때
 				if (Board_short1->getTail()->getNext() == horse_temp->getPos()) { // Board에서  15번의 위치해 있을 때
 					if (horse_temp->getShortCut1() || horse_temp->getShortCut2()) { // 지름길을 한번이라도 지나서 왔을 경우
@@ -321,84 +322,84 @@ int player::move_horse(int move_number, int select_number, yut* Yut, board* Boar
 				if (return_number == 3) // Board_short2에서 잡았을 경우
 					pRun_horse = Board_short2->getCenter();  //pRun_horse를 Short2의 센터로 설정
 				else if (return_number == 4) // Board_short1에서 잡았을 경우
-					pRun_horse = Board_short1->getCenter(); // 
-				caught_horse(pRun_horse, horse_temp);
-				if (run == 5 || run == 4) {
-					Yut->delete_yut(move_number);
+					pRun_horse = Board_short1->getCenter(); //pRun_horse를 short1의 센터로 설정
+				caught_horse(pRun_horse, horse_temp);  // 말을 잡는 매소드를 호출
+				if (run == 5 || run == 4) { //  윷이나 모로 잡았을 때
+					Yut->delete_yut(move_number); //  윷을 그냥 삭제 한번더 못던지게 함
 					return 7;
 				}
 			}
 			else {
-				if (return_number == 5) {
+				if (return_number == 5) { // return_number가 5일경우 pRun_horse에서 Short2에 같은편 말이 있으므로 업음
 					pRun_horse = Board_short2->getCenter();
 				}
-				else if (return_number == 6)
-					pRun_horse = Board_short1->getCenter();
-				horse_temp->insert_carry(pRun_horse->getOn());
-				run_horse(pRun_horse, horse_temp);
+				else if (return_number == 6) // rerturn_number가 6일경우 pRun_horse에서 Short1에 같은편 말이 있으므로 업음
+					pRun_horse = Board_short1->getCenter(); 
+				horse_temp->insert_carry(pRun_horse->getOn()); //horse_temp는 말을 업는 매소드를 호출
+				run_horse(pRun_horse, horse_temp); // 말을 이동시킴
 			}
-			Yut->delete_yut(move_number);
+			Yut->delete_yut(move_number); // 사용한 윷을 지움
 		}
 	}
-	return return_number;
+	return return_number; // return_number를 반환
 }
 
-void player::horse_delete(horse* pHorse) {
+void player::horse_delete(horse* pHorse) { // 말을 지우는 매소드
 	horse* pTemp = pHead;
 	horse* pPrev = pTemp;
 	horse* pCarry = pHorse->getCarry();
-	while (pTemp) {
-		if (pTemp == pHorse)
+	while (pTemp) { // pTemp가 null일때까지 반복
+		if (pTemp == pHorse) // pTemprk 선택한 말일때까지 반복
 			break;
-		pPrev = pTemp;
-		pTemp = pTemp->getNext();
+		pPrev = pTemp; // pTemp의 전값을 저장
+		pTemp = pTemp->getNext(); // pTemp 는 다음값으로
 	}
-	if (pTemp == pHead) {
-		if (pHead->getNext() == nullptr) {
-			delete pTemp;
+	if (pTemp == pHead) { // pTemp가 pHead일경우 head를 다시설정해주는 예외처리
+		if (pHead->getNext() == nullptr) { //pHead가 혼자남았을 때 pHead와 pTail를 초기화해주기위한 매소드
+			delete pTemp; //동적할당해제
 			pHead = nullptr;
 			pTail = nullptr;
 		}
-		else {
+		else { // pHead 다음값이 있을 때 pHead만 옮겨준다.
 			pHead = pHead->getNext();
-			delete pTemp;
+			delete pTemp; // 동적할당 해제
 		}
 	}
-	else if (pTemp == pTail) {
-		pPrev->setNext(nullptr);
-		delete pTemp;
+	else if (pTemp == pTail) { // pTemp가 pTail일 경우
+		pPrev->setNext(nullptr); // 다음값은 없으므로 설ㅈ어
+		delete pTemp; // 동적할당해제
 	}
-	else {
-		pPrev->setNext(pTemp->getNext());
-		delete pTemp;
+	else { //삭제할 horse가 Head나 Tail이 아닐경우
+		pPrev->setNext(pTemp->getNext());  // 이전값이 삭제할노드의 다음값을 next로가리킴
+		delete pTemp;//동적할당해제
 	}
 }
 
-bool player::is_hand() {
+bool player::is_hand() { // 모든말이 hand에 있는지 확인하는 매소드
 	horse* pTemp = pHead;
-	while (pTemp) {
-		if (pTemp->getPos())
+	while (pTemp) { 
+		if (pTemp->getPos()) // 만약 하나라도 말이 있으면 return false출력
 			return false;
-		pTemp = pTemp->getNext();
+		pTemp = pTemp->getNext(); //pTemp는 그다음으로
 	}
-	return true;
+	return true; //모두가 hand에 있을 때 true반환
 }
 
-void player::delete_player() {
+void player::delete_player() { // player에 있는 horse를 모두 삭제하는 매소드
 	horse* pTemp = pHead;
-	while (pTemp) {
+	while (pTemp) { // pTemp가 nullptr일떄까지
 		pHead = pHead->getNext();
-		delete pTemp;
+		delete pTemp; // 동적할당해제를해준다.
 		pTemp = pHead;
 	}
 }
 
-bool player::possible_backdo() {
+bool player::possible_backdo() { // back를 할 수 있는 말인지 확인하는 매소드
 	horse* pTemp = pHead;
-	while (pHead) {
-		if (pTemp->getPos())
+	while (pTemp) {
+		if (pTemp->getPos()) // 만약 hand에있는 것이 아닌 말이면 할수있도록 true를 반환한다.
 			return true;
-		pTemp = pHead->getNext();
+		pTemp = pTemp->getNext();
 	}
-	return false;
+	return false; //모두 hand에 있을 시 false를 반환
 }

@@ -61,7 +61,7 @@ void cafe::Insert(int price, char* Name) {
 			}
 		}
 		if (is_same) { // 중복된 문자일 경우
-			cout << "중복된 문자를 입력하셨습니다" << endl;
+			cout << Name <<"은 중복된 문자입니다." << endl;
 			delete pMenu; // 생성한 노드 삭제
 		} 
 		else {

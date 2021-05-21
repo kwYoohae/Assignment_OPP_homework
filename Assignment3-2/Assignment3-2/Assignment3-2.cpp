@@ -88,6 +88,7 @@ int main() {
 	int count_bst = 0; //bst의 문자가 얼마나 저장되었는지 확인하는 변수
 	bool end = true; //반복문을 돌리기 위한 함수
 	while (end) {
+		cout << "CMD >> ";
 		cin.getline(command , 20); //명령어 입력
 		//cout << is_Enqueue(command) << endl;
 		if (strncmp(command, "Enqueue" , 7) == 0) { //Enqueue가 맞을 때

@@ -1,13 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include "cafe.h"
-
+#include <string>
 using namespace std;
 
 int main() {
 	cafe Cafe;
 	bool end = true;
-	char command[100];
+	string command;
 	int price;
 	char menu[100];
 	ifstream readFile("menu.txt"); //메뉴 택스트를 불러옴
@@ -23,15 +23,15 @@ int main() {
 		cout << "Command list: LOAD, PRINT, INSERT, SEARCH, DELETE, EXIT" << endl;
 		cout << "CMD>> ";
 		cin >> command; //커맨드를 입력받음
-		if (strcmp(command, "INSERT") == 0) { // 커맨드가 Insert일 때
-			while (getchar() != '\n'); // 버퍼를 비워줌
+		if (command.compare("INSERT") == 0) { // 커맨드가 Insert일 때
+			while (getchar() != '\n'); // '\n'이 나올때 까지 문자를 받음
 			cout << "Menu Name: "; 
 			cin.getline(menu, 100); //menu를 받음
 			cout << "Price : ";
 			cin >> price; // price를 받음
 			Cafe.Insert(price, menu); // 메뉴와 가격을 저장하는 매소드 호출
 		}
-		else if (strcmp(command, "PRINT") == 0) {
+		else if (command.compare("PRINT") == 0) {
 			if (Cafe.getHead() != nullptr) { //Cafe에 저장된 값이 비어있지 않을 떄
 				cout << "Command list: MENU, PRICE" << endl;
 				cout << "CMD>> ";
@@ -53,7 +53,7 @@ int main() {
 				cout << "Cafe Menu is Empty" << endl;
 			}
 		}
-		else if (strcmp(command, "LOAD") == 0) { // 커맨드가 Load일 떄
+		else if (command.compare("LOAD") == 0) { // 커맨드가 Load일 떄
 			ifstream readFile("menu.txt"); // menu.txt를 불러옴
 			char temp[100];
 			while (readFile) {
@@ -71,14 +71,14 @@ int main() {
 					price += temp[i] - '0'; // 가격을 int형으로 바꿈
 					price *= 10; //가격에 10을 곱합 자릿수를 올려주기위해서
 				}
-				price /= 10; //마지막값은 10이 더 곱해져있으므로 10으로 나누어줌
+				price /= 10; //마지막값은 10이 더 곱9해져있으므로 10으로 나누어줌
 				Cafe.Insert(price, menu); // 카페메뉴를 추가하는 매소드 호출
 			}
 			readFile.close(); //파일을 닫아줌
 		}
-		else if (strcmp(command, "SEARCH") == 0) { // command가 search일 대
+		else if (command.compare("SEARCH") == 0) { // command가 search일 대
 			if (Cafe.getHead() != nullptr) { // 카페의 메뉴가 비어있지 않을 때
-				while (getchar() != '\n'); // 버퍼를 비워줌
+				while (getchar() != '\n'); // // '\n'이 나올때 까지 문자를 받음
 				cout << "Menu Name: ";
 				cin.getline(menu, 100); // 메뉴의값을 받음
 				if (Cafe.SEARCH(menu) == -1) // 메뉴를 찾는 매소드에서 -1을 반환하면 메뉴가 없으므로 없다는 명령출력
@@ -89,9 +89,9 @@ int main() {
 			else
 				cout << "Cafe Menu is Empty" << endl; // 카페에 메뉴가 없을 때 출력
 		}
-		else if (strcmp(command, "DELETE") == 0) { // Command가 Delete일떄
+		else if (command.compare("DELETE") == 0) { // Command가 Delete일떄
 			if (Cafe.getHead() != nullptr) { // 카페메뉴가 비어있지 않을 때
-				while (getchar() != '\n'); // 버퍼를 지워줌
+				while (getchar() != '\n'); // // '\n'이 나올때 까지 문자를 받음
 				cout << "Menu Name : "; 
 				cin.getline(menu, 100); // 메뉴를 받음
 				if (!Cafe.Delete_node(menu)) // 카페의 입력받은 menu를 삭제하는 메소드 호출
@@ -101,7 +101,7 @@ int main() {
 				cout << "Cafe Menu is Empty" << endl; 
 			}
 		}
-		else if (strcmp(command, "EXIT") == 0) { //command가 EXIT일 떄
+		else if (command.compare("EXIT") == 0) { //command가 EXIT일 떄
 			end = false; //반복문종료
 		}
 		else {

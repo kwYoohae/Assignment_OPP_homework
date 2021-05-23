@@ -145,7 +145,7 @@ void make_board(board* Board, board* Board_short1, board* Board_short2) { // 보�
 
 bool select_exists(player Player , int number) { // 선택할 수 없는 말을 선택하는지 확인하는 변수
 	horse *pTemp = Player.getHead();
-	if (number > 5 || number < 1) // 1~4의 값을 입력하지 않으면 false출력
+	if (number > 4 || number < 1) // 1~4의 값을 입력하지 않으면 false출력
 		return false;
 	else {
 		for (int i = 1; i < number; i++) { //정할 horse값으로 이동

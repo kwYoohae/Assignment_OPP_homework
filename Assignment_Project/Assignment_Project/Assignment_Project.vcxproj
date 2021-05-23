@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{bd2746a9-d29d-47e5-bbc5-a6d58f7a66a0}</ProjectGuid>
-    <RootNamespace>Assignmnet37</RootNamespace>
+    <ProjectGuid>{dd01bfcf-25b0-4ad3-b09d-78d46037f705}</ProjectGuid>
+    <RootNamespace>AssignmentProject</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Assignment3-7</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -140,12 +139,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Data_2D.h" />
-    <ClInclude Include="Student_Node.h" />
-    <ClInclude Include="Data_1D.h" />
+    <ClCompile Include="location_node.cpp" />
+    <ClCompile Include="location_tree.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="product_node.cpp" />
+    <ClCompile Include="product_tree.cpp" />
+    <ClCompile Include="time_node.cpp" />
+    <ClCompile Include="time_tree.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Assignment3-7.cpp" />
+    <ClInclude Include="location_node.h" />
+    <ClInclude Include="location_tree.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="product_node.h" />
+    <ClInclude Include="product_tree.h" />
+    <ClInclude Include="time_node.h" />
+    <ClInclude Include="time_tree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

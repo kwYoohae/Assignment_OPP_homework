@@ -139,22 +139,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="location_node.cpp" />
     <ClCompile Include="location_tree.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Node.cpp" />
-    <ClCompile Include="product_node.cpp" />
     <ClCompile Include="product_tree.cpp" />
-    <ClCompile Include="time_node.cpp" />
+    <ClCompile Include="tree_node.cpp" />
     <ClCompile Include="time_tree.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="location_node.h" />
     <ClInclude Include="location_tree.h" />
     <ClInclude Include="Node.h" />
-    <ClInclude Include="product_node.h" />
     <ClInclude Include="product_tree.h" />
-    <ClInclude Include="time_node.h" />
+    <ClInclude Include="tree_node.h" />
     <ClInclude Include="time_tree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

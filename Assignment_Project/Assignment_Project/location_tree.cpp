@@ -7,10 +7,10 @@ location_tree::~location_tree() {
 
 }
 
-location_node* location_tree::getRoot() {
+tree_node* location_tree::getRoot() {
 	return pRoot;
 }
 
-void location_tree::setRoot(location_node* pTemp) {
+void location_tree::setRoot(tree_node* pTemp) {
 	pRoot = pTemp;
 }

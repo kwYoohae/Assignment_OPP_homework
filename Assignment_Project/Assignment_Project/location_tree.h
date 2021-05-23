@@ -1,16 +1,16 @@
 #pragma once
-#include "location_node.h"
+#include "tree_node.h"
 class location_tree
 {
 private:
-	location_node* pRoot;
+	tree_node* pRoot;
 
 public:
 	location_tree();
 	~location_tree();
 
-	location_node* getRoot();
+	tree_node* getRoot();
 
-	void setRoot(location_node* pTemp);
+	void setRoot(tree_node* pTemp);
 };
 

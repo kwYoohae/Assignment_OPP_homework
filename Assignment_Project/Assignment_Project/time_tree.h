@@ -1,20 +1,19 @@
 #pragma once
-#include "time_node.h"
+#include "tree_node.h"
 class time_tree
 {
 private:
-	time_node* pRoot;
-	time_node* pHead;
-	time_node* pTail;
+	tree_node* pRoot;
 
 public:
 	time_tree();
 	~time_tree();
 
-	time_node* getRoot();
+	tree_node* getRoot();
 
+	void setRoot(tree_node* pTemp);
+	void Plus_Count();
 
-	void setRoot(time_node* pTemp);
-
+	void Insert_Down(tree_node* pParent, tree_node* pTemp, tree_node** pDown);
 };
 

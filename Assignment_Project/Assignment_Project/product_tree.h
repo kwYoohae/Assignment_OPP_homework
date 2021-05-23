@@ -1,18 +1,18 @@
 #pragma once
-#include "product_node.h"
+#include "tree_node.h"
 
 class product_tree
 {
 private:
-	product_node* pRoot;
+	tree_node* pRoot;
 
 public:
 	product_tree();
 	~product_tree();
 
-	product_node* getRoot();
+	tree_node* getRoot();
 
-	void setRoot(product_node* pTemp);
+	void setRoot(tree_node* pTemp);
 };
 
 

@@ -18,13 +18,7 @@
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="time_node.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="time_tree.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="location_node.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Node.cpp">
@@ -33,21 +27,15 @@
     <ClCompile Include="location_tree.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="product_node.cpp">
+    <ClCompile Include="product_tree.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="product_tree.cpp">
+    <ClCompile Include="tree_node.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="time_node.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="time_tree.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="location_node.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Node.h">
@@ -56,10 +44,10 @@
     <ClInclude Include="location_tree.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="product_node.h">
+    <ClInclude Include="product_tree.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="product_tree.h">
+    <ClInclude Include="tree_node.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

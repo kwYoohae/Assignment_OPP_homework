@@ -220,7 +220,7 @@ bool cafe::Delete_node(char* name) { // 노드를 삭제해주는 매소드
 	menu_node* pMenu = pHead; //pHead를 가리키는 노드 
 	bool is_search = false;
 	while (pBst) { // pBst가 nullptr일 떄 까지 반복
-		if (strcmp(name, pBst->getNode()->getName()) == 0) { // 입력한이름과 노드가 가지고 있는 이름이 같을 때
+		if (Compare(name, pBst->getNode()->getName()) == 0) { // 입력한이름과 노드가 가지고 있는 이름이 같을 때
 			is_search = true; // 같은경우라고 bool문 설정
 			if (pParent->getLeft() == pBst) { // 부모노드에서 왼쪽이 내가 찾는 노드있지 확인
 				if (pBst->getLeft() == nullptr && pBst->getRight() == nullptr) { // 찾는 노드가 자식노드를 가지지 않을 경우
@@ -304,11 +304,11 @@ bool cafe::Delete_node(char* name) { // 노드를 삭제해주는 매소드
 			}
 			break; // 반복문 종료
 		}
-		else if (strcmp(name, pBst->getNode()->getName()) == 1) { // 삭제할 노드의 이름과 현재노드의 이름을 비교해서 삭제할 노드의 이름이클때는 오른쪽으로 이동
+		else if (Compare(name, pBst->getNode()->getName()) == 1) { // 삭제할 노드의 이름과 현재노드의 이름을 비교해서 삭제할 노드의 이름이클때는 오른쪽으로 이동
 			pParent = pBst;
 			pBst = pBst->getRight();
 		}
-		else if (strcmp(name, pBst->getNode()->getName()) == -1) { // 삭제할 노드의 이름과 현재노드의 이름을 비교해서 작을 경우는 왼쪽으로
+		else if (Compare(name, pBst->getNode()->getName()) == -1) { // 삭제할 노드의 이름과 현재노드의 이름을 비교해서 작을 경우는 왼쪽으로
 			pParent = pBst;
 			pBst = pBst->getLeft();
 		}

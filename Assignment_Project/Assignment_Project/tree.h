@@ -1,13 +1,13 @@
 #pragma once
 #include "tree_node.h"
-class location_tree
+class tree
 {
 private:
 	tree_node* pRoot;
 
 public:
-	location_tree();
-	~location_tree();
+	tree();
+	~tree();
 
 	tree_node* getRoot();
 

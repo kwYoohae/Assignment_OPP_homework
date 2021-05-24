@@ -139,19 +139,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="location_tree.cpp" />
+    <ClCompile Include="cube_1D.cpp" />
+    <ClCompile Include="cube_2D.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Node.cpp" />
-    <ClCompile Include="product_tree.cpp" />
+    <ClCompile Include="cube.cpp" />
     <ClCompile Include="tree_node.cpp" />
-    <ClCompile Include="time_tree.cpp" />
+    <ClCompile Include="tree.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="location_tree.h" />
+    <ClInclude Include="cube_1D.h" />
+    <ClInclude Include="cube_2D.h" />
     <ClInclude Include="Node.h" />
-    <ClInclude Include="product_tree.h" />
+    <ClInclude Include="cube.h" />
     <ClInclude Include="tree_node.h" />
-    <ClInclude Include="time_tree.h" />
+    <ClInclude Include="tree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

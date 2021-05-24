@@ -1,34 +1,31 @@
-#include "location_tree.h"
 #include "Node.h"
-#include "product_tree.h"
-#include "time_tree.h"
+#include "tree.h"
+#include "cube.h"
 #include <iostream>
 #include <fstream>
 
 using namespace std;
 
 void Print_Check(tree_node* pTemp);
-template <typename T>
-void Open_Category(T* type_Data,const char* text_file);
-//void Open_Location(location_tree* Location);
-//void Open_Time(time_tree* Time);
 
-template <typename T>
-void Insert_data(T* type, tree_node* pParent, char* data);
+void Open_Category(tree* type_Data,const char* text_file);
+void Insert_data(tree* type, tree_node* pParent, char* data);
+void Load_salse(cube* Cube, cube_2D* Cube_2d, cube_1D* Cube_1d);
+void make_raw(cube* Cube, tree *product, tree* location, tree *time);
+void make_2D(cube_2D* cube, tree* row_tree, tree* colomn_tree);
+int count_low(tree* Tree);
+void make_rawNode(cube_1D* pNew, int column_count);
+
 
 int main() {
-	product_tree Product;
-	location_tree Location;
-	time_tree Time;
+	tree Product;
+	tree Location;
+	tree Time;
+	
 	Open_Category(&Time,"time.txt");
 	Open_Category(&Product,"product.txt");
 	Open_Category(&Location,"location.txt");
-	Print_Check(Time.getRoot());
-	cout << '\n' << '\n';
-	Print_Check(Location.getRoot());
-	cout << '\n' << '\n';
-	Print_Check(Product.getRoot());
-	cout << '\n' << '\n';
+	
 }
 
 void Print_Check(tree_node* pTemp) {
@@ -39,8 +36,7 @@ void Print_Check(tree_node* pTemp) {
 	}
 }
 
-template<typename T>
-void Insert_data(T* type, tree_node* pParent, char* data) {
+void Insert_data(tree* type, tree_node* pParent, char* data) {
 	if (!type->getRoot()) {
 		tree_node* pNew = new tree_node;
 		pNew->setData(data);
@@ -81,8 +77,7 @@ void Insert_data(T* type, tree_node* pParent, char* data) {
 	}
 }
 
-template <typename T>
-void Open_Category(T* type_Data,const char *text_file) {
+void Open_Category(tree* type_Data,const char *text_file) {
 	ifstream readFile(text_file);
 	if (!readFile.is_open()) {
 		cout << "Error" << endl;
@@ -156,4 +151,126 @@ void Open_Category(T* type_Data,const char *text_file) {
 		}
 	}
 	readFile.close();
+}
+
+void Load_salse(cube* Cube, cube_2D* Cube_2d, cube_1D* Cube_1d) {
+
+}
+
+void make_raw(cube* Cube, tree* product, tree* location, tree* time) {
+	tree_node* pLow_data = time->getRoot();
+	tree_node* pLow_parent = nullptr;
+	while (pLow_data->getDown()) {
+		pLow_data = pLow_data->getDown();
+	}
+	pLow_parent = pLow_data->getUp();
+	while (pLow_parent) {
+		while (pLow_data) {
+			cube_2D* pNew = new cube_2D;
+			pNew->setName(pLow_data->getData());
+			if (!Cube->getHead()) {
+				Cube->setHead(pNew);
+				Cube->setTail(pNew);
+			}
+			else {
+				Cube->getTail()->setNext(pNew);
+				pNew->setPrev(Cube->getTail());
+				Cube->setTail(pNew);
+			}
+			pLow_data = pLow_data->getNext();
+		}
+		pLow_parent = pLow_parent->getNext();
+		pLow_data = pLow_parent->getDown();
+	}
+}
+
+void make_2D(cube_2D* Cube, tree* row_tree, tree* column_tree) {
+	int column_count = count_low(column_tree);
+	tree_node* pLow_data = row_tree->getRoot();
+	tree_node* pLow_parent = nullptr;
+	while (pLow_data->getDown()) {
+		pLow_data = pLow_data->getDown();
+	}
+	pLow_parent = pLow_data->getUp();
+	while (pLow_parent) {
+		while (pLow_data) {
+			cube_1D* pNew = new cube_1D;
+			pNew->setName(pLow_data->getData());
+			if (!Cube->getHead()) {
+				Cube->setHead(pNew);
+				Cube->setTail(pNew);
+				make_rawNode(pNew, column_count);
+			}
+			else {
+				Cube->getTail()->setNext(pNew);
+				pNew->setPrev(Cube->getTail());
+				Cube->setTail(pNew);
+				make_rawNode(pNew, column_count);
+			}
+			pLow_data = pLow_data->getNext();
+		}
+		pLow_parent = pLow_parent->getNext();
+		pLow_data = pLow_parent->getDown();
+	}
+
+	pLow_data = column_tree->getRoot();
+	pLow_parent = nullptr;
+	cube_1D* pTemp;
+	while (pLow_data->getDown()) {
+		pLow_data = pLow_data->getDown();
+	}
+	while (pLow_parent) {
+		while (pLow_data) {
+			cube_1D* pNew = new cube_1D;
+			pNew->setName(pLow_data->getData());
+			if (!Cube->getHead()) {
+				Cube->setHead(pNew);
+				Cube->setTail(pNew);
+				make_rawNode(pNew, column_count);
+			}
+			else {
+				Cube->getTail()->setNext(pNew);
+				pNew->setPrev(Cube->getTail());
+				Cube->setTail(pNew);
+				make_rawNode(pNew, column_count);
+			}
+			pLow_data = pLow_data->getNext();
+		}
+		pLow_parent = pLow_parent->getNext();
+		pLow_data = pLow_parent->getDown();
+	}
+}
+
+int count_low(tree* Tree) {
+	tree_node* pTemp = Tree->getRoot();
+	tree_node* pParent = Tree->getRoot();
+	int count = 0;
+	while (pTemp->getDown()) {
+		pParent = pTemp;
+		pTemp = pTemp->getDown();
+	}
+	while (pParent) {
+		while (pTemp) {
+			pTemp = pTemp->getNext();
+			count++;
+		}
+		pParent = pParent->getNext();
+		pTemp = pParent->getDown();
+	}
+	return count;
+}
+
+void make_rawNode(cube_1D* pNew , int column_count) {
+	for (int i = 0; i < column_count; i++) {
+		Node* pNode = new Node;
+		if (!pNew->getHead()) {
+			pNew->setHead(pNode);
+			pNew->setTail(pNode);
+		}
+		else {
+			pNew->getTail()->setRight(pNode);
+			pNode->setLeft(pNew->getTail());
+			pNew->setTail(pNode);
+		}
+	}
 }

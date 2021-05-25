@@ -6,6 +6,8 @@ cube_2D::cube_2D() {
 	pTail = nullptr;
 	pNext = nullptr;
 	pPrev = nullptr;
+	pRow = nullptr;
+	pColumn = nullptr;
 	memset(name, NULL, 100);
 }
 cube_2D::~cube_2D() {
@@ -27,7 +29,19 @@ cube_2D* cube_2D::getNext() {
 cube_2D* cube_2D::getPrev() {
 	return pPrev;
 }
+cube_2D* cube_2D::getRow() {
+	return pRow;
+}
+cube_2D* cube_2D::getColumn() {
+	return pColumn;
+}
 
+void cube_2D::setRow(cube_2D* pTemp) {
+	pRow = pTemp;
+}
+void cube_2D::setColumn(cube_2D* pTemp) {
+	pColumn = pTemp;
+}
 void cube_2D::setNext(cube_2D* pTemp) {
 	pNext = pTemp;
 }

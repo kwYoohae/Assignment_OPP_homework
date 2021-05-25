@@ -8,6 +8,8 @@ private:
 	cube_1D* pTail;
 	cube_2D* pNext;
 	cube_2D* pPrev;
+	cube_2D* pRow;
+	cube_2D* pColumn;
 	char name[100];
 public:
 	cube_2D();
@@ -17,7 +19,12 @@ public:
 	cube_1D* getTail();
 	cube_2D* getNext();
 	cube_2D* getPrev();
+	cube_2D* getRow();
+	cube_2D* getColumn();
 	char* getName();
+
+	void setRow(cube_2D* pTemp);
+	void setColumn(cube_2D* pTemp);
 
 	void setPrev(cube_2D* pTemp);
 	void setNext(cube_2D* pTemp);

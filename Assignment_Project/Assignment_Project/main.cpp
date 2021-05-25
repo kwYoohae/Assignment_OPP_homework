@@ -16,45 +16,35 @@ int count_2dLow(cube* Cube);
 void make_rawNode(cube_1D* pNew, int column_count);
 void make_Demention(cube_2D* Cube, tree* Tree);
 void make_2Demention(cube* Cube, tree* Tree, tree* row_tree, tree* column_tree);
-void new_node(int high_count, int row_count, int column_count, cube_2D* high_temp, cube_2D* row_temp, cube_2D* column_temp,int cnt);
+void new_node(int high_count, int row_count, int column_count, cube_2D* high_temp, cube_2D* row_temp, cube_2D* column_temp);
 Node* select_node(int high_count, int row_count, int column_count, cube_2D* high, cube_2D* row, cube_2D* column);
-
-
+void print_cube(cube* Cube);
+void Load_sales(cube* raw_cube);
+void insert_data(cube* Cube, char* product, char* location, char* time, int data);
 int main() {
 	tree Product;
 	tree Location;
 	tree Time;
-	cube Cube_time;
+	cube raw_cube;
 	Open_Category(&Time,"time.txt");
 	Open_Category(&Product,"product.txt");
 	Open_Category(&Location,"location.txt");
-	make_2Demention(&Cube_time, &Time , &Location, &Product);
-	make_node(&Cube_time);
-	int high_cnt = count_2dLow(&Cube_time);
-	int row_cnt = count_low(Cube_time.getHead()->getRow());
-	int column_cnt = count_low(Cube_time.getHead()->getRow());
-	cube_2D* pHigh = Cube_time.getHead();
-	for (int i = 0; i < high_cnt; i++) {
-		for (int j = 0; j < row_cnt; j++) {
-			for (int k = 0; k < column_cnt; k++) {
-				//new_node(i, j, k, high_temp, row_temp, column_temp);
-				cout <<" data: " <<select_node(i, j, k, pHigh, pHigh->getRow(), pHigh->getColumn())->getData() << '\n';
-			}
-		}
-	}
+	make_2Demention(&raw_cube, &Time , &Location, &Product);
+	make_node(&raw_cube);
+	//print_cube(&raw_cube);
+	Load_sales(&raw_cube);
+	print_cube(&raw_cube);
 }
 
 void make_node(cube* high) {
 	int high_cnt = count_2dLow(high);
 	int row_cnt = count_low(high->getHead()->getRow());
 	int column_cnt = count_low(high->getHead()->getColumn());
-	int cnt = 0;
 	cube_2D* pHigh = high->getHead();
 	for (int i = 0; i < high_cnt; i++) {
 		for (int j = 0; j < row_cnt; j++) {
 			for (int k = 0; k < column_cnt; k++) {
-				new_node(i, j, k, pHigh, pHigh->getRow(), pHigh->getColumn(),cnt);
-				cnt++;
+				new_node(i, j, k, pHigh, pHigh->getRow(), pHigh->getColumn());
 				//cout << select_node(i, j, k, high_temp, row_temp, column_temp);
 			}
 		}
@@ -82,7 +72,7 @@ Node* select_node(int high_count, int row_count, int column_count, cube_2D* high
 	return pTemp;
 }
 
-void new_node(int high_count, int row_count, int column_count, cube_2D* high_temp , cube_2D* row_temp, cube_2D* column_temp, int cnt) {
+void new_node(int high_count, int row_count, int column_count, cube_2D* high_temp , cube_2D* row_temp, cube_2D* column_temp) {
 	cube_1D* row = row_temp->getHead();
 	cube_1D* column = column_temp->getHead();
 	for (int i = 0; i < row_count; i++) {
@@ -92,7 +82,6 @@ void new_node(int high_count, int row_count, int column_count, cube_2D* high_tem
 		column = column->getNext();
 	}
 	Node* pNew = new Node;
-	pNew->setData(cnt);
 	if (!row->getHead()) {
 		row->setHead(pNew);
 		row->setTail(pNew);
@@ -111,7 +100,7 @@ void new_node(int high_count, int row_count, int column_count, cube_2D* high_tem
 		column->getTail()->setRight(pNew);
 		column->setTail(pNew);
 	}
-	cout << "high : " << high_temp->getName() << " row : " << row->getName() << " column : " << column->getName() << " Data : " << pNew->getData() << '\n';
+	//cout << "high : " << high_temp->getName() << " row : " << row->getName() << " column : " << column->getName() << " Data : " << pNew->getData() << '\n';
 }
 
 void Print_Check(tree_node* pTemp) {
@@ -341,4 +330,93 @@ void make_rawNode(cube_1D* pNew , int column_count) {
 			pNew->setTail(pNode);
 		}
 	}
+}
+
+void print_cube(cube* Cube) {
+	int high_cnt = count_2dLow(Cube);
+	int row_cnt = count_low(Cube->getHead()->getRow());
+	int column_cnt = count_low(Cube->getHead()->getRow());
+	cube_2D* pHigh = Cube->getHead();
+	for (int i = 0; i < high_cnt; i++) {
+		for (int j = 0; j < row_cnt; j++) {
+			for (int k = 0; k < column_cnt; k++) {
+				//new_node(i, j, k, high_temp, row_temp, column_temp);
+				//cout << "i : " << i << " j : " << j << " k : " << k << " data : ";
+				cout << select_node(i, j, k, pHigh, pHigh->getRow(), pHigh->getColumn())->getData() << '\n';
+			}
+		}
+	}
+}
+
+void Load_sales(cube* Cube) {
+	ifstream readFile("sales.txt");
+	if (!readFile.is_open()) {
+		cout << "Error" << endl;
+		readFile.close();
+	}
+	char temp[200];
+	char product[200];
+	char location[200];
+	char time[200];
+	int product_number = 0;
+	int location_nubmer = 0;
+	int time_number = 0;
+	int data = 0;
+	int len = 0;
+	while (true) {
+		memset(temp, NULL, 200);
+		memset(product, NULL, 200);
+		memset(location, NULL, 200);
+		memset(time, NULL, 200);
+		data = 0;
+		readFile.getline(temp, 200, '\n');
+		if (temp[0] == NULL)
+			break;
+		for (int i = 0; temp[len] != ' '; i++, len++) {
+			product[i] = temp[len];
+		}
+		len++;
+		for (int i = 0; temp[len] != ' '; i++, len++) {
+			location[i] = temp[len];
+		}
+		len++;
+		for (int i = 0; temp[len] != ' '; i++, len++) {
+			time[i] = temp[len];
+		}
+		len++;
+		for (int i = 0; temp[len] != '\0'; i++,len++) {
+			data += temp[len] - '0';
+			data *= 10;
+		}
+		data /= data;
+		insert_data(Cube, product, location, time, data);
+		len = 0;
+	}
+	readFile.close();
+}
+
+void insert_data(cube* Cube, char* product, char* location, char* time, int data) {
+	cube_2D* pTime = Cube->getHead();
+	while (pTime) {
+		if (strcmp(pTime->getName(), time) == 0) {
+			break;
+		}
+		pTime = pTime->getNext();
+	}
+	cube_1D* find_number = pTime->getRow()->getHead();
+	while (find_number) {
+		if (strcmp(find_number->getName(), location) == 0)
+			break;
+		find_number = find_number->getNext();
+	}
+	Node* pTemp = find_number->getHead();
+	find_number = pTime->getColumn()->getHead();
+	while (find_number) {
+		if (strcmp(find_number->getName(), product) == 0) {
+			break;
+		}
+		find_number = find_number->getNext();
+		pTemp = pTemp->getDown();
+	}
+	pTemp->setData(data);
 }

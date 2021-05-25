@@ -56,3 +56,4 @@ void cube::make_raw(tree* Tree) {
 		pLow_data = pLow_parent->getDown();
 	}
 }
+

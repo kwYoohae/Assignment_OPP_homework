@@ -5,15 +5,15 @@ cube_2D::cube_2D() {
 	pHead = nullptr;
 	pTail = nullptr;
 	pNext = nullptr;
-	pPrev = nullptr
+	pPrev = nullptr;
 	memset(name, NULL, 100);
 }
 cube_2D::~cube_2D() {
 
 }
 
-cube_1D* cube_2D::getRhead() {
-	return pRhead;
+cube_1D* cube_2D::getHead() {
+	return pHead;
 }
 cube_1D* cube_2D::getTail() {
 	return pTail;

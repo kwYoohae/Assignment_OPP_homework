@@ -5,12 +5,20 @@ Node::Node() {
 	pLeft = nullptr;
 	pUp = nullptr;
 	pDown = nullptr;
+	pHigh = nullptr;
+	pLow = nullptr;
 	data = 0;
 }
 Node::~Node() {
 
 }
 
+Node* Node::getHigh() {
+	return pHigh;
+}
+Node* Node::getLow() {
+	return pLow;
+}
 Node* Node::getLeft() {
 	return pLeft;
 }
@@ -27,6 +35,12 @@ int Node::getData() {
 	return data;
 }
 
+void Node::setLow(Node* pTemp) {
+	pLow = pTemp;
+}
+void Node::setHigh(Node* pTemp) {
+	pHigh = pTemp;
+}
 void Node::setLeft(Node* pTemp) {
 	pLeft = pTemp;
 }

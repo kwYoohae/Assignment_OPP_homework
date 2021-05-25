@@ -7,7 +7,7 @@ cube_1D::cube_1D() {
 	memset(name, NULL, 100);
 }
 cube_1D::~cube_1D() {
-
+	
 }
 
 Node* cube_1D::getTail() {

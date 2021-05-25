@@ -388,7 +388,7 @@ void Load_sales(cube* Cube) {
 			data += temp[len] - '0';
 			data *= 10;
 		}
-		data /= data;
+		data /= 10;
 		insert_data(Cube, product, location, time, data);
 		len = 0;
 	}

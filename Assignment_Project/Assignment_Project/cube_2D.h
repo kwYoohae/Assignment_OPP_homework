@@ -32,5 +32,6 @@ public:
 	void setTail(cube_1D* pTemp);
 	void setName(char* pTemp);
 	void make_cube();
+	void delete_cube();
 };
 

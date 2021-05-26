@@ -57,3 +57,16 @@ void cube_2D::setTail(cube_1D* pTemp) {
 void cube_2D::setName(char* pTemp) {
 	strcpy_s(name, pTemp);
 }
+
+void cube_2D::delete_cube() {
+	cube_1D* pTemp = pHead;
+	while (pHead) {
+		pHead = pHead->getNext();
+		pTemp->delete_node();
+		delete pTemp;
+		pTemp = pHead;
+	}
+	pHead = nullptr;
+	pTail = nullptr;
+	memset(name, NULL, 100);
+}

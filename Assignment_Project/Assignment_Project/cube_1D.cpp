@@ -4,6 +4,8 @@
 cube_1D::cube_1D() {
 	pHead = nullptr;
 	pTail = nullptr;
+	pNext = nullptr;
+	pPrev = nullptr;
 	memset(name, NULL, 100);
 }
 cube_1D::~cube_1D() {
@@ -44,4 +46,14 @@ void cube_1D::setPrev(cube_1D* pTemp) {
 
 void cube_1D::make_raw(tree* Tree) {
 	
+}
+
+void cube_1D::delete_node() {
+	Node* pTemp = pHead;
+	Node* pTemp_right = pHead;
+	while (pTemp) {
+		pHead = pHead->getDown();
+		delete pTemp;
+		pTemp = pHead;
+	}
 }

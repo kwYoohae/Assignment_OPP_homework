@@ -3,7 +3,8 @@
 #include "cube.h"
 #include <iostream>
 #include <fstream>
-
+#include <ostream>
+#include <crtdbg.h>
 using namespace std;
 
 void Print_Check(tree_node* pTemp);
@@ -13,27 +14,52 @@ void Insert_data(tree* type, tree_node* pParent, char* data);
 void make_node(cube* high);
 int count_low(cube_2D* Cube);
 int count_2dLow(cube* Cube);
+int count_low_node(cube_2D);
 void make_rawNode(cube_1D* pNew, int column_count);
-void make_Demention(cube_2D* Cube, tree* Tree);
-void make_2Demention(cube* Cube, tree* Tree, tree* row_tree, tree* column_tree);
+void make_Demention(cube_2D* Cube, tree* Tree, int dimention_number);
+void make_2Demention(cube* Cube, tree* Tree, tree* row_tree, tree* column_tree, int high_D, int row_D, int column_D);
 void new_node(int high_count, int row_count, int column_count, cube_2D* high_temp, cube_2D* row_temp, cube_2D* column_temp);
 Node* select_node(int high_count, int row_count, int column_count, cube_2D* high, cube_2D* row, cube_2D* column);
 void print_cube(cube* Cube);
 void Load_sales(cube* raw_cube);
 void insert_data(cube* Cube, char* product, char* location, char* time, int data);
+void resize_view(cube* raw, cube* view);
+
 int main() {
 	tree Product;
 	tree Location;
 	tree Time;
 	cube raw_cube;
-	Open_Category(&Time,"time.txt");
-	Open_Category(&Product,"product.txt");
-	Open_Category(&Location,"location.txt");
-	make_2Demention(&raw_cube, &Time , &Location, &Product);
-	make_node(&raw_cube);
-	//print_cube(&raw_cube);
-	Load_sales(&raw_cube);
-	print_cube(&raw_cube);
+	cube view_cube;
+	char command[100];
+	bool end = true;
+	ofstream WriteCommad("command.txt");
+	while (end) {
+		cout << "CMD >> ";
+		cin >> command;
+		if (strcmp(command, "LOAD") == 0) {
+			WriteCommad.write(command, strlen(command));
+			Open_Category(&Time, "time.txt");
+			Open_Category(&Product, "product.txt");
+			Open_Category(&Location, "location.txt");
+			make_2Demention(&raw_cube, &Time, &Location, &Product,3,3,3);
+			make_node(&raw_cube);
+			//print_cube(&raw_cube);
+			Load_sales(&raw_cube);
+			make_2Demention(&view_cube, &Time, &Location, &Product,2,2,2);
+			make_node(&view_cube);
+			print_cube(&view_cube);
+		}
+		else if (strcmp(command, "END") == 0) {
+			raw_cube.delete_cube_all();
+			_CrtDumpMemoryLeaks();
+			end = false;
+		}
+		else if (strcmp(command, "PRINT") == 0) {
+			print_cube(&raw_cube);
+		}
+	}
+
 }
 
 void make_node(cube* high) {
@@ -228,10 +254,12 @@ void Open_Category(tree* type_Data,const char *text_file) {
 	readFile.close();
 }
 
-void make_2Demention(cube* Cube, tree* Tree, tree* row_tree, tree* column_tree) {
+void make_2Demention(cube* Cube, tree* Tree, tree* row_tree, tree* column_tree, int high_D, int row_D, int column_D) {
 	tree_node* pLow_data = Tree->getRoot();
 	tree_node* pLow_parent = nullptr;
-	while (pLow_data->getDown()) {
+	for (int i = 1; i < high_D; i++) {
+		if (!pLow_data->getDown())
+			break;
 		pLow_data = pLow_data->getDown();
 	}
 	pLow_parent = pLow_data->getUp();
@@ -246,8 +274,8 @@ void make_2Demention(cube* Cube, tree* Tree, tree* row_tree, tree* column_tree) 
 				cube_2D* pColumn = new cube_2D;
 				pNew->setRow(pRow);
 				pNew->setColumn(pColumn);
-				make_Demention(pRow, row_tree);
-				make_Demention(pColumn, column_tree);
+				make_Demention(pRow, row_tree,row_D);
+				make_Demention(pColumn, column_tree,column_D);
 			}
 			else {
 				Cube->getTail()->setNext(pNew);
@@ -255,8 +283,8 @@ void make_2Demention(cube* Cube, tree* Tree, tree* row_tree, tree* column_tree) 
 				Cube->setTail(pNew);
  				cube_2D* pRow = new cube_2D;
 				cube_2D* pColumn = new cube_2D;
-				make_Demention(pRow, row_tree);
-				make_Demention(pColumn, column_tree);
+				make_Demention(pRow, row_tree,row_D);
+				make_Demention(pColumn, column_tree,column_D);
 				pNew->setRow(pRow);
 				pNew->setColumn(pColumn);
 			}
@@ -270,10 +298,12 @@ void make_2Demention(cube* Cube, tree* Tree, tree* row_tree, tree* column_tree) 
 }
 
 
-void make_Demention(cube_2D* Cube, tree* Tree) {
+void make_Demention(cube_2D* Cube, tree* Tree, int dimention_number) {
 	tree_node* pLow_data = Tree->getRoot();
 	tree_node* pLow_parent = nullptr;
-	while (pLow_data->getDown()) {
+	for (int i = 1; i < dimention_number; i++) {
+		if (!pLow_data->getDown())
+			break;
 		pLow_data = pLow_data->getDown();
 	}
 	pLow_parent = pLow_data->getUp();
@@ -303,6 +333,7 @@ int count_low(cube_2D* Cube) {
 	int count = 0;
 	cube_1D* pTemp = Cube->getHead();
 	while (pTemp) {
+		cout << pTemp->getName() << endl;
 		pTemp = pTemp->getNext();
 		count++;
 	}
@@ -312,6 +343,7 @@ int count_2dLow(cube* Cube) {
 	int count = 0;
 	cube_2D* pTemp = Cube->getHead();
 	while (pTemp) {
+		cout << pTemp->getName() << endl;
 		pTemp = pTemp->getNext();
 		count++;
 	}
@@ -335,7 +367,7 @@ void make_rawNode(cube_1D* pNew , int column_count) {
 void print_cube(cube* Cube) {
 	int high_cnt = count_2dLow(Cube);
 	int row_cnt = count_low(Cube->getHead()->getRow());
-	int column_cnt = count_low(Cube->getHead()->getRow());
+	int column_cnt = count_low(Cube->getHead()->getColumn());
 	cube_2D* pHigh = Cube->getHead();
 	for (int i = 0; i < high_cnt; i++) {
 		for (int j = 0; j < row_cnt; j++) {
@@ -419,4 +451,8 @@ void insert_data(cube* Cube, char* product, char* location, char* time, int data
 		pTemp = pTemp->getDown();
 	}
 	pTemp->setData(data);
+}
+
+void resize_view(cube* raw, cube* view) {
+	
 }

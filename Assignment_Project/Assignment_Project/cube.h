@@ -19,5 +19,6 @@ public:
 	void setName(char* pTemp);
 
 	void make_raw(tree* Tree);
+	void delete_cube_all();
 };
 

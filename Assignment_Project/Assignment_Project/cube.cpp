@@ -57,3 +57,17 @@ void cube::make_raw(tree* Tree) {
 	}
 }
 
+void cube::delete_cube_all() {
+	cube_2D* pTemp = pHead;
+	while (pTemp) {
+		pHead = pHead->getNext();
+		pTemp->getRow()->delete_cube();
+		delete pTemp->getRow();
+		delete pTemp->getColumn();
+		delete pTemp;
+		pTemp = pHead;
+	}
+	pHead = nullptr;
+	pTail = nullptr;
+	
+}

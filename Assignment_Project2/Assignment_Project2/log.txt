@@ -1,39 +1,53 @@
 [LOAD]
-January	Seoul	Busan	Incheon	Tokyo	Kyoto	Sapporo	NY	LA	WDC	Toronto	Vancouver	Calgary	
-pork	0		1		2		3		4		5		6		7		8		9		10		11		
-beef	12		13		14		15		16		17		18		19		20		21		22		23		
-chicken	24		25		26		27		28		29		30		31		32		33		34		35		
-duck	36		37		38		39		40		41		42		43		44		45		46		47		
-apple	48		49		50		51		52		53		54		55		56		57		58		59		
-pear	60		61		62		63		64		65		66		67		68		69		70		71		
-kiwi	72		73		74		75		76		77		78		79		80		81		82		83		
-grape	84		85		86		87		88		89		90		91		92		93		94		95		
-onion	96		97		98		99		100		101		102		103		104		105		106		107		
-carrot	108		109		110		111		112		113		114		115		116		117		118		119		
-lettuce	120		121		122		123		124		125		126		127		128		129		130		131		
-cabbage	132		133		134		135		136		137		138		139		140		141		142		143		
-
-
-[LOAD]
 Q1	Korea	Japan	USA	Canada	
-meat	1305		1332		1359		1386		
-fruit	1737		1764		1791		1818		
-vegetable	2169		2196		2223		2250		
+meat	9		9		9		9		
+fruit	9		9		9		9		
+vegetable	9		9		9		9		
 
 
 [ROTATE]
-January	pork	beef	chicken	duck	apple	pear	kiwi	grape	onion	carrot	lettuce	cabbage	
-Seoul	132		120		108		96		84		72		60		48		36		24		12		0		
-Busan	133		121		109		97		85		73		61		49		37		25		13		1		
-Incheon	134		122		110		98		86		74		62		50		38		26		14		2		
-Tokyo	135		123		111		99		87		75		63		51		39		27		15		3		
-Kyoto	136		124		112		100		88		76		64		52		40		28		16		4		
-Sapporo	137		125		113		101		89		77		65		53		41		29		17		5		
-NY	138		126		114		102		90		78		66		54		42		30		18		6		
-LA	139		127		115		103		91		79		67		55		43		31		19		7		
-WDC	140		128		116		104		92		80		68		56		44		32		20		8		
-Toronto	141		129		117		105		93		81		69		57		45		33		21		9		
-Vancouver	142		130		118		106		94		82		70		58		46		34		22		10		
-Calgary	143		131		119		107		95		83		71		59		47		35		23		11		
+Q1	vegetable	fruit	meat	
+Korea	9		9		9		
+Japan	9		9		9		
+USA	9		9		9		
+Canada	9		9		9		
+
+
+[ROTATE]
+vegetable	Q1	Q2	Q3	Q4	
+Korea	9		9		9		9		
+Japan	9		9		9		9		
+USA	9		9		9		9		
+Canada	9		9		9		9		
+
+
+[ROTATE]
+Canada	Q1	Q2	Q3	Q4	
+meat	9		9		9		9		
+fruit	9		9		9		9		
+vegetable	9		9		9		9		
+
+
+[ROTATE]
+vegetable	Q1	Q2	Q3	Q4	
+Korea	9		9		9		9		
+Japan	9		9		9		9		
+USA	9		9		9		9		
+Canada	9		9		9		9		
+
+
+[ROTATE]
+Q1	vegetable	fruit	meat	
+Korea	9		9		9		
+Japan	9		9		9		
+USA	9		9		9		
+Canada	9		9		9		
+
+
+[ROTATE]
+Q1	Korea	Japan	USA	Canada	
+meat	9		9		9		9		
+fruit	9		9		9		9		
+vegetable	9		9		9		9		
 
 

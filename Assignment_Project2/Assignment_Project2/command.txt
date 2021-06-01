@@ -1,2 +1,7 @@
 LOAD
 ROTATE clockwise
+ROTATE left
+ROTATE up
+ROTATE down
+ROTATE right
+ROTATE c_clockwise

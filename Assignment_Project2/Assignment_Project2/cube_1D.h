@@ -28,5 +28,7 @@ public:
 	void setName(char* pTemp);
 	void setNext(cube_1D* pTemp);
 	void setPrev(cube_1D* pTemp);
+
+	
 };
 

@@ -52,23 +52,22 @@ int main() {
 				raw_cube.Make_tree(&Time, &Location, &Product, 3);
 				//Load_sales(&raw_cube);
 				//raw_cube.Print();
-				raw_cube.WriteLog(command);
+				//raw_cube.WriteLog(command);
 				view_cube.Make_Cube(count_low(&Product, 3), count_low(&Location, 3), count_low(&Time, 3));
 				view_cube.Make_tree(&Time, &Location, &Product, 2);
 				view_cube.copyData(&raw_cube);
 				view_cube.Make_View(&Time, &Location, &Product);
-				view_cube.Print();
+				///view_cube.Print();
 				view_cube.WriteLog(command);
-				raw_cube.Print();
 			}
 			else if (strcmp(command, "ROTATE") == 0) {
-				/*view_cube.Print();
-				view_cube.check();
+				//view_cube.Print();
+				//view_cube.check();
 				view_cube.Rotate(command_list);
-				view_cube.check();
-				view_cube.WriteLog(command);*/
-				raw_cube.Rotate(command_list);
-				raw_cube.WriteLog(command);
+				//view_cube.check();
+				view_cube.WriteLog(command);
+				//raw_cube.Rotate(command_list);
+				//raw_cube.WriteLog(command);
 			}
 			memset(str, NULL, 200);
 			memset(command, NULL, 100);

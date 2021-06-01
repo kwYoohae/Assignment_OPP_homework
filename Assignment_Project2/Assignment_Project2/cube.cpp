@@ -140,7 +140,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 }
 
 void cube::Make_Cube(int p, int l, int t) {
-	int cnt = 0;
+	int cnt = 1;
 	node* pWork1 = nullptr;
 	node* pWork2 = nullptr;
 	node* pWork3 = nullptr;
@@ -185,7 +185,7 @@ void cube::Make_Cube(int p, int l, int t) {
 					pNew->setCprev(pWork3);
 				}
 				pNew->setData(cnt);
-				cnt++;
+				//cnt++;
 			}
 			if (j != 0) {
 				pWork1 = pHead;
@@ -476,23 +476,130 @@ void cube::copyData(cube* raw) {
 }
 
 void cube::Rotate(char* command) {
+	node* (node:: * pRight_temp)() = pRight;
+	node* (node:: * pLeft_temp)() = pLeft;
+	node* (node:: * pUp_temp)() = pUp;
+	node* (node:: * pDown_temp)() = pDown;
+	node* (node:: * pIn_temp)() = pIn;
+	node* (node:: * pOut_temp)() = pOut;
+	void (node:: * setRight_temp)(node * pTemp) = setRight;
+	void (node:: * setLeft_temp)(node * pTemp) = setLeft;
+	void (node:: * setUp_temp)(node * pTemp) = setUp;
+	void (node:: * setDown_temp)(node * pTemp) = setDown;
+	void (node:: * setIn_temp)(node * pTemp) = setIn;
+	void (node:: * setOut_temp)(node * pTemp) = setOut;
 
+	cube_1D* (cube:: * pRow_temp)() = pRow;
+	cube_1D* (cube:: * pColumn_temp)() = pColumn;
+	cube_1D* (cube:: * pHeight_temp)() = pHeight;
+	void (cube:: * pRow_set_temp)(cube_1D * pTemp) = pRow_set;
+	void (cube:: * pColumn_set_temp)(cube_1D * pTemp) = pColumn_set;
+	void (cube:: * pHeight_set_temp)(cube_1D * pTemp) = pHeight_set;
 	if (strcmp(command, "clockwise") == 0) {
 		while ((pHead->*pDown)()) {
 			pHead = (pHead->*pDown)();
 		}
-		pRight = &node::getHprev;
-		setRight = &node::setHprev;
-		pLeft = &node::getHnext;
-		setLeft = &node::setHnext;
-		pDown = &node::getCnext;
-		setDown = &node::setCnext;
-		pUp = &node::getCprev;
-		setUp = &node::setCprev;
-		pHeight = &cube::getColumn;
-		pColumn = &cube::getHeight;
-		pHeight_set = &cube::setColumn;
-		pColumn_set = &cube::setHeight;
+		pRight = pUp_temp;
+		setRight = setUp_temp;
+		pLeft = pDown_temp;
+		setLeft = setDown_temp;
+		pDown = pRight_temp;
+		setDown = setRight_temp;
+		pUp = pLeft_temp;
+		setUp = setLeft_temp;
+		pHeight = pColumn_temp;
+		pColumn = pHeight_temp;
+		pHeight_set = pColumn_set_temp;
+		pColumn_set = pHeight_set_temp;
+		Reverse((this->*pColumn)());
+	}
+	else if (strcmp(command, "c_clockwise") == 0) {
+		while ((pHead->*pRight)()) {
+			pHead = (pHead->*pRight)();
+		}
+		pRight = pDown_temp;
+		setRight = setDown_temp;
+		pLeft = pUp_temp;
+		setLeft = setUp_temp;
+		pDown = pLeft_temp;
+		setDown = setLeft_temp;
+		pUp = pRight_temp;
+		setUp = setRight_temp;
+		pHeight = pColumn_temp;
+		pColumn = pHeight_temp;
+		pHeight_set = pColumn_set_temp;
+		pColumn_set = pHeight_set_temp;
+		Reverse((this->*pHeight)());
+	}
+	else if (strcmp(command, "left") == 0) {
+		while ((pHead->*pRight)()) {
+			pHead = (pHead->*pRight)();
+		}
+		pRight = pOut_temp;
+		setRight = setOut_temp;
+		pLeft = pIn_temp;
+		setLeft = setIn_temp;
+		pOut = pLeft_temp;
+		setOut = setLeft_temp;
+		pIn = pRight_temp;
+		setIn = setRight_temp;
+		pColumn = pRow_temp;
+		pRow = pColumn_temp;
+		pColumn_set = pRow_set_temp;
+		pRow_set = pColumn_set_temp;
+	}
+	else if (strcmp(command, "right") == 0) {
+		while ((pHead->*pOut)()) {
+			pHead = (pHead->*pOut)();
+		}
+		pRight = pIn_temp;
+		setRight = setIn_temp;
+		pLeft = pOut_temp;
+		setLeft = setOut_temp;
+		pOut = pRight_temp;
+		setOut = setRight_temp;
+		pIn = pLeft_temp;
+		setIn = setLeft_temp;
+		pColumn = pRow_temp;
+		pRow = pColumn_temp;
+	}
+	else if (strcmp(command, "up") == 0) {
+		while ((pHead->*pDown)()) {
+			pHead = (pHead->*pDown)();
+		}
+		pDown = pOut_temp;
+		setDown = setOut_temp;
+		pUp = pIn_temp;
+		setUp = setIn_temp;
+		pOut = pUp_temp;
+		setOut = setUp_temp;
+		pIn = pDown_temp;
+		setIn = setDown_temp;
+		pHeight = pRow_temp;
+		pRow = pHeight_temp;
+		pHeight_set = pRow_set_temp;
+		pRow_set = pHeight_set_temp;
+		Reverse((this->*pHeight)());
+		Reverse((this->*pRow)());
+	}
+	else if (strcmp(command, "down") == 0) {
+		while ((pHead->*pOut)()) {
+			pHead = (pHead->*pOut)();
+		}
+		pDown = pIn_temp;
+		setDown = setIn_temp;
+		pUp = pOut_temp;
+		setUp = setOut_temp;
+		pOut = pDown_temp;
+		setOut = setDown_temp;
+		pIn = pUp_temp;
+		setIn = setUp_temp;
+		pHeight = pRow_temp;
+		pRow = pHeight_temp;
+		pHeight_set = pRow_set_temp;
+		pRow_set = pHeight_set_temp;
+		Reverse((this->*pHeight)());
+		Reverse((this->*pRow)());
 	}
 }
 
@@ -518,4 +625,37 @@ void cube::check() {
 		pTemp = pTemp->getNext();
 	}
 	cout << '\n';
+}
+
+void cube::Reverse(cube_1D* pCube) {
+	cube_1D* pHead = pCube;
+	cube_1D* pTemp1 = pHead;
+	cube_1D* pPrev = nullptr;
+	cube_1D* pNode = pHead;
+	int cnt = 0;
+	while (pNode->getNext()) {
+		pNode = pNode->getNext();
+		cnt++;
+	}
+	pTemp1 = pNode;
+	while (cnt != 0) {
+		pNode = pHead;
+		for (int i = 0; i < cnt; i++) {
+			pPrev = pNode;
+			pNode = pNode->getNext();
+		}
+		pNode->setNext(pPrev);
+		cnt--;
+	}
+	pPrev->setNext(nullptr);
+	if (pCube == Row)
+		Row = pTemp1;
+	else if (pCube == Column)
+		Column = pTemp1;
+	else if (pCube == Height)
+		Height = pTemp1;
+	while (pTemp1) {
+		cout << pTemp1->getData()->getData() << '\t';
+		pTemp1 = pTemp1->getNext();
+	}
 }

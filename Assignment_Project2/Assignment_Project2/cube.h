@@ -53,5 +53,7 @@ public:
 	void (cube::* pRow_set)(cube_1D* pTemp) = &cube::setRow;
 	void (cube::* pColumn_set)(cube_1D* pTemp) = &cube::setColumn;
 	void (cube::* pHeight_set)(cube_1D* pTemp) = &cube::setHeight;
+	
+	void Reverse(cube_1D* pCube);
 };
 

@@ -14,16 +14,16 @@ node::~node() {
 }
 
 node* node::getHnext() {
-	return cNext;
-}
-node* node::getHprev() {
-	return cPrev;
-}
-node* node::getCnext() {
 	return hNext;
 }
-node* node::getCprev() {
+node* node::getHprev() {
 	return hPrev;
+}
+node* node::getCnext() {
+	return cNext;
+}
+node* node::getCprev() {
+	return cPrev;
 }
 node* node::getRnext() {
 	return rNext;
@@ -36,16 +36,16 @@ int node::getData() {
 }
 
 void node::setCnext(node* pTemp) {
-	hNext = pTemp;
+	cNext = pTemp;
 }
 void node::setCprev(node* pTemp) {
-	hPrev = pTemp;
-}
-void node::setHprev(node* pTemp) {
 	cPrev = pTemp;
 }
+void node::setHprev(node* pTemp) {
+	hPrev = pTemp;
+}
 void node::setHnext(node* pTemp) {
-	cNext = pTemp;
+	hNext = pTemp;
 }
 void node::setRnext(node* pTemp) {
 	rNext = pTemp;

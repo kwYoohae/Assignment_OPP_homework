@@ -141,7 +141,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 }
 
 void cube::Make_Cube(int p, int l, int t) {
-	int cnt = 0;
+	int cnt = 1;
 	node* pWork1 = nullptr;
 	node* pWork2 = nullptr;
 	node* pWork3 = nullptr;
@@ -171,22 +171,22 @@ void cube::Make_Cube(int p, int l, int t) {
 						pWork1 = pWork1->getHnext();
 					}
 					pWork2 = pWork1;
-					while (pWork2->getCnext()) {
-						pWork2 = pWork2->getCnext();
+					while (pWork2->getRnext()) {
+						pWork2 = pWork2->getRnext();
 					}
-					pWork2->setCnext(pNew);
-					pNew->setCprev(pWork2);
+					pWork2->setRnext(pNew);
+					pNew->setRprev(pWork2);
 					pWork3 = pNew;
 				}
 				else {
-					while (pWork3->getRnext()) {
-						pWork3 = pWork3->getRnext();
+					while (pWork3->getCnext()) {
+						pWork3 = pWork3->getCnext();
 					}
-					pWork3->setRnext(pNew);
-					pNew->setRprev(pWork3);
+					pWork3->setCnext(pNew);
+					pNew->setCprev(pWork3);
 				}
 				pNew->setData(cnt);
-				cnt++;
+				//cnt++;
 			}
 			if (j != 0) {
 				pWork1 = pHead;
@@ -194,15 +194,15 @@ void cube::Make_Cube(int p, int l, int t) {
 					pWork1 = pWork1->getHnext();
 				}
 				pWork3 = pWork1;
-				while (pWork3->getCnext()) {
-					pWork3 = pWork3->getCnext();
-				}
-				pWork2 = pWork3->getCprev();
-				while (pWork2) {
-					pWork2->setCnext(pWork3);
-					pWork3->setCprev(pWork2);
-					pWork2 = pWork2->getRnext();
+				while (pWork3->getRnext()) {
 					pWork3 = pWork3->getRnext();
+				}
+				pWork2 = pWork3->getRprev();
+				while (pWork2) {
+					pWork2->setRnext(pWork3);
+					pWork3->setRprev(pWork2);
+					pWork2 = pWork2->getCnext();
+					pWork3 = pWork3->getCnext();
 				}
 			}
 		}
@@ -217,12 +217,12 @@ void cube::Make_Cube(int p, int l, int t) {
 				while (pWork2) {
 					pWork2->setHnext(pWork3);
 					pWork3->setHprev(pWork2);
-					pWork2 = pWork2->getRnext();
-					pWork3 = pWork3->getRnext();
+					pWork2 = pWork2->getCnext();
+					pWork3 = pWork3->getCnext();
 				}
-				pWork2 = pWork1->getHprev()->getCnext();
-				pWork3 = pWork1->getCnext();
-				pWork1 = pWork1->getCnext();
+				pWork2 = pWork1->getHprev()->getRnext();
+				pWork3 = pWork1->getRnext();
+				pWork1 = pWork1->getRnext();
 			}
 		}
 	}
@@ -230,36 +230,35 @@ void cube::Make_Cube(int p, int l, int t) {
 
 void cube::Print() {
 	cout.setf(ios::left);
-	int t = count_time();
-	int p = count_product();
-	int l = count_location();
+	int R = 0;
+	int C = 0;
+	int H = 0;
+	cube_1D* pTemp = pRow;
+	while (pTemp) {
+		R++;
+		pTemp = pTemp->getNext();
+	}
+	pTemp = pColumn;
+	while (pTemp) {
+		C++;
+		pTemp = pTemp->getNext();
+	}
+	pTemp = pHeight;
+	while (pTemp) {
+		H++;
+		pTemp = pTemp->getNext();
+	}
 	node* pWork1 = pHead;
 	node* pWork2 = pHead;
 	node* pWork3 = pHead;
-	cube_1D* pTemp_l = pColumn;
-	cube_1D* pTemp_t = pRow;
-	cube_1D* pTemp_p = pHeight;
-	for (int i = 0; i < t; i++) {
-		pTemp_l = pColumn;
-		pTemp_p = pHeight;
-		cout << pTemp_t->getData()->getData() << '\t';
-		pTemp_t = pTemp_t->getNext();
-		for (int j = 0; j < l;j++) {
-			while (pTemp_p) {
-				cout << pTemp_p->getData()->getData() << '\t';
-				pTemp_p = pTemp_p->getNext();
-			}
-			cout << '\n';
-			for (int k = 0; k < p; k++) {
-				if (k == 0) {
-					cout << pTemp_l->getData()->getData() << '\t';
-					pTemp_l = pTemp_l->getNext();
-				}
+	for (int i = 0; i < R; i++) {
+		for (int j = 0; j < H; j++) {
+			for (int k = 0; k < C;k++) {
 				cout << pWork3->getData() << '\t';
-				pWork3 = pWork3->getHnext();
+				pWork3 = pWork3->getCnext();
 			}
 			cout << '\n';
-			pWork2 = pWork2->getCnext();
+			pWork2 = pWork2->getHnext();
 			pWork3 = pWork2;
 		}
 		cout << '\n' << '\n';
@@ -297,31 +296,137 @@ int cube::count_product() {
 	return count;
 }
 
-void cube::Make_View(cube* raw,tree* Time, tree* Location, tree* Product) {
+void cube::Make_View(tree* Time, tree* Location, tree* Product) {
 	int number = 0;
 	node* pWork1 = pHead;
 	node* pWork2;
 	node* pWork3;
 	node* pWork4;
-	tree_node* tree_temp = raw->getRow()->getData()->getDown();
-	while (tree_temp->getNext()) {
-		tree_temp = tree_temp->getNext();
+	tree_node* pTemp;
+	tree_node* tree_temp = pHeight->getData();
+	tree_node* tree_down = tree_temp->getDown();
+	pTemp = tree_temp;
+	while (pTemp) {
+		cout << pTemp->getData() << '\n';
+		pTemp = pTemp->getNext();
+	}
+	while (tree_down->getNext()) {
+		tree_down = tree_down->getNext();
 		number++;
 	}
-	for (int i = 0; i < number; i++) {
-		pWork2 = pWork1;
-		while (pWork2) {
-			pWork3 = pWork2;
-			while (pWork3) {
-				pWork4 = (pWork3->getHnext());
-				pWork3->setData(pWork3->getData() + pWork4->getData());
-				pWork3->setHnext(pWork4->getHnext());
-				pWork4->getHnext()->setHprev(pWork3);
-				delete pWork4;
-				pWork3 = pWork3->getCnext();
+	while (tree_temp) {
+		for (int i = 0; i < number; i++) {
+			pWork2 = pWork1;
+			while (pWork2) {
+				pWork3 = pWork2;
+				while (pWork3) {
+					pWork4 = pWork3->getHnext();
+					//pWork3->setData(pWork3->getData() + pWork4->getData());
+					pWork3->setHnext(pWork4->getHnext());
+					if (pWork4->getHnext()) {
+						pWork4->getHnext()->setHprev(pWork3);
+					}
+					delete pWork4;
+					pWork3 = pWork3->getCnext();
+				}
+				pWork2 = pWork2->getRnext();
 			}
-			pWork2 = pWork2->getRnext();
+		}
+		pWork1 = pWork1->getHnext();
+		tree_temp = tree_temp->getNext();
+		if (!tree_temp)
+			break;
+		tree_down = tree_temp->getDown();
+		number = 0;
+		while (tree_down->getNext()) {
+			tree_down = tree_down->getNext();
+			number++;
 		}
 	}
-	
+
+	tree_temp = pRow->getData();
+	pTemp = tree_temp;
+	pWork1 = pHead;
+	number = 0;
+	while (pTemp) {
+		cout << pTemp->getData() << '\n';
+		pTemp = pTemp->getNext();
+	}
+	tree_down = tree_temp->getDown();
+	while (tree_down->getNext()) {
+		tree_down = tree_down->getNext();
+		number++;
+	}
+	while (tree_temp) {
+		for (int i = 0; i < number; i++) {
+			pWork2 = pWork1;
+			while (pWork2) {
+				pWork3 = pWork2;
+				while (pWork3) {
+					pWork4 = pWork3->getRnext();
+					pWork3->setData(pWork3->getData() + pWork4->getData());
+					pWork3->setRnext(pWork4->getRnext());
+					if (pWork4->getRnext()) {
+						pWork4->getRnext()->setRprev(pWork3);
+					}
+					delete pWork4;
+					pWork3 = pWork3->getCnext();
+				}
+				pWork2 = pWork2->getHnext();
+			}
+		}
+		pWork1 = pWork1->getRnext();
+		tree_temp = tree_temp->getNext();
+		if (!tree_temp)
+			break;
+		tree_down = tree_temp->getDown();
+		number = 0;
+		while (tree_down->getNext()) {
+			tree_down = tree_down->getNext();
+			number++;
+		}
+	}
+
+	tree_temp = pColumn->getData();
+	pTemp = tree_temp;
+	pWork1 = pHead;
+	number = 0;
+	while (pTemp) {
+		cout << pTemp->getData() << '\n';
+		pTemp = pTemp->getNext();
+	}
+	tree_down = tree_temp->getDown();
+	while (tree_down->getNext()) {
+		tree_down = tree_down->getNext();
+		number++;
+	}
+	while (tree_temp) {
+		for (int i = 0; i < number; i++) {
+			pWork2 = pWork1;
+			while (pWork2) {
+				pWork3 = pWork2;
+				while (pWork3) {
+					pWork4 = pWork3->getCnext();
+					pWork3->setData(pWork3->getData() + pWork4->getData());
+					pWork3->setCnext(pWork4->getCnext());
+					if (pWork4->getCnext()) {
+						pWork4->getCnext()->setCprev(pWork3);
+					}
+					delete pWork4;
+					pWork3 = pWork3->getHnext();
+				}
+				pWork2 = pWork2->getRnext();
+			}
+		}
+		pWork1 = pWork1->getCnext();
+		tree_temp = tree_temp->getNext();
+		if (!tree_temp)
+			break;
+		tree_down = tree_temp->getDown();
+		number = 0;
+		while (tree_down->getNext()) {
+			tree_down = tree_down->getNext();
+			number++;
+		}
+	}
 }

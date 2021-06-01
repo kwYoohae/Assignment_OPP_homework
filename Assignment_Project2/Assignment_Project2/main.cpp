@@ -35,12 +35,12 @@ int main() {
 			raw_cube.Make_Cube(count_low(&Product, 3), count_low(&Location, 3), count_low(&Time, 3));
 			raw_cube.Make_tree(&Time, &Location, &Product, 3);
 			//Load_sales(&raw_cube);
-			raw_cube.Print();
+			//raw_cube.Print();
 			view_cube.Make_Cube(count_low(&Product, 3), count_low(&Location, 3), count_low(&Time, 3));
 			view_cube.Make_tree(&Time, &Location, &Product, 2);
 			//Load_sales(&view_cube);
-			//view_cube.Make_View(&raw_cube, &Time, &Location, &Product);
-		//	view_cube.Print();
+			view_cube.Make_View(&Time, &Location, &Product);
+			view_cube.Print();
 		}
 		else if (strcmp(command, "END") == 0) {
 			_CrtDumpMemoryLeaks();
@@ -289,11 +289,3 @@ void insert_data(cube* Cube, char* product, char* location, char* time, int data
 	pNode->setData(data);
 }
 
-int make_view(tree* product, tree* time, tree*, cube* raw, cube* view) {
-	tree_node* pTemp = nullptr;
-	while (!pTemp) {
-
-	}
-//view->Make_Cube()
-	return 1;
-}

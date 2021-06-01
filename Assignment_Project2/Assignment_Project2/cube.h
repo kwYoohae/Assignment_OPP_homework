@@ -24,7 +24,7 @@ public:
 	void setColumn(cube_1D* pTemp);
 	void setHeight(cube_1D* pTemp);
 	void Make_Cube(int p, int l, int t);
-	void Make_View(cube* raw, tree* Time, tree* Location, tree* Product);
+	void Make_View(tree* Time, tree* Location, tree* Product);
 	void Make_tree(tree* Time, tree* Location, tree* Product ,int number);
 	int count_time();
 	int count_location();

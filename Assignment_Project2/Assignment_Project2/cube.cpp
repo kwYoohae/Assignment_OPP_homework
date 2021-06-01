@@ -1,7 +1,7 @@
 #include "cube.h"
 #include <iostream>
 #include <iomanip>
-
+#include <fstream>
 using namespace std;
 
 cube::cube() {
@@ -306,10 +306,6 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) {
 	tree_node* tree_temp = pHeight->getData();
 	tree_node* tree_down = tree_temp->getDown();
 	pTemp = tree_temp;
-	while (pTemp) {
-		cout << pTemp->getData() << '\n';
-		pTemp = pTemp->getNext();
-	}
 	while (tree_down->getNext()) {
 		tree_down = tree_down->getNext();
 		number++;
@@ -348,10 +344,6 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) {
 	pTemp = tree_temp;
 	pWork1 = pHead;
 	number = 0;
-	while (pTemp) {
-		cout << pTemp->getData() << '\n';
-		pTemp = pTemp->getNext();
-	}
 	tree_down = tree_temp->getDown();
 	while (tree_down->getNext()) {
 		tree_down = tree_down->getNext();
@@ -391,10 +383,6 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) {
 	pTemp = tree_temp;
 	pWork1 = pHead;
 	number = 0;
-	while (pTemp) {
-		cout << pTemp->getData() << '\n';
-		pTemp = pTemp->getNext();
-	}
 	tree_down = tree_temp->getDown();
 	while (tree_down->getNext()) {
 		tree_down = tree_down->getNext();
@@ -429,4 +417,35 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) {
 			number++;
 		}
 	}
+}
+
+void cube::WriteLog(char* command) {
+	ofstream log;
+	log.open("log.txt", ios::app);
+	log << '[' << command << ']' <<'\n';
+	log << pRow->getData()->getData() << '\t';
+	cube_1D* pTemp = pColumn;
+	while (pTemp) {
+		log << pTemp->getData()->getData() << '\t';
+		pTemp = pTemp->getNext();
+	}
+	log << '\n';
+	pTemp = pHeight;
+	node* pWork1 = pHead;
+	node* pWork2 = pWork1;
+	while (pWork2) {
+		log << pTemp->getData()->getData() << '\t';
+		pTemp = pTemp->getNext();
+		while (pWork1) {
+			log << pWork1->getData() << '\t';
+			pWork1 = pWork1->getCnext();
+		}
+		log << '\n';
+		pWork2 = pWork2->getHnext();
+		if (!pWork2->getHnext())
+			break;
+		pWork1 = pWork2;
+	}
+	log << '\n' << '\n';
+	log.close();
 }

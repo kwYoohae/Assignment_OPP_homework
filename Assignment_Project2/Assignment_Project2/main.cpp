@@ -22,34 +22,33 @@ int main() {
 	cube raw_cube;
 	cube view_cube;
 	char command[100];
-	bool end = true;
-	ofstream WriteCommad("command.txt");
-	while (end) {
-		cout << "CMD >> ";
-		cin >> command; 
-		if (strcmp(command, "LOAD") == 0) {
-			WriteCommad.write(command, strlen(command));
-			Open_Category(&Time, "time.txt");
-			Open_Category(&Product, "product.txt");
-			Open_Category(&Location, "location.txt");
-			raw_cube.Make_Cube(count_low(&Product, 3), count_low(&Location, 3), count_low(&Time, 3));
-			raw_cube.Make_tree(&Time, &Location, &Product, 3);
-			//Load_sales(&raw_cube);
-			//raw_cube.Print();
-			view_cube.Make_Cube(count_low(&Product, 3), count_low(&Location, 3), count_low(&Time, 3));
-			view_cube.Make_tree(&Time, &Location, &Product, 2);
-			//Load_sales(&view_cube);
-			view_cube.Make_View(&Time, &Location, &Product);
-			view_cube.Print();
+	fstream ReadCommand("command.txt");
+	while (ReadCommand.is_open()) {
+		while (true) {
+			ReadCommand.getline(command,100);
+			if (!command[0]) {
+				break;
+			}
+			if (strcmp(command,"LOAD") == 0) {
+				Open_Category(&Time, "time.txt");
+				Open_Category(&Product, "product.txt");
+				Open_Category(&Location, "location.txt");
+				raw_cube.Make_Cube(count_low(&Product, 3), count_low(&Location, 3), count_low(&Time, 3));
+				raw_cube.Make_tree(&Time, &Location, &Product, 3);
+				raw_cube.WriteLog(command);
+				//Load_sales(&raw_cube);
+				//raw_cube.Print();
+				view_cube.Make_Cube(count_low(&Product, 3), count_low(&Location, 3), count_low(&Time, 3));
+				view_cube.Make_tree(&Time, &Location, &Product, 2);
+				//Load_sales(&view_cube);
+				view_cube.Make_View(&Time, &Location, &Product);
+				view_cube.Print();
+				view_cube.WriteLog(command);
+			}
+			memset(command, NULL, 100);
 		}
-		else if (strcmp(command, "END") == 0) {
-			_CrtDumpMemoryLeaks();
-			end = false;
-		}
-		else if (strcmp(command, "PRINT") == 0) {
-		}
+		ReadCommand.close();
 	}
-
 }
 
 

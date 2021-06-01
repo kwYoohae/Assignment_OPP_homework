@@ -29,5 +29,6 @@ public:
 	int count_time();
 	int count_location();
 	int count_product();
+	void WriteLog(char* command);
 };
 

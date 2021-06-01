@@ -7,12 +7,16 @@ cube_1D::cube_1D() {
 	pNext = nullptr;
 	pPrev = nullptr;
 	memset(name, NULL, 100);
+	pData = nullptr;
 }
 
 cube_1D::~cube_1D() {
 
 }
 
+tree_node* cube_1D::getData() {
+	return pData;
+}
 node* cube_1D::getHead() {
 	return pHead;
 }
@@ -29,6 +33,9 @@ cube_1D* cube_1D::getPrev() {
 	return pPrev;
 }
 
+void cube_1D::setData(tree_node* pTemp) {
+	pData = pTemp;
+}
 void cube_1D::setHead(node* pTemp) {
 	pHead = pTemp;
 }

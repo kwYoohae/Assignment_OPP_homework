@@ -56,7 +56,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 			cube_1D* pNew = new cube_1D;
 			if (!pRow) {
 				pRow = pNew;
-				pNew->setName(pTemp->getData());
+				pNew->setData(pTemp);
 			}
 			else {
 				cube_1D* cube_temp = pRow;
@@ -64,7 +64,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 					cube_temp = cube_temp->getNext();
 				cube_temp->setNext(pNew);
 				pNew->setPrev(cube_temp);
-				pNew->setName(pTemp->getData());
+				pNew->setData(pTemp);
 			}
 			pTemp = pTemp->getNext();
 		}
@@ -88,7 +88,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 			cube_1D* pNew = new cube_1D;
 			if (!pColumn) {
 				pColumn = pNew;
-				pNew->setName(pTemp->getData());
+				pNew->setData(pTemp);
 			}
 			else {
 				cube_1D* cube_temp = pColumn;
@@ -96,7 +96,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 					cube_temp = cube_temp->getNext();
 				cube_temp->setNext(pNew);
 				pNew->setPrev(cube_temp);
-				pNew->setName(pTemp->getData());
+				pNew->setData(pTemp);
 			}
 			pTemp = pTemp->getNext();
 		}
@@ -121,6 +121,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 			if (!pHeight) {
 				pHeight = pNew;
 				pNew->setName(pTemp->getData());
+				pNew->setData(pTemp);
 			}
 			else {
 				cube_1D* cube_temp = pHeight;
@@ -128,7 +129,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 					cube_temp = cube_temp->getNext();
 				cube_temp->setNext(pNew);
 				pNew->setPrev(cube_temp);
-				pNew->setName(pTemp->getData());
+				pNew->setData(pTemp);
 			}
 			pTemp = pTemp->getNext();
 		}
@@ -238,17 +239,17 @@ void cube::Print() {
 	for (int i = 0; i < t; i++) {
 		pTemp_l = pColumn;
 		pTemp_p = pHeight;
-		cout << pTemp_t->getName() << '\t';
+		cout << pTemp_t->getData()->getData() << '\t';
 		pTemp_t = pTemp_t->getNext();
 		for (int j = 0; j < l;j++) {
 			while (pTemp_p) {
-				cout << pTemp_p->getName() << '\t';
+				cout << pTemp_p->getData()->getData() << '\t';
 				pTemp_p = pTemp_p->getNext();
 			}
 			cout << '\n';
 			for (int k = 0; k < p; k++) {
 				if (k == 0) {
-					cout << pTemp_l->getName() << '\t';
+					cout << pTemp_l->getData()->getData() << '\t';
 					pTemp_l = pTemp_l->getNext();
 				}
 				cout << pWork3->getData() << '\t';

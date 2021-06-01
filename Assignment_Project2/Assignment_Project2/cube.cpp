@@ -141,6 +141,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 }
 
 void cube::Make_Cube(int p, int l, int t) {
+	int cnt = 0;
 	node* pWork1 = nullptr;
 	node* pWork2 = nullptr;
 	node* pWork3 = nullptr;
@@ -184,6 +185,8 @@ void cube::Make_Cube(int p, int l, int t) {
 					pWork3->setRnext(pNew);
 					pNew->setRprev(pWork3);
 				}
+				pNew->setData(cnt);
+				cnt++;
 			}
 			if (j != 0) {
 				pWork1 = pHead;
@@ -295,44 +298,30 @@ int cube::count_product() {
 }
 
 void cube::Make_View(cube* raw,tree* Time, tree* Location, tree* Product) {
+	int number = 0;
 	node* pWork1 = pHead;
-	node* pWork2 = pWork1->getRnext();
-	node* pWork1_head = pWork1;
-	node* pWork2_head = pWork2;
-	node* pTemp;
-	cube_1D* time_tree = pRow;
-	cube_1D* location_tree = pColumn;
-	cube_1D* product_tree = pHeight;
-	while(time_tree){
-		int number = Time->cnt_chiled(time_tree->getName());
+	node* pWork2;
+	node* pWork3;
+	node* pWork4;
+	tree_node* tree_temp = raw->getRow()->getData()->getDown();
+	while (tree_temp->getNext()) {
+		tree_temp = tree_temp->getNext();
+		number++;
+	}
+	for (int i = 0; i < number; i++) {
 		pWork2 = pWork1;
-		for (int i = 1; i < number;i++) {
+		while (pWork2) {
+			pWork3 = pWork2;
+			while (pWork3) {
+				pWork4 = (pWork3->getHnext());
+				pWork3->setData(pWork3->getData() + pWork4->getData());
+				pWork3->setHnext(pWork4->getHnext());
+				pWork4->getHnext()->setHprev(pWork3);
+				delete pWork4;
+				pWork3 = pWork3->getCnext();
+			}
 			pWork2 = pWork2->getRnext();
 		}
-		pWork1 = pWork2->getRprev();
-		pWork2_head = pWork2;
-		pWork1_head = pWork1;
-		pTemp = pWork2;
-		for (int i = 1; i < number; i++) {
-			while (pWork1_head) {
-				pWork1->setData(pWork2->getData() + pWork1->getData());
-				pWork1 = pWork1->getHnext();
-				pWork2 = pWork2->getHnext();
-				if (!pWork1) {
-					pWork1_head = pWork1_head->getCnext();
-					pWork2_head = pWork2_head->getCnext();
-					pWork1 = pWork1_head;
-					pWork2 = pWork2_head;
-				}
-			}
-			pTemp = pTemp->getRprev();
-			pWork1 = pTemp->getRprev();
-			pWork2 = pTemp;
-			pWork1_head = pWork1;
-			pWork2_head = pWork2;
-		}
-
-		time_tree = time_tree->getNext();
 	}
-
+	
 }

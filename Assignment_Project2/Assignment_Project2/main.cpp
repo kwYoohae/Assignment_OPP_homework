@@ -13,7 +13,7 @@ void Open_Category(tree* type_Data, const char* text_file);
 void Insert_data(tree* type, tree_node* pParent, char* data);
 void Load_sales(cube* Cube);
 int count_low(tree* Tree, int number);
-int Role_up(tree* product, tree* time, tree* , cube* raw, cube* view);
+//int Role_up(tree* product, tree* time, tree* , cube* raw, cube* view);
 void insert_data(cube* Cube, char* product, char* location, char* time, int data);
 int main() {
 	tree Product;
@@ -34,10 +34,10 @@ int main() {
 			Open_Category(&Location, "location.txt");
 			raw_cube.Make_Cube(count_low(&Product, 3), count_low(&Location, 3), count_low(&Time, 3));
 			raw_cube.Make_tree(&Time, &Location, &Product, 3);
-			Load_sales(&raw_cube);
+			//Load_sales(&raw_cube);
 			raw_cube.Print();
-			//view_cube.Make_Cube(count_low(&Product, 3), count_low(&Location, 3), count_low(&Time, 3));
-			//view_cube.Make_tree(&Time, &Location, &Product, 2);
+			view_cube.Make_Cube(count_low(&Product, 3), count_low(&Location, 3), count_low(&Time, 3));
+			view_cube.Make_tree(&Time, &Location, &Product, 2);
 			//Load_sales(&view_cube);
 			//view_cube.Make_View(&raw_cube, &Time, &Location, &Product);
 		//	view_cube.Print();

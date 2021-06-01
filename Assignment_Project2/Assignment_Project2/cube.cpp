@@ -6,36 +6,35 @@ using namespace std;
 
 cube::cube() {
 	pHead = nullptr;
-	pRow = nullptr;
-	pColumn = nullptr;
-	pHeight = nullptr;
+	Row = nullptr;
+	Column = nullptr;
+	Height = nullptr;
 }
 
 cube::~cube() {
-
 }
 
 cube_1D* cube::getRow() {
-	return pRow;
+	return Row;
 }
 cube_1D* cube::getColumn() {
-	return pColumn;
+	return Column;
 }
 cube_1D* cube::getHeight() {
-	return pHeight;
+	return Height;
 }
 node* cube::getHead() {
 	return pHead;
 }
 
 void cube::setRow(cube_1D* pTemp) {
-	pRow = pTemp;
+	Row = pTemp;
 }
 void cube::setColumn(cube_1D* pTemp) {
-	pColumn = pTemp;
+	Column = pTemp;
 }
 void cube::setHeight(cube_1D* pTemp) {
-	pHeight = pTemp;
+	Height = pTemp;
 }
 void cube::setHead(node* pTemp) {
 	pHead = pTemp;
@@ -54,12 +53,12 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 	while (pParent) {
 		while (pTemp) {
 			cube_1D* pNew = new cube_1D;
-			if (!pRow) {
-				pRow = pNew;
+			if (!Row) {
+				Row = pNew;
 				pNew->setData(pTemp);
 			}
 			else {
-				cube_1D* cube_temp = pRow;
+				cube_1D* cube_temp = Row;
 				while (cube_temp->getNext())
 					cube_temp = cube_temp->getNext();
 				cube_temp->setNext(pNew);
@@ -86,12 +85,12 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 	while (pParent) {
 		while (pTemp) {
 			cube_1D* pNew = new cube_1D;
-			if (!pColumn) {
-				pColumn = pNew;
+			if (!Column) {
+				Column = pNew;
 				pNew->setData(pTemp);
 			}
 			else {
-				cube_1D* cube_temp = pColumn;
+				cube_1D* cube_temp = Column;
 				while (cube_temp->getNext())
 					cube_temp = cube_temp->getNext();
 				cube_temp->setNext(pNew);
@@ -118,13 +117,13 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 	while (pParent) {
 		while (pTemp) {
 			cube_1D* pNew = new cube_1D;
-			if (!pHeight) {
-				pHeight = pNew;
+			if (!Height) {
+				Height = pNew;
 				pNew->setName(pTemp->getData());
 				pNew->setData(pTemp);
 			}
 			else {
-				cube_1D* cube_temp = pHeight;
+				cube_1D* cube_temp = Height;
 				while (cube_temp->getNext())
 					cube_temp = cube_temp->getNext();
 				cube_temp->setNext(pNew);
@@ -185,7 +184,7 @@ void cube::Make_Cube(int p, int l, int t) {
 					pWork3->setCnext(pNew);
 					pNew->setCprev(pWork3);
 				}
-				pNew->setData(cnt);
+				//pNew->setData(cnt);
 				//cnt++;
 			}
 			if (j != 0) {
@@ -233,17 +232,17 @@ void cube::Print() {
 	int R = 0;
 	int C = 0;
 	int H = 0;
-	cube_1D* pTemp = pRow;
+	cube_1D* pTemp = Row;
 	while (pTemp) {
 		R++;
 		pTemp = pTemp->getNext();
 	}
-	pTemp = pColumn;
+	pTemp = Column;
 	while (pTemp) {
 		C++;
 		pTemp = pTemp->getNext();
 	}
-	pTemp = pHeight;
+	pTemp = Height;
 	while (pTemp) {
 		H++;
 		pTemp = pTemp->getNext();
@@ -303,7 +302,7 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) {
 	node* pWork3;
 	node* pWork4;
 	tree_node* pTemp;
-	tree_node* tree_temp = pHeight->getData();
+	tree_node* tree_temp = Height->getData();
 	tree_node* tree_down = tree_temp->getDown();
 	pTemp = tree_temp;
 	while (tree_down->getNext()) {
@@ -340,7 +339,7 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) {
 		}
 	}
 
-	tree_temp = pRow->getData();
+	tree_temp = Row->getData();
 	pTemp = tree_temp;
 	pWork1 = pHead;
 	number = 0;
@@ -379,7 +378,7 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) {
 		}
 	}
 
-	tree_temp = pColumn->getData();
+	tree_temp = Column->getData();
 	pTemp = tree_temp;
 	pWork1 = pHead;
 	number = 0;
@@ -423,29 +422,55 @@ void cube::WriteLog(char* command) {
 	ofstream log;
 	log.open("log.txt", ios::app);
 	log << '[' << command << ']' <<'\n';
-	log << pRow->getData()->getData() << '\t';
-	cube_1D* pTemp = pColumn;
+	log << (this->*pRow)()->getData()->getData() << '\t';
+	cube_1D* pTemp = (this->*pColumn)();
 	while (pTemp) {
 		log << pTemp->getData()->getData() << '\t';
 		pTemp = pTemp->getNext();
 	}
 	log << '\n';
-	pTemp = pHeight;
+	pTemp = (this->*pHeight)();
 	node* pWork1 = pHead;
 	node* pWork2 = pWork1;
 	while (pWork2) {
 		log << pTemp->getData()->getData() << '\t';
 		pTemp = pTemp->getNext();
 		while (pWork1) {
-			log << pWork1->getData() << '\t';
+			log << pWork1->getData() << '\t' << '\t';
 			pWork1 = pWork1->getCnext();
 		}
 		log << '\n';
 		pWork2 = pWork2->getHnext();
-		if (!pWork2->getHnext())
-			break;
 		pWork1 = pWork2;
 	}
 	log << '\n' << '\n';
 	log.close();
+}
+
+void cube::copyData(cube* raw) {
+	node* pWork1 = raw->getHead();
+	node* pWork2 = pWork1;
+	node* pWork3 = pWork1;
+	node* pCopy1 = pHead;
+	node* pCopy2 = pCopy1;
+	node* pCopy3 = pCopy1;
+	while (pWork1) {
+		while (pWork2) {
+			while (pWork3) {
+				pCopy3->setData(pWork3->getData());
+				pWork3 = pWork3->getCnext();
+				pCopy3 = pCopy3->getCnext();
+			}
+			pWork2 = pWork2->getHnext();
+			pCopy2 = pCopy2->getHnext();
+			pWork3 =pWork2;
+			pCopy3 = pCopy2;
+		}
+		pWork1 = pWork1->getRnext();
+		pCopy1 = pCopy1->getRnext();
+		pWork2 = pWork1;
+		pWork3 = pWork1;
+		pCopy3 = pCopy1;
+		pCopy2 = pCopy1;
+	}
 }

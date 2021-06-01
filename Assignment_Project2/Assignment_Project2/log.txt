@@ -1,21 +1,7 @@
 [LOAD]
-January	Seoul	Busan	Incheon	Tokyo	Kyoto	Sapporo	NY	LA	WDC	Toronto	Vancouver	Calgary	
-pork	1	1	1	1	1	1	1	1	1	1	1	1	
-beef	1	1	1	1	1	1	1	1	1	1	1	1	
-chicken	1	1	1	1	1	1	1	1	1	1	1	1	
-duck	1	1	1	1	1	1	1	1	1	1	1	1	
-apple	1	1	1	1	1	1	1	1	1	1	1	1	
-pear	1	1	1	1	1	1	1	1	1	1	1	1	
-kiwi	1	1	1	1	1	1	1	1	1	1	1	1	
-grape	1	1	1	1	1	1	1	1	1	1	1	1	
-onion	1	1	1	1	1	1	1	1	1	1	1	1	
-carrot	1	1	1	1	1	1	1	1	1	1	1	1	
-lettuce	1	1	1	1	1	1	1	1	1	1	1	1	
-
-
-[LOAD]
 Q1	Korea	Japan	USA	Canada	
-meat	9	9	9	9	
-fruit	9	9	9	9	
+meat	6		0		0		0		
+fruit	1022		42		0		0		
+vegetable	0		0		51		0		
 
 

@@ -21,13 +21,24 @@ int main() {
 	tree Time;
 	cube raw_cube;
 	cube view_cube;
+	char str[200];
 	char command[100];
+	char command_list[100];
+	memset(str, NULL, 200);
+	int cnt = 0;
 	fstream ReadCommand("command.txt");
 	while (ReadCommand.is_open()) {
 		while (true) {
-			ReadCommand.getline(command,100);
-			if (!command[0]) {
+			ReadCommand.getline(str,100);
+			if (!str[0]) {
 				break;
+			}
+			for (int i = 0; str[i] != ' '; i++,cnt++) {
+				command[i] = str[i];
+			}
+			cnt++;
+			for (int i = 0; str[cnt] != '\0'; i++, cnt++) {
+				command_list[i] = str[cnt];
 			}
 			if (strcmp(command,"LOAD") == 0) {
 				Open_Category(&Time, "time.txt");
@@ -35,17 +46,22 @@ int main() {
 				Open_Category(&Location, "location.txt");
 				raw_cube.Make_Cube(count_low(&Product, 3), count_low(&Location, 3), count_low(&Time, 3));
 				raw_cube.Make_tree(&Time, &Location, &Product, 3);
-				raw_cube.WriteLog(command);
-				//Load_sales(&raw_cube);
+				Load_sales(&raw_cube);
 				//raw_cube.Print();
 				view_cube.Make_Cube(count_low(&Product, 3), count_low(&Location, 3), count_low(&Time, 3));
 				view_cube.Make_tree(&Time, &Location, &Product, 2);
-				//Load_sales(&view_cube);
+				view_cube.copyData(&raw_cube);
 				view_cube.Make_View(&Time, &Location, &Product);
 				view_cube.Print();
 				view_cube.WriteLog(command);
 			}
+			else if (strcmp(command, "ROTATE") == 0) {
+				
+			}
+			memset(str, NULL, 200);
 			memset(command, NULL, 100);
+			memset(command_list, NULL, 100);
+			cnt = 0;
 		}
 		ReadCommand.close();
 	}

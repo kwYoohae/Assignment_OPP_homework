@@ -6,9 +6,9 @@ class cube
 {
 private:
 	node* pHead;
-	cube_1D* pRow;
-	cube_1D* pColumn;
-	cube_1D* pHeight;
+	cube_1D* Row;
+	cube_1D* Column;
+	cube_1D* Height;
 public:
 	cube();
 	~cube();
@@ -29,6 +29,18 @@ public:
 	int count_time();
 	int count_location();
 	int count_product();
+	void copyData(cube* raw);
 	void WriteLog(char* command);
+
+	node* (node::*pRight)() = &node::getCnext;
+	node*(node::*pLeft)() = &node::getCprev;
+	node* (node::* pUp)() = &node::getHprev;
+	node*(node::*pDown)() = &node::getHnext;
+	node*(node::*pIn)() = &node::getRprev;
+	node*(node::*pOut)() = &node::getRnext;
+
+	cube_1D* (cube::*pRow)() = &cube::getRow;
+	cube_1D* (cube::* pColumn)() = &cube::getColumn;
+	cube_1D* (cube::* pHeight)() = &cube::getHeight;
 };
 

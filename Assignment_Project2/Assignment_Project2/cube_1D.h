@@ -1,7 +1,6 @@
 #pragma once
 #include "node.h"
 #include "tree_node.h"
-#include "cube.h"
 
 class cube_1D
 {

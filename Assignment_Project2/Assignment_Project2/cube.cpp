@@ -58,7 +58,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 				pNew->setData(pTemp);
 			}
 			else {
-				cube_1D* cube_temp = Row;
+				cube_1D* cube_temp = (this->*pRow)();
 				while (cube_temp->getNext())
 					cube_temp = cube_temp->getNext();
 				cube_temp->setNext(pNew);
@@ -90,7 +90,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 				pNew->setData(pTemp);
 			}
 			else {
-				cube_1D* cube_temp = Column;
+				cube_1D* cube_temp = (this->*pColumn)();
 				while (cube_temp->getNext())
 					cube_temp = cube_temp->getNext();
 				cube_temp->setNext(pNew);
@@ -123,7 +123,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 				pNew->setData(pTemp);
 			}
 			else {
-				cube_1D* cube_temp = Height;
+				cube_1D* cube_temp = (this->*pHeight)();
 				while (cube_temp->getNext())
 					cube_temp = cube_temp->getNext();
 				cube_temp->setNext(pNew);
@@ -140,13 +140,13 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 }
 
 void cube::Make_Cube(int p, int l, int t) {
-	int cnt = 1;
+	int cnt = 0;
 	node* pWork1 = nullptr;
 	node* pWork2 = nullptr;
 	node* pWork3 = nullptr;
-	for (int i = 0; i < p; i++) {
-		for (int j = 0; j < l; j++) {
-			for (int k = 0; k < t; k++) {
+	for (int i = 0; i < t; i++) {
+		for (int j = 0; j < p; j++) {
+			for (int k = 0; k < l; k++) {
 				node* pNew = new node;
 				if (i == 0 && j == 0 && k == 0) {
 					pHead = pNew;
@@ -156,25 +156,25 @@ void cube::Make_Cube(int p, int l, int t) {
 				}
 				else if (i != 0 && k == 0 && j == 0) {
 					pWork1 = pHead;
-					while (pWork1->getHnext()) {
-						pWork1 = pWork1->getHnext();
+					while (pWork1->getRnext()) {
+						pWork1 = pWork1->getRnext();
 					}
-					pWork1->setHnext(pNew);
-					pNew->setHprev(pWork1);
+					pWork1->setRnext(pNew);
+					pNew->setRprev(pWork1);
 					pWork2 = pNew;
 					pWork3 = pNew;
 				}
 				else if (k == 0) {
 					pWork1 = pHead;
-					while (pWork1->getHnext()) {
-						pWork1 = pWork1->getHnext();
+					while (pWork1->getRnext()) {
+						pWork1 = pWork1->getRnext();
 					}
 					pWork2 = pWork1;
-					while (pWork2->getRnext()) {
-						pWork2 = pWork2->getRnext();
+					while (pWork2->getHnext()) {
+						pWork2 = pWork2->getHnext();
 					}
-					pWork2->setRnext(pNew);
-					pNew->setRprev(pWork2);
+					pWork2->setHnext(pNew);
+					pNew->setHprev(pWork2);
 					pWork3 = pNew;
 				}
 				else {
@@ -184,22 +184,22 @@ void cube::Make_Cube(int p, int l, int t) {
 					pWork3->setCnext(pNew);
 					pNew->setCprev(pWork3);
 				}
-				//pNew->setData(cnt);
-				//cnt++;
+				pNew->setData(cnt);
+				cnt++;
 			}
 			if (j != 0) {
 				pWork1 = pHead;
-				while (pWork1->getHnext()) {
-					pWork1 = pWork1->getHnext();
+				while (pWork1->getRnext()) {
+					pWork1 = pWork1->getRnext();
 				}
 				pWork3 = pWork1;
-				while (pWork3->getRnext()) {
-					pWork3 = pWork3->getRnext();
+				while (pWork3->getHnext()) {
+					pWork3 = pWork3->getHnext();
 				}
-				pWork2 = pWork3->getRprev();
+				pWork2 = pWork3->getHprev();
 				while (pWork2) {
-					pWork2->setRnext(pWork3);
-					pWork3->setRprev(pWork2);
+					pWork2->setHnext(pWork3);
+					pWork3->setHprev(pWork2);
 					pWork2 = pWork2->getCnext();
 					pWork3 = pWork3->getCnext();
 				}
@@ -207,21 +207,21 @@ void cube::Make_Cube(int p, int l, int t) {
 		}
 		if (i != 0) {
 			pWork1 = pHead;
-			while (pWork1->getHnext()) {
-				pWork1 = pWork1->getHnext();
+			while (pWork1->getRnext()) {
+				pWork1 = pWork1->getRnext();
 			}
-			pWork2 = pWork1->getHprev();
+			pWork2 = pWork1->getRprev();
 			pWork3 = pWork1;
 			while (pWork1) {
 				while (pWork2) {
-					pWork2->setHnext(pWork3);
-					pWork3->setHprev(pWork2);
+					pWork2->setRnext(pWork3);
+					pWork3->setRprev(pWork2);
 					pWork2 = pWork2->getCnext();
 					pWork3 = pWork3->getCnext();
 				}
-				pWork2 = pWork1->getHprev()->getRnext();
-				pWork3 = pWork1->getRnext();
-				pWork1 = pWork1->getRnext();
+				pWork2 = pWork1->getRprev()->getHnext();
+				pWork3 = pWork1->getHnext();
+				pWork1 = pWork1->getHnext();
 			}
 		}
 	}
@@ -232,17 +232,17 @@ void cube::Print() {
 	int R = 0;
 	int C = 0;
 	int H = 0;
-	cube_1D* pTemp = Row;
+	cube_1D* pTemp = (this->*pRow)();
 	while (pTemp) {
 		R++;
 		pTemp = pTemp->getNext();
 	}
-	pTemp = Column;
+	pTemp = (this->*pColumn)();
 	while (pTemp) {
 		C++;
 		pTemp = pTemp->getNext();
 	}
-	pTemp = Height;
+	pTemp = (this->*pHeight)();
 	while (pTemp) {
 		H++;
 		pTemp = pTemp->getNext();
@@ -254,14 +254,14 @@ void cube::Print() {
 		for (int j = 0; j < H; j++) {
 			for (int k = 0; k < C;k++) {
 				cout << pWork3->getData() << '\t';
-				pWork3 = pWork3->getCnext();
+				pWork3 = (pWork3->*pRight)();
 			}
 			cout << '\n';
-			pWork2 = pWork2->getHnext();
+			pWork2 = (pWork2->*pDown)();
 			pWork3 = pWork2;
 		}
 		cout << '\n' << '\n';
-		pWork1 = pWork1->getRnext();
+		pWork1 = (pWork1->*pOut)();
 		pWork2 = pWork1;
 		pWork3 = pWork1;
 	}
@@ -437,10 +437,10 @@ void cube::WriteLog(char* command) {
 		pTemp = pTemp->getNext();
 		while (pWork1) {
 			log << pWork1->getData() << '\t' << '\t';
-			pWork1 = pWork1->getCnext();
+			pWork1 = (pWork1->*pRight)();
 		}
 		log << '\n';
-		pWork2 = pWork2->getHnext();
+		pWork2 = (pWork2->*pDown)();
 		pWork1 = pWork2;
 	}
 	log << '\n' << '\n';
@@ -473,4 +473,49 @@ void cube::copyData(cube* raw) {
 		pCopy3 = pCopy1;
 		pCopy2 = pCopy1;
 	}
+}
+
+void cube::Rotate(char* command) {
+
+	if (strcmp(command, "clockwise") == 0) {
+		while ((pHead->*pDown)()) {
+			pHead = (pHead->*pDown)();
+		}
+		pRight = &node::getHprev;
+		setRight = &node::setHprev;
+		pLeft = &node::getHnext;
+		setLeft = &node::setHnext;
+		pDown = &node::getCnext;
+		setDown = &node::setCnext;
+		pUp = &node::getCprev;
+		setUp = &node::setCprev;
+		pHeight = &cube::getColumn;
+		pColumn = &cube::getHeight;
+		pHeight_set = &cube::setColumn;
+		pColumn_set = &cube::setHeight;
+	}
+}
+
+void cube::check() {
+	cube_1D* pTemp = (this->*pRow)();
+	cout << "Row :";
+	while (pTemp) {
+		cout << pTemp->getData()->getData() << '\t';
+		pTemp = pTemp->getNext();
+	}
+	cout << '\n';
+	pTemp = (this->*pColumn)();
+	cout << "pColumn :";
+	while (pTemp) {
+		cout << pTemp->getData()->getData() << '\t';
+		pTemp = pTemp->getNext();
+	}
+	cout << '\n';
+	pTemp = (this->*pHeight)();
+	cout << "pHeight :";
+	while (pTemp) {
+		cout << pTemp->getData()->getData() << '\t';
+		pTemp = pTemp->getNext();
+	}
+	cout << '\n';
 }

@@ -31,6 +31,8 @@ public:
 	int count_product();
 	void copyData(cube* raw);
 	void WriteLog(char* command);
+	void Rotate(char* command);
+	void check();
 
 	node* (node::*pRight)() = &node::getCnext;
 	node*(node::*pLeft)() = &node::getCprev;
@@ -38,9 +40,18 @@ public:
 	node*(node::*pDown)() = &node::getHnext;
 	node*(node::*pIn)() = &node::getRprev;
 	node*(node::*pOut)() = &node::getRnext;
+	void (node::*setRight)(node* pTemp) = &node::setCnext;
+	void (node::*setLeft)(node* pTemp) = &node::setCprev;
+	void (node::*setUp)(node* pTemp) = &node::setHprev;
+	void (node::*setDown)(node* pTemp) = &node::setHnext;
+	void (node::*setIn)(node* pTemp) = &node::setRprev;
+	void (node::*setOut)(node* pTemp) = &node::setRnext;
 
 	cube_1D* (cube::*pRow)() = &cube::getRow;
 	cube_1D* (cube::* pColumn)() = &cube::getColumn;
 	cube_1D* (cube::* pHeight)() = &cube::getHeight;
+	void (cube::* pRow_set)(cube_1D* pTemp) = &cube::setRow;
+	void (cube::* pColumn_set)(cube_1D* pTemp) = &cube::setColumn;
+	void (cube::* pHeight_set)(cube_1D* pTemp) = &cube::setHeight;
 };
 

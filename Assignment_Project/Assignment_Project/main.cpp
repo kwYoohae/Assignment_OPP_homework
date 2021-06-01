@@ -14,7 +14,6 @@ void Insert_data(tree* type, tree_node* pParent, char* data);
 void make_node(cube* high);
 int count_low(cube_2D* Cube);
 int count_2dLow(cube* Cube);
-int count_low_node(cube_2D);
 void make_rawNode(cube_1D* pNew, int column_count);
 void make_Demention(cube_2D* Cube, tree* Tree, int dimention_number);
 void make_2Demention(cube* Cube, tree* Tree, tree* row_tree, tree* column_tree, int high_D, int row_D, int column_D);
@@ -23,7 +22,7 @@ Node* select_node(int high_count, int row_count, int column_count, cube_2D* high
 void print_cube(cube* Cube);
 void Load_sales(cube* raw_cube);
 void insert_data(cube* Cube, char* product, char* location, char* time, int data);
-void resize_view(cube* raw, cube* view);
+void roll_up(cube* raw, cube* view,int h , int r , int c);
 
 int main() {
 	tree Product;
@@ -339,6 +338,18 @@ int count_low(cube_2D* Cube) {
 	}
 	return count;
 }
+int count_low(tree* Tree, int num) {
+	int count = 0;
+	tree_node* pTemp = Tree->getRoot();
+	for (int i = 1; i < num; i++) {
+		pTemp = pTemp->getDown();
+	}
+	while (pTemp) {
+		pTemp = pTemp->getNext();
+		count++;
+	}
+	return count;
+}
 int count_2dLow(cube* Cube) {
 	int count = 0;
 	cube_2D* pTemp = Cube->getHead();
@@ -453,6 +464,6 @@ void insert_data(cube* Cube, char* product, char* location, char* time, int data
 	pTemp->setData(data);
 }
 
-void resize_view(cube* raw, cube* view) {
-	
+void Make_view(cube* raw, cube* view, int high_d, int row_d, int column_d) {
+
 }

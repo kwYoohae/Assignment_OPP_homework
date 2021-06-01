@@ -5,3 +5,4 @@ ROTATE up
 ROTATE down
 ROTATE right
 ROTATE c_clockwise
+EXIT

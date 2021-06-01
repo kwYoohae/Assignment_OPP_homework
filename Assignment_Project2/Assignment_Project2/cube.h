@@ -55,5 +55,10 @@ public:
 	void (cube::* pHeight_set)(cube_1D* pTemp) = &cube::setHeight;
 	
 	void Reverse(cube_1D* pCube);
+
+	void Roll_up(char* command);
+
+	void delete_cube();
+
 };
 

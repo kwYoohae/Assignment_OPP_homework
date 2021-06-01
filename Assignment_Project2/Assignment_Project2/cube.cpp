@@ -659,3 +659,45 @@ void cube::Reverse(cube_1D* pCube) {
 		pTemp1 = pTemp1->getNext();
 	}
 }
+
+void cube::Roll_up(char* command) {
+
+}
+
+void cube::delete_cube() {
+	node* pWork1 = pHead;
+	node* pWork2 = pHead;
+	node* pWork3 = pHead;
+	node* pWork4 = pHead;
+	while (pWork1) {
+		pWork2 = pWork1;
+		pWork1 = (pWork1->*pOut)();
+		while (pWork2) {
+			pWork3 = pWork2;
+			pWork2 = (pWork2->*pDown)();
+			while (pWork3) {
+				pWork4 = pWork3;
+				pWork3 = (pWork3->*pRight)();
+				delete pWork4;
+			}
+		}
+	}
+	cube_1D* pTemp = Row;
+	while (pTemp) {
+		Row = Row->getNext();
+		delete pTemp;
+		pTemp = Row;
+	}
+	pTemp = Column;
+	while (pTemp) {
+		Column = Column->getNext();
+		delete pTemp;
+		pTemp = Column;
+	}
+	pTemp = Height;
+	while (pTemp) {
+		Height = Height->getNext();
+		delete pTemp;
+		pTemp = Height;
+	}
+}

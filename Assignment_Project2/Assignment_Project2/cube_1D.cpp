@@ -52,3 +52,4 @@ void cube_1D::setNext(cube_1D* pTemp) {
 void cube_1D::setPrev(cube_1D* pTemp) {
 	pPrev = pTemp;
 }
+

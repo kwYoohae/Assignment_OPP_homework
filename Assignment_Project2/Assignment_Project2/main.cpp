@@ -69,6 +69,11 @@ int main() {
 				//raw_cube.Rotate(command_list);
 				//raw_cube.WriteLog(command);
 			}
+			else if (strcmp(command, "EXIT") == 0) {
+				raw_cube.delete_cube();
+				view_cube.delete_cube();
+				break;
+			}
 			memset(str, NULL, 200);
 			memset(command, NULL, 100);
 			memset(command_list, NULL, 100);
@@ -76,6 +81,8 @@ int main() {
 		}
 		ReadCommand.close();
 	}
+	return 0;
+	_CrtDumpMemoryLeaks();
 }
 
 

@@ -4,7 +4,8 @@ tree::tree() {
 	pRoot = nullptr;
 }
 tree::~tree() {
-
+	delete_tree(pRoot);
+	pRoot = nullptr;
 }
 
 tree_node* tree::getRoot() {
@@ -52,5 +53,13 @@ int tree::cnt_chiled(char* data) {
 		pTemp = pTemp->getNext();
 	}
 	return cnt;
+}
+
+void tree::delete_tree(tree_node* pNode) {
+	if (!pNode) {
+		delete_tree(pNode->getDown());
+		delete_tree(pNode->getNext());
+		delete pNode;
+	}
 }
 

@@ -3,30 +3,30 @@ class node
 {
 private:
 	int data;
-	node* tNext;
-	node* tPrev;
-	node* pNext;
-	node* pPrev;
-	node* lNext;
-	node* lPrev;
+	node* rNext;
+	node* rPrev;
+	node* cNext;
+	node* cPrev;
+	node* hNext;
+	node* hPrev;
 public:
 	node();
 	~node();
 
-	node* getTnext();
-	node* getTprev();
-	node* getLnext();
-	node* getLprev();
-	node* getPprev();
-	node* getPnext();
+	node* getRnext();
+	node* getRprev();
+	node* getCnext();
+	node* getCprev();
+	node* getHprev();
+	node* getHnext();
 	int getData();
 
-	void setTnext(node* pTemp);
-	void setTprev(node* pTemp);
-	void setLnext(node* pTemp);
-	void setLprev(node* pTemp);
-	void setPprev(node* pTemp);
-	void setPnext(node* pTemp);
+	void setRnext(node* pTemp);
+	void setRprev(node* pTemp);
+	void setCnext(node* pTemp);
+	void setCprev(node* pTemp);
+	void setHprev(node* pTemp);
+	void setHnext(node* pTemp);
 	void setData(int temp);
 };
 

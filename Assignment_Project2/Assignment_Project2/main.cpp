@@ -254,21 +254,21 @@ void insert_data(cube* Cube, char* product, char* location, char* time, int data
 	int p = 0;
 	int l = 0;
 	int t = 0;
-	cube_1D* pTemp = Cube->getTime();
+	cube_1D* pTemp = Cube->getRow();
 	while (pTemp) {
 		if (strcmp(pTemp->getName(), time) == 0)
 			break;
 		t++;
 		pTemp = pTemp->getNext();
 	}
-	pTemp = Cube->getLocation();
+	pTemp = Cube->getColumn();
 	while (pTemp) {
 		if (strcmp(pTemp->getName(), location) == 0)
 			break;
 		l++;
 		pTemp = pTemp->getNext();
 	}
-	pTemp = Cube->getProduct();
+	pTemp = Cube->getHeight();
 	while (pTemp) {
 		if (strcmp(pTemp->getName(), product) == 0)
 			break;
@@ -278,13 +278,13 @@ void insert_data(cube* Cube, char* product, char* location, char* time, int data
 	
 	node* pNode = Cube->getHead();
 	for (int i = 0; i < p; i++) {
-		pNode = pNode->getPnext();
+		pNode = pNode->getHnext();
 	}
 	for (int i = 0; i < l; i++) {
-		pNode = pNode->getLnext();
+		pNode = pNode->getCnext();
 	}
 	for (int i = 0; i < t; i++) {
-		pNode = pNode->getTnext();
+		pNode = pNode->getRnext();
 	}
 	pNode->setData(data);
 }

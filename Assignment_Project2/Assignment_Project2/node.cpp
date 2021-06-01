@@ -1,57 +1,57 @@
 #include "node.h"
 
 node::node() {
-	tNext = nullptr;
-	tPrev = nullptr;
-	pPrev = nullptr;
-	pNext = nullptr;
-	lNext = nullptr;
-	lPrev = nullptr;
+	rNext = nullptr;
+	rPrev = nullptr;
+	cPrev = nullptr;
+	cNext = nullptr;
+	hNext = nullptr;
+	hPrev = nullptr;
 	data = 0;
 }
 node::~node() {
 
 }
 
-node* node::getPnext() {
-	return pNext;
+node* node::getHnext() {
+	return cNext;
 }
-node* node::getPprev() {
-	return pPrev;
+node* node::getHprev() {
+	return cPrev;
 }
-node* node::getLnext() {
-	return lNext;
+node* node::getCnext() {
+	return hNext;
 }
-node* node::getLprev() {
-	return lPrev;
+node* node::getCprev() {
+	return hPrev;
 }
-node* node::getTnext() {
-	return tNext;
+node* node::getRnext() {
+	return rNext;
 }
-node* node::getTprev() {
-	return tPrev;
+node* node::getRprev() {
+	return rPrev;
 }
 int node::getData() {
 	return data;
 }
 
-void node::setLnext(node* pTemp) {
-	lNext = pTemp;
+void node::setCnext(node* pTemp) {
+	hNext = pTemp;
 }
-void node::setLprev(node* pTemp) {
-	lPrev = pTemp;
+void node::setCprev(node* pTemp) {
+	hPrev = pTemp;
 }
-void node::setPprev(node* pTemp) {
-	pPrev = pTemp;
+void node::setHprev(node* pTemp) {
+	cPrev = pTemp;
 }
-void node::setPnext(node* pTemp) {
-	pNext = pTemp;
+void node::setHnext(node* pTemp) {
+	cNext = pTemp;
 }
-void node::setTnext(node* pTemp) {
-	tNext = pTemp;
+void node::setRnext(node* pTemp) {
+	rNext = pTemp;
 }
-void node::setTprev(node* pTemp) {
-	tPrev = pTemp;
+void node::setRprev(node* pTemp) {
+	rPrev = pTemp;
 }
 void node::setData(int temp) {
 	data = temp;

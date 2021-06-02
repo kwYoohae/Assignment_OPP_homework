@@ -40,40 +40,40 @@ void cube::setHead(node* pTemp) {
 	pHead = pTemp;
 }
 
-void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
-	tree_node* pTemp = Time->getRoot();
+void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) { // 트리를 만드는 매소드
+	tree_node* pTemp = Time->getRoot(); // time부터 트리생성
 	tree_node* pParent = pTemp;
-	for (int i = 1; i < number; i++) {
+	for (int i = 1; i < number; i++) { // time의 입력한 계층만큼 밑으로 내려감
 		pParent = pTemp;
 		pTemp = pTemp->getDown();
 		if (!pTemp->getDown()) {
 			break;
 		}
 	}
-	while (pParent) {
+	while (pParent) { // 부모노드가 더이상 자매노드가 없을 때까지 생성
 		while (pTemp) {
 			cube_1D* pNew = new cube_1D;
-			if (!Row) {
+			if (!Row) { // Row값이 비어있을 때는
 				Row = pNew;
-				pNew->setData(pTemp);
+				pNew->setData(pTemp); // Row에 데이터 저장
 			}
 			else {
-				cube_1D* cube_temp = (this->*pRow)();
-				while (cube_temp->getNext())
+				cube_1D* cube_temp = (this->*pRow)(); 
+				while (cube_temp->getNext()) // Row값에서 마지막값까지이동 
 					cube_temp = cube_temp->getNext();
-				cube_temp->setNext(pNew);
-				pNew->setPrev(cube_temp);
-				pNew->setData(pTemp);
+				cube_temp->setNext(pNew); // 마지막을 새로만든 노드와 이어줌
+				pNew->setPrev(cube_temp); // 마지막값의 이전값을 설정해줌
+				pNew->setData(pTemp); // 데이터를 넣어줌
 			}
-			pTemp = pTemp->getNext();
+			pTemp = pTemp->getNext(); // 다음 자매노드로
 		}
-		pParent = pParent->getNext();
-		if (!pParent)
+		pParent = pParent->getNext(); // 다음 자매노드로
+		if (!pParent) // 비었을때 반복문 종료
 			break;
 		pTemp = pParent->getDown();
 	}
 
-	pTemp = Location->getRoot();
+	pTemp = Location->getRoot(); //위와 똑같은 방식으로 Location의 자식의 자매노드를 계속 탐색해서 tree를 생성해준다
 	pParent = pTemp;
 	for (int i = 1; i < number; i++) {
 		pParent = pTemp;
@@ -105,7 +105,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 		pTemp = pParent->getDown();
 	}
 
-	pTemp = Product->getRoot();
+	pTemp = Product->getRoot();//위와 똑같은 방식으로 Time의 자식의 자매노드를 계속 탐색해서 tree를 생성해준다
 	pParent = pTemp;
 	for (int i = 1; i < number; i++) {
 		pParent = pTemp;
@@ -139,7 +139,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) {
 	}
 }
 
-void cube::Make_Cube(int p, int l, int t) {
+void cube::Make_Cube(int p, int l, int t) { //cube를 만드는 매소드 
 	int cnt = 1;
 	node* pWork1 = nullptr;
 	node* pWork2 = nullptr;
@@ -147,76 +147,76 @@ void cube::Make_Cube(int p, int l, int t) {
 	for (int i = 0; i < t; i++) {
 		for (int j = 0; j < p; j++) {
 			for (int k = 0; k < l; k++) {
-				node* pNew = new node;
-				if (i == 0 && j == 0 && k == 0) {
+				node* pNew = new node; // cube를 생성
+				if (i == 0 && j == 0 && k == 0) { // 처음값은 Head로 설정
 					pHead = pNew;
 					pWork1 = pHead;
 					pWork2 = pHead;
 					pWork3 = pHead;
 				}
-				else if (i != 0 && k == 0 && j == 0) {
-					pWork1 = pHead;
-					while (pWork1->getRnext()) {
+				else if (i != 0 && k == 0 && j == 0) { // Row값(Time값을 생성하기 위한 조건문)
+					pWork1 = pHead; 
+					while (pWork1->getRnext()) { // Row의 끝값까지 가서 생성
 						pWork1 = pWork1->getRnext();
 					}
-					pWork1->setRnext(pNew);
-					pNew->setRprev(pWork1);
-					pWork2 = pNew;
-					pWork3 = pNew;
+					pWork1->setRnext(pNew); // 새로운 Row(Time)을생성
+					pNew->setRprev(pWork1); // 이전값 설정
+					pWork2 = pNew; // 새로운 Row(Time)에서 2차원 배열을 만들어주기 위한설정
+					pWork3 = pNew;// 새로운 Row(Time)에서 2차원 배열을 만들어주기 위한설정
 				}
-				else if (k == 0) {
+				else if (k == 0) { // 2차원배열 Height(product를 만들어주기 위한 조건문)
 					pWork1 = pHead;
-					while (pWork1->getRnext()) {
+					while (pWork1->getRnext()) { // Row(Time)의 끝까지 이동
 						pWork1 = pWork1->getRnext();
 					}
-					pWork2 = pWork1;
-					while (pWork2->getHnext()) {
+					pWork2 = pWork1; // 거기서부터 지금까지 만든 product의 끝까지 이동
+					while (pWork2->getHnext()) { 
 						pWork2 = pWork2->getHnext();
 					}
-					pWork2->setHnext(pNew);
+					pWork2->setHnext(pNew); // 새로운 product의 이전값 다음값 설정
 					pNew->setHprev(pWork2);
 					pWork3 = pNew;
 				}
-				else {
-					while (pWork3->getCnext()) {
+				else { // 그냥 column(location)을 생성할 경우 location의 끝값까지 이동 후 만들어줌
+					while (pWork3->getCnext()) { 
 						pWork3 = pWork3->getCnext();
 					}
-					pWork3->setCnext(pNew);
+					pWork3->setCnext(pNew); // 새로생긴 location의 next,prev값 설정
 					pNew->setCprev(pWork3);
 				}
 				pNew->setData(cnt);
 				//cnt++;
 			}
-			if (j != 0) {
+			if (j != 0) { // j(product)가 2개이상일때 서로의 product줄을 서로 이어주는 매소드
 				pWork1 = pHead;
-				while (pWork1->getRnext()) {
+				while (pWork1->getRnext()) { // Time이 생성된곳까지 이동
 					pWork1 = pWork1->getRnext();
 				}
 				pWork3 = pWork1;
-				while (pWork3->getHnext()) {
+				while (pWork3->getHnext()) { // product가 생성된곳 까지이동
 					pWork3 = pWork3->getHnext();
 				}
-				pWork2 = pWork3->getHprev();
+				pWork2 = pWork3->getHprev(); // 마지막 product의 전값으로 설정
 				while (pWork2) {
-					pWork2->setHnext(pWork3);
+					pWork2->setHnext(pWork3); // 서로의 product값 설정
 					pWork3->setHprev(pWork2);
-					pWork2 = pWork2->getCnext();
+					pWork2 = pWork2->getCnext(); // 그다음 location으로 이동
 					pWork3 = pWork3->getCnext();
 				}
 			}
 		}
-		if (i != 0) {
-			pWork1 = pHead;
-			while (pWork1->getRnext()) {
+		if (i != 0) { // Time값이 2개일 때
+			pWork1 = pHead; 
+			while (pWork1->getRnext()) { //time의 생성된 끝값까지 이동한다
 				pWork1 = pWork1->getRnext();
 			}
-			pWork2 = pWork1->getRprev();
+			pWork2 = pWork1->getRprev(); // 마지막값의 전값으로 설정
 			pWork3 = pWork1;
-			while (pWork1) {
-				while (pWork2) {
+			while (pWork1) { // time을 2차원배열끼리 연결이 끝날때까지 반복
+				while (pWork2) { // location을 탐색하여 time을 이어주는 반복문
 					pWork2->setRnext(pWork3);
 					pWork3->setRprev(pWork2);
-					pWork2 = pWork2->getCnext();
+					pWork2 = pWork2->getCnext(); // 다음 location갑승로
 					pWork3 = pWork3->getCnext();
 				}
 				pWork2 = pWork1->getRprev()->getHnext();

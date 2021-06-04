@@ -1,318 +1,108 @@
 [LOAD]
 Q1	Korea	Japan	USA	Canada	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
+meat	36		36		36		36		
+fruit	36		36		36		36		
+vegetable	36		36		36		36		
 
 
 [ROTATE]
 Q1	vegetable	fruit	meat	
-Korea	9		9		9		
-Japan	9		9		9		
-USA	9		9		9		
-Canada	9		9		9		
+Korea	36		36		36		
+Japan	36		36		36		
+USA	36		36		36		
+Canada	36		36		36		
 
 
 [ROTATE]
-vegetable	Q1	Q2	Q3	Q4	
-Korea	9		9		9		9		
-Japan	9		9		9		9		
-USA	9		9		9		9		
-Canada	9		9		9		9		
+vegetable	Q4	Q3	Q2	Q1	
+Korea	36		36		36		36		
+Japan	36		36		36		36		
+USA	36		36		36		36		
+Canada	36		36		36		36		
 
 
-[ROTATE]
-Canada	Q1	Q2	Q3	Q4	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
+[SLICE]
+vegetable	Q4	Q3	Q2	Q1	
+Korea	36		36		36		36		
 
 
-[ROTATE]
-vegetable	Q1	Q2	Q3	Q4	
-Korea	9		9		9		9		
-Japan	9		9		9		9		
-USA	9		9		9		9		
-Canada	9		9		9		9		
-
-
-[ROTATE]
-Q1	vegetable	fruit	meat	
-Korea	9		9		9		
-Japan	9		9		9		
-USA	9		9		9		
-Canada	9		9		9		
-
-
-[ROTATE]
-Q1	Korea	Japan	USA	Canada	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
-
+[ROLLUP]
+ERROR
 
 [LOAD]
 Q1	Korea	Japan	USA	Canada	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
+meat	36		36		36		36		
+fruit	36		36		36		36		
+vegetable	36		36		36		36		
 
 
 [ROTATE]
 Q1	vegetable	fruit	meat	
-Korea	9		9		9		
-Japan	9		9		9		
-USA	9		9		9		
-Canada	9		9		9		
+Korea	36		36		36		
+Japan	36		36		36		
+USA	36		36		36		
+Canada	36		36		36		
 
 
 [ROTATE]
 vegetable	Q1	Q2	Q3	Q4	
-Korea	9		9		9		9		
-Japan	9		9		9		9		
-USA	9		9		9		9		
-Canada	9		9		9		9		
+Korea	36		36		36		36		
+Japan	36		36		36		36		
+USA	36		36		36		36		
+Canada	36		36		36		36		
 
 
-[ROTATE]
-Canada	Q1	Q2	Q3	Q4	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
-
-
-[ROTATE]
+[SLICE]
 vegetable	Q1	Q2	Q3	Q4	
-Korea	9		9		9		9		
-Japan	9		9		9		9		
-USA	9		9		9		9		
-Canada	9		9		9		9		
+Korea	36		36		36		36		
+
+
+[ROLLUP]
+ERROR
+
+[SLICE]
+vegetable	Q2	
+Korea	36		
+
+
+[SLICE]
+ERROR
+
+[ROLLUP]
+vegetable	time	
+Korea	36		
+
+
+[ROLLUP]
+ERROR
+
+[ROLLUP]
+ERROR
+
+[VIEW]
+vegetable	time	
+Korea	36		
+
+
+[ROLLUP]
+vegetable	time	
+location	36		
+
+
+[ROLLUP]
+vegetable	time	
+location	36		
 
 
 [ROTATE]
-Q1	vegetable	fruit	meat	
-Korea	9		9		9		
-Japan	9		9		9		
-USA	9		9		9		
-Canada	9		9		9		
+location	time	
+product	36		
+fruit	36		
+vegetable	36		
 
 
 [ROTATE]
-Q1	Korea	Japan	USA	Canada	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
-
-
-[LOAD]
-Q1	Korea	Japan	USA	Canada	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
-
-
-[ROTATE]
-Q1	vegetable	fruit	meat	
-Korea	9		9		9		
-Japan	9		9		9		
-USA	9		9		9		
-Canada	9		9		9		
-
-
-[ROTATE]
-vegetable	Q1	Q2	Q3	Q4	
-Korea	9		9		9		9		
-Japan	9		9		9		9		
-USA	9		9		9		9		
-Canada	9		9		9		9		
-
-
-[ROTATE]
-Canada	Q1	Q2	Q3	Q4	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
-
-
-[ROTATE]
-vegetable	Q1	Q2	Q3	Q4	
-Korea	9		9		9		9		
-Japan	9		9		9		9		
-USA	9		9		9		9		
-Canada	9		9		9		9		
-
-
-[ROTATE]
-Q1	vegetable	fruit	meat	
-Korea	9		9		9		
-Japan	9		9		9		
-USA	9		9		9		
-Canada	9		9		9		
-
-
-[ROTATE]
-Q1	Korea	Japan	USA	Canada	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
-
-
-[LOAD]
-Q1	Korea	Japan	USA	Canada	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
-
-
-[ROTATE]
-Q1	vegetable	fruit	meat	
-Korea	9		9		9		
-Japan	9		9		9		
-USA	9		9		9		
-Canada	9		9		9		
-
-
-[ROTATE]
-vegetable	Q1	Q2	Q3	Q4	
-Korea	9		9		9		9		
-Japan	9		9		9		9		
-USA	9		9		9		9		
-Canada	9		9		9		9		
-
-
-[ROTATE]
-Canada	Q1	Q2	Q3	Q4	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
-
-
-[ROTATE]
-vegetable	Q1	Q2	Q3	Q4	
-Korea	9		9		9		9		
-Japan	9		9		9		9		
-USA	9		9		9		9		
-Canada	9		9		9		9		
-
-
-[ROTATE]
-Q1	vegetable	fruit	meat	
-Korea	9		9		9		
-Japan	9		9		9		
-USA	9		9		9		
-Canada	9		9		9		
-
-
-[ROTATE]
-Q1	Korea	Japan	USA	Canada	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
-
-
-[LOAD]
-Q1	Korea	Japan	USA	Canada	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
-
-
-[ROTATE]
-Q1	vegetable	fruit	meat	
-Korea	9		9		9		
-Japan	9		9		9		
-USA	9		9		9		
-Canada	9		9		9		
-
-
-[ROTATE]
-vegetable	Q1	Q2	Q3	Q4	
-Korea	9		9		9		9		
-Japan	9		9		9		9		
-USA	9		9		9		9		
-Canada	9		9		9		9		
-
-
-[ROTATE]
-Canada	Q1	Q2	Q3	Q4	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
-
-
-[ROTATE]
-vegetable	Q1	Q2	Q3	Q4	
-Korea	9		9		9		9		
-Japan	9		9		9		9		
-USA	9		9		9		9		
-Canada	9		9		9		9		
-
-
-[ROTATE]
-Q1	vegetable	fruit	meat	
-Korea	9		9		9		
-Japan	9		9		9		
-USA	9		9		9		
-Canada	9		9		9		
-
-
-[ROTATE]
-Q1	Korea	Japan	USA	Canada	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
-
-
-[LOAD]
-Q1	Korea	Japan	USA	Canada	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
-
-
-[ROTATE]
-Q1	vegetable	fruit	meat	
-Korea	9		9		9		
-Japan	9		9		9		
-USA	9		9		9		
-Canada	9		9		9		
-
-
-[ROTATE]
-vegetable	Q1	Q2	Q3	Q4	
-Korea	9		9		9		9		
-Japan	9		9		9		9		
-USA	9		9		9		9		
-Canada	9		9		9		9		
-
-
-[ROTATE]
-Canada	Q1	Q2	Q3	Q4	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
-
-
-[ROTATE]
-vegetable	Q1	Q2	Q3	Q4	
-Korea	9		9		9		9		
-Japan	9		9		9		9		
-USA	9		9		9		9		
-Canada	9		9		9		9		
-
-
-[ROTATE]
-Q1	vegetable	fruit	meat	
-Korea	9		9		9		
-Japan	9		9		9		
-USA	9		9		9		
-Canada	9		9		9		
-
-
-[ROTATE]
-Q1	Korea	Japan	USA	Canada	
-meat	9		9		9		9		
-fruit	9		9		9		9		
-vegetable	9		9		9		9		
+vegetable	time	
+location	36		
 
 

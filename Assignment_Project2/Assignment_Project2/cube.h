@@ -26,11 +26,9 @@ public:
 	void Make_Cube(int p, int l, int t);
 	void Make_View(tree* Time, tree* Location, tree* Product);
 	void Make_tree(tree* Time, tree* Location, tree* Product ,int number);
-	int count_time();
-	int count_location();
-	int count_product();
 	void copyData(cube* raw);
 	void WriteLog(char* command);
+	void WriteError(char* command);
 	void Rotate(char* command);
 	void check();
 
@@ -56,8 +54,9 @@ public:
 	
 	void Reverse(cube_1D* pCube);
 
-	void Roll_up(char* command);
-
+	bool Roll_up(char* command);
+	bool slice(char* command);
+	bool DrillDown(char* command, cube* raw);
 	void delete_cube();
 
 };

@@ -10,9 +10,10 @@ using namespace std;
 void Print_Check(tree_node* pTemp);
 
 void Open_Category(tree* type_Data, const char* text_file);
-void Insert_data(tree* type, tree_node* pParent, char* data);
+void insert_treeNode(tree* type, tree_node* pParent, char* data);
 void Load_sales(cube* Cube);
 int count_low(tree* Tree, int number);
+int count_down(tree* Tree);
 //int Role_up(tree* product, tree* time, tree* , cube* raw, cube* view);
 void insert_data(cube* Cube, char* product, char* location, char* time, int data);
 int main() {
@@ -24,6 +25,7 @@ int main() {
 	char str[200]; // command를 읽는 변수
 	char command[100]; // command를 저장할 변수
 	char command_list[100]; //command 뒤의 명령어를 받는 변수
+	int Down_number = 0;
 	memset(str, NULL, 200); // 초기화
 	memset(command, NULL, 100); // 초기화
 	memset(command_list, NULL, 100); // 초기화
@@ -42,32 +44,51 @@ int main() {
 			}
 			cnt++; // ' '를 건너뛰기 위해 cnt를 올려줌
 			for (int i = 0; str[cnt] != '\0'; i++, cnt++) {
+				if (str[cnt] == ' ')
+					break;
 				command_list[i] = str[cnt]; // command뒤에 나오는 수를 읽기위해서 사용하는 변수
 			}
 			if (strcmp(command,"LOAD") == 0) {
 				Open_Category(&Time, "time.txt"); //time.txt를 읽어서 tree로 만드는 함수
 				Open_Category(&Product, "product.txt");//product.txt를 읽어서 tree로 만드는 함수
 				Open_Category(&Location, "location.txt");//location.txt를 읽어서 tree로 만드는 함수
-				raw_cube.Make_Cube(count_low(&Product, 3), count_low(&Location, 3), count_low(&Time, 3)); //cube를 만드는 매소드 호출
-				raw_cube.Make_tree(&Time, &Location, &Product, 3); //cube의 쓰이는 tree를 만드는 매소드 호출
+				Down_number = count_down(&Time);
+				raw_cube.Make_Cube(count_low(&Product, Down_number), count_low(&Location, Down_number), count_low(&Time, Down_number)); //cube를 만드는 매소드 호출
+				raw_cube.Make_tree(&Time, &Location, &Product, Down_number); //cube의 쓰이는 tree를 만드는 매소드 호출
 				//Load_sales(&raw_cube); // sales.txt에 저장한 값들을 저장하는 매소드 호출
-				//raw_cube.Print();
-				//raw_cube.WriteLog(command);
-				view_cube.Make_Cube(count_low(&Product, 3), count_low(&Location, 3), count_low(&Time, 3)); // cube를 만드는 매소드 호출
-				view_cube.Make_tree(&Time, &Location, &Product, 2); // cube에 쓰이는 tree를 만드는 매소드 호출(뒤의 숫자는 계층을 표시)
+				if (Down_number == 1) {
+					view_cube.Make_Cube(count_low(&Product, 1), count_low(&Location, Down_number), (&Time, 1)); // cube를 만드는 매소드 호출
+					view_cube.Make_tree(&Time, &Location, &Product, 1); // cube에 쓰이는 tree를 만드는 매소드 호출(뒤의 숫자는 계층을 표시)
+				}
+				else {
+					view_cube.Make_Cube(count_low(&Product, Down_number), count_low(&Location, Down_number), count_low(&Time, Down_number)); // cube를 만드는 매소드 호출
+					view_cube.Make_tree(&Time, &Location, &Product, Down_number-1); // cube에 쓰이는 tree를 만드는 매소드 호출(뒤의 숫자는 계층을 표시)
+				}
 				view_cube.copyData(&raw_cube); // rawcube가 가진 데이터를 복사
 				view_cube.Make_View(&Time, &Location, &Product); // view큐브를 만들기위해 raw보다 더 낮은 계층으로 만드는 매소드 호출
 				///view_cube.Print();
 				view_cube.WriteLog(command); // log를 작성하는 매소드 호출
 			}
 			else if (strcmp(command, "ROTATE") == 0) {
-				//view_cube.Print();
-				//view_cube.check();
 				view_cube.Rotate(command_list); // rotate를 실행하는 매소드 호출
-				//view_cube.check();
 				view_cube.WriteLog(command); // 로그를 작성하는 매소드 호출
-				//raw_cube.Rotate(command_list);
-				//raw_cube.WriteLog(command);
+			}
+			else if (strcmp(command, "ROLLUP") == 0) {
+				if (!view_cube.Roll_up(command_list))
+					view_cube.WriteError(command);
+				else {
+					view_cube.WriteLog(command);
+				}
+			}
+			else if (strcmp(command, "SLICE") == 0) {
+				if (!view_cube.slice(command_list))
+					view_cube.WriteError(command);
+				else {
+					view_cube.WriteLog(command);
+				}
+			}
+			else if (strcmp(command, "VIEW") == 0) {
+				view_cube.WriteLog(command);
 			}
 			else if (strcmp(command, "EXIT") == 0) {
 				raw_cube.delete_cube(); // raw큐브 삭제 매소드 호출
@@ -95,11 +116,12 @@ void Print_Check(tree_node* pTemp) {
 	}
 }
 
-void Insert_data(tree* type, tree_node* pParent, char* data) {
+void insert_treeNode(tree* type, tree_node* pParent, char* data) {
 	if (!type->getRoot()) {
 		tree_node* pNew = new tree_node;
 		pNew->setData(data);
 		type->setRoot(pNew);
+		pNew->setLow(1);
 	}
 	else if (pParent == type->getRoot()) {
 		tree_node* pNew = new tree_node;
@@ -110,12 +132,13 @@ void Insert_data(tree* type, tree_node* pParent, char* data) {
 			tree_node* pTemp = pParent->getDown();
 			while (pTemp->getNext())
 				pTemp = pTemp->getNext();
-			tree_node* pNew = new tree_node;
+			//tree_node* pNew = new tree_node;
 			pNew->setData(data);
 			pNew->setPrev(pTemp);
 			pTemp->setNext(pNew);
 		}
 		pNew->setUp(pParent);
+		pNew->setLow(2);
 	}
 	else {
 		tree_node* pNew = new tree_node;
@@ -126,13 +149,13 @@ void Insert_data(tree* type, tree_node* pParent, char* data) {
 			tree_node* pTemp = pParent->getDown();
 			while (pTemp->getNext())
 				pTemp = pTemp->getNext();
-			tree_node* pNew = new tree_node;
+			//tree_node* pNew = new tree_node;
 			pNew->setData(data);
 			pNew->setPrev(pTemp);
 			pTemp->setNext(pNew);
 		}
 		pNew->setUp(pParent);
-
+		pNew->setLow(3);
 	}
 }
 
@@ -147,6 +170,7 @@ void Open_Category(tree* type_Data, const char* text_file) { // 파일을 읽어 트리
 	char data[100];
 	int len = 0;
 	int count = -1;
+	int low_number = 1;
 	while (true) { // 반복문수행
 		tree_node* pTemp = nullptr; // pTemp 초기화
 		int i = 0; // 초기화
@@ -162,16 +186,16 @@ void Open_Category(tree* type_Data, const char* text_file) { // 파일을 읽어 트리
 				i++;
 				if (temp[len] == ' ') { // ' '을 만나면(띄어쓰기마다 단어를 저장)
 					i = 0;
-					Insert_data(type_Data, type_Data->getRoot(), data); // data를 넣는 매소드 호출
+					insert_treeNode(type_Data, type_Data->getRoot(), data); // data를 넣는 매소드 호출
 					memset(data, NULL, 100); // data초기화
 					len++; // len을 늘림
 				}
 				else if (temp[len] == '\0') { // 만약에 문장이 끝나면
-					Insert_data(type_Data, type_Data->getRoot(), data); //마지막단어를 넣음
+					insert_treeNode(type_Data, type_Data->getRoot(), data); //마지막단어를 넣음
 					memset(data, NULL, 100); // 데이터 초기화
 				}
 			}
-			pParent = type_Data->getRoot(); // pParent는 root로 
+			pParent = type_Data->getRoot(); // pParent는 root로  
 			count++;// count증가
 			len = 0;
 		}
@@ -196,12 +220,12 @@ void Open_Category(tree* type_Data, const char* text_file) { // 파일을 읽어 트리
 					i++;
 					if (temp[len] == ' ') { // 띄어쓰기 일때마다 값을 저장
 						i = 0;
-						Insert_data(type_Data, pTemp, data); // 값을 저장하는 매소드 호출
+						insert_treeNode(type_Data, pTemp, data); // 값을 저장하는 매소드 호출
 						memset(data, NULL, 100); // 읽어오는값 초기화
 						len++;
 					}
 					else if (temp[len] == '\0') { // 문장의 끝을 만났을때
-						Insert_data(type_Data, pTemp, data); // 마지막단어를 넣어줌
+						insert_treeNode(type_Data, pTemp, data); // 마지막단어를 넣어줌
 						memset(data, NULL, 100);//초기화
 					}
 				}
@@ -239,9 +263,9 @@ int count_low(tree* Tree, int number) { // 자식노드의 개수를 모두 세어주는 매소�
 void Load_sales(cube* Cube) { // sales.txt파일을 읽어서 값을 저장하기 위한 매소드
 	ifstream readFile("sales.txt"); /// sales.txt파일을 읽어옴
 	if (!readFile.is_open()) { // 파일이 닫혀있을 경우
-		cout << "Error" << endl;
-		readFile.close();
-		return;
+		ofstream WriteFile("sales.txt");
+		WriteFile.close();
+		readFile.open("sales.txt");
 	}
 	char temp[200];
 	char product[200];
@@ -323,3 +347,12 @@ void insert_data(cube* Cube, char* product, char* location, char* time, int data
 	pNode->setData(data);
 }
 
+int count_down(tree* Tree) {
+	int cnt = 0;
+	tree_node* pTemp = Tree->getRoot();
+	while (pTemp) {
+		cnt++;
+		pTemp = pTemp->getDown();
+	}
+	return cnt;
+}

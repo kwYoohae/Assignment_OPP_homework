@@ -267,35 +267,7 @@ void cube::Print() {
 	}
 }
 
-int cube::count_time() {
-	int count = 0;
-	node* pTemp = pHead;
-	while (pTemp) {
-		pTemp = pTemp->getRnext();
-		count++;
-	}
-	return count;
-}
-int cube::count_location() {
-	int count = 0;
-	node* pTemp = pHead;
-	while (pTemp) {
-		pTemp = pTemp->getCnext();
-		count++;
-	}
-	return count;
-}
-int cube::count_product() {
-	int count = 0;
-	node* pTemp = pHead;
-	while (pTemp) {
-		pTemp = pTemp->getHnext();
-		count++;
-	}
-	return count;
-}
-
-void cube::Make_View(tree* Time, tree* Location, tree* Product) {
+void cube::Make_View(tree* Time, tree* Location, tree* Product) { //view큐브의 초기생성을 하는 매소드(row,column,height를 3계층에서 2게층으로 rollup하는 방법
 	int number = 0;
 	node* pWork1 = pHead;
 	node* pWork2;
@@ -305,41 +277,41 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) {
 	tree_node* tree_temp = Height->getData();
 	tree_node* tree_down = tree_temp->getDown();
 	pTemp = tree_temp;
-	while (tree_down->getNext()) {
+	while (tree_down->getNext()) { // hight의 계층을 찾고 원하는 트리노드가 있는 곳까지 이동
 		tree_down = tree_down->getNext();
 		number++;
 	}
-	while (tree_temp) {
-		for (int i = 0; i < number; i++) {
-			pWork2 = pWork1;
+	while (tree_temp) { // tree_temp가 마지막 자매노드까지 방문했을 때까지 반복
+		for (int i = 0; i < number; i++) { // 자식노드의 개수만큼 반복 rollup을 해줌
+			pWork2 = pWork1; 
 			while (pWork2) {
 				pWork3 = pWork2;
-				while (pWork3) {
-					pWork4 = pWork3->getHnext();
-					//pWork3->setData(pWork3->getData() + pWork4->getData());
-					pWork3->setHnext(pWork4->getHnext());
-					if (pWork4->getHnext()) {
-						pWork4->getHnext()->setHprev(pWork3);
+				while (pWork3) { // height를 기준으로 서로의 다음을 이어줌
+					pWork4 = pWork3->getHnext(); // height를 기준으로 삭제할 height를 가져옴
+					pWork3->setData(pWork3->getData() + pWork4->getData()); // 삭제할 노드와 기존 데이터를 합침
+					pWork3->setHnext(pWork4->getHnext()); // 삭제할데이터의 다음값과 합치는 값의 다음값을 결정해줌
+					if (pWork4->getHnext()) { // pWork4의 다음값이 비어있지 않을때(마지막 값이 아닐때)
+						pWork4->getHnext()->setHprev(pWork3); // 그다음 값의 이전값을 설정해줌
 					}
-					delete pWork4;
-					pWork3 = pWork3->getCnext();
+					delete pWork4; //노드삭제
+					pWork3 = pWork3->getCnext(); // 그다음 노드로 이동 Column값
 				}
-				pWork2 = pWork2->getRnext();
+				pWork2 = pWork2->getRnext(); // 모든 Column값을 연결해주었으면 다음 Row값으로 이동
 			}
 		}
-		pWork1 = pWork1->getHnext();
-		tree_temp = tree_temp->getNext();
-		if (!tree_temp)
-			break;
-		tree_down = tree_temp->getDown();
+		pWork1 = pWork1->getHnext(); //모든 Height에 대한값을 삭제하면 다음 Height로 이동
+		tree_temp = tree_temp->getNext(); // tree_temp다음값으로 이동한다
+		if (!tree_temp) // 없으면 종료
+			break; 
+		tree_down = tree_temp->getDown(); // tree_temp의 자식노드로 이동한다.
 		number = 0;
-		while (tree_down->getNext()) {
+		while (tree_down->getNext()) { // 자식노드의 개수를 샌다
 			tree_down = tree_down->getNext();
 			number++;
 		}
 	}
 
-	tree_temp = Row->getData();
+	tree_temp = Row->getData(); // 위의 Height와 똑같은 방식으로 Row의 3계층을 2계층으로 합치는 과정임.
 	pTemp = tree_temp;
 	pWork1 = pHead;
 	number = 0;
@@ -378,7 +350,7 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) {
 		}
 	}
 
-	tree_temp = Column->getData();
+	tree_temp = Column->getData();// 위의 Height와 똑같은 방식으로 Column의 3계층을 2계층으로 합치는 과정임.
 	pTemp = tree_temp;
 	pWork1 = pHead;
 	number = 0;
@@ -418,55 +390,55 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) {
 	}
 }
 
-void cube::WriteLog(char* command) {
+void cube::WriteLog(char* command) {//log에 결과값을 작성하는 매소드
 	ofstream log;
-	log.open("log.txt", ios::app);
-	log << '[' << command << ']' <<'\n';
-	log << (this->*pRow)()->getData()->getData() << '\t';
-	cube_1D* pTemp = (this->*pColumn)();
+	log.open("log.txt", ios::app); // log.txt파일을 열고 ios::app방식으로 기존 텍스트에 이어쓴다.
+	log << '[' << command << ']' <<'\n';//무슨 커맨드를 작동한 결과인지 결과를 입력한다. 
+	log << (this->*pRow)()->getData()->getData() << '\t'; // Row값을 먼저 출력한다.
+	cube_1D* pTemp = (this->*pColumn)(); // Column값을 모두 출력한다.
 	while (pTemp) {
 		log << pTemp->getData()->getData() << '\t';
 		pTemp = pTemp->getNext();
 	}
 	log << '\n';
-	pTemp = (this->*pHeight)();
+	pTemp = (this->*pHeight)(); 
 	node* pWork1 = pHead;
 	node* pWork2 = pWork1;
 	while (pWork2) {
-		log << pTemp->getData()->getData() << '\t';
+		log << pTemp->getData()->getData() << '\t'; // Height의 데이터중 하나를 출력한다/
 		pTemp = pTemp->getNext();
 		while (pWork1) {
-			log << pWork1->getData() << '\t' << '\t';
-			pWork1 = (pWork1->*pRight)();
+			log << pWork1->getData() << '\t' << '\t'; // 노드의 데이터를 출력한다.
+			pWork1 = (pWork1->*pRight)(); // 다음 값으로 이동
 		}
 		log << '\n';
-		pWork2 = (pWork2->*pDown)();
+		pWork2 = (pWork2->*pDown)(); // 모든 Right값을 돌았을 때 밑으로 Down으로 이동
 		pWork1 = pWork2;
 	}
 	log << '\n' << '\n';
 	log.close();
 }
 
-void cube::copyData(cube* raw) {
-	node* pWork1 = raw->getHead();
-	node* pWork2 = pWork1;
-	node* pWork3 = pWork1;
-	node* pCopy1 = pHead;
-	node* pCopy2 = pCopy1;
-	node* pCopy3 = pCopy1;
+void cube::copyData(cube* raw) { // raw큐브의 데이터를 복사해서 가져오는 매소드
+	node* pWork1 = raw->getHead();  // raw큐브의값
+	node* pWork2 = pWork1;// raw큐브의값
+	node* pWork3 = pWork1;// raw큐브의값
+	node* pCopy1 = pHead; // view큐브의 값
+	node* pCopy2 = pCopy1; // view큐브의 값
+	node* pCopy3 = pCopy1; // view큐브의 값
 	while (pWork1) {
 		while (pWork2) {
 			while (pWork3) {
-				pCopy3->setData(pWork3->getData());
-				pWork3 = pWork3->getCnext();
+				pCopy3->setData(pWork3->getData()); // 데이터를 복사해줌
+				pWork3 = pWork3->getCnext(); // column(RIght)쪽으로 계속이동
 				pCopy3 = pCopy3->getCnext();
 			}
-			pWork2 = pWork2->getHnext();
+			pWork2 = pWork2->getHnext(); // Height(Down)쪽으로 계속이동
 			pCopy2 = pCopy2->getHnext();
 			pWork3 =pWork2;
 			pCopy3 = pCopy2;
 		}
-		pWork1 = pWork1->getRnext();
+		pWork1 = pWork1->getRnext(); // Row(Out)쪽으로 계속이동
 		pCopy1 = pCopy1->getRnext();
 		pWork2 = pWork1;
 		pWork3 = pWork1;
@@ -547,6 +519,7 @@ void cube::Rotate(char* command) {
 		pRow = pColumn_temp;
 		pColumn_set = pRow_set_temp;
 		pRow_set = pColumn_set_temp;
+		//Reverse((this->*pColumn)());
 	}
 	else if (strcmp(command, "right") == 0) {
 		while ((pHead->*pOut)()) {
@@ -562,6 +535,7 @@ void cube::Rotate(char* command) {
 		setIn = setLeft_temp;
 		pColumn = pRow_temp;
 		pRow = pColumn_temp;
+		//Reverse((this->*pColumn)());
 	}
 	else if (strcmp(command, "up") == 0) {
 		while ((pHead->*pDown)()) {
@@ -633,6 +607,8 @@ void cube::Reverse(cube_1D* pCube) {
 	cube_1D* pPrev = nullptr;
 	cube_1D* pNode = pHead;
 	int cnt = 0;
+	if (!pHead->getNext())
+		return;
 	while (pNode->getNext()) {
 		pNode = pNode->getNext();
 		cnt++;
@@ -648,6 +624,13 @@ void cube::Reverse(cube_1D* pCube) {
 		cnt--;
 	}
 	pPrev->setNext(nullptr);
+	pHead->setPrev(nullptr);
+	pPrev = pHead->getNext();
+	while (pPrev) {
+		pPrev->setPrev(pHead);
+		pHead = pHead->getNext();
+		pPrev = pPrev->getNext();
+	}
 	if (pCube == Row)
 		Row = pTemp1;
 	else if (pCube == Column)
@@ -660,8 +643,273 @@ void cube::Reverse(cube_1D* pCube) {
 	}
 }
 
-void cube::Roll_up(char* command) {
-
+bool cube::Roll_up(char* command) {
+	bool find = false;
+	int h = 0;
+	int r = 0;
+	int c = 0;
+	int cnt = 0;
+	int end = 0;
+	int start = 0;
+	int low_number = 0;
+	cube_1D* pTemp = (this->*pRow)();
+	while (!find) {
+		while (pTemp) {
+			if (strcmp(pTemp->getData()->getData(), command) == 0) {
+				cnt++;
+				r = cnt;
+				find = true;
+				break;
+			}
+			pTemp = pTemp->getNext();
+			cnt++;
+		}
+		if (find)
+			break;
+		pTemp = (this->*pColumn)();
+		cnt = 0;
+		while (pTemp) {
+			if (strcmp(pTemp->getData()->getData(), command) == 0) {
+				cnt++;
+				c = cnt;
+				find = true;
+				break;
+			}
+			pTemp = pTemp->getNext();
+			cnt++;
+		}
+		if (find)
+			break;
+		pTemp = (this->*pHeight)();
+		cnt = 0;
+		while (pTemp) {
+			if (strcmp(pTemp->getData()->getData(), command) == 0) {
+				cnt++;
+				h = cnt;
+				find = true;
+				break;
+			}
+			pTemp = pTemp->getNext();
+			cnt++;
+		}
+		break;
+	}
+	if (find == true) {
+		if (!pTemp->getData()->getUp()) {
+			return false;
+		}
+		else {
+			low_number = pTemp->getData()->getLow() - 1;
+			tree_node* pCount =pTemp->getData()->getNext();
+			node* pWork1 = pHead;
+			while (pCount) {
+				end++;
+				pCount = pCount->getNext();
+			}
+			pCount = pTemp->getData()->getPrev();
+			while (pCount) {
+				start++;
+				pCount = pCount->getPrev();
+			}
+			if (!pTemp->getData()->getUp()->getDown()->getNext()) {
+				pTemp->setData(pTemp->getData()->getUp());
+				return true;
+			}
+			else if (!pTemp->getNext() && !pTemp->getPrev()) {
+				pTemp->setData(pTemp->getData()->getUp());
+				return true;
+			}
+			for (int i = 0; i < start; i++) {
+				r--;
+				h--;
+				c--;
+				if (!pTemp->getPrev())
+					break;
+				pTemp = pTemp->getPrev();
+			}
+			if (h > 0) {
+				for (int i = 0; i < h-1; i++) {
+					pWork1 = (pWork1->*pDown)();
+				}
+				node* pWork2 = pWork1;
+				node* pWork3 = pWork1;
+				node* pWork4 = pWork1;
+				for (int i = 0; i < start+end; i++) {
+					pWork2 = pWork1;
+					while (pWork2) {
+						pWork3 = pWork2;
+						while (pWork3) {
+							pWork4 = (pWork3->*pDown)();
+							pWork3->setData(pWork3->getData() + pWork4->getData());
+							(pWork3->*setDown)((pWork4->*pDown)());
+							if ((pWork4->*pDown)()) {
+								((pWork4->*pDown)()->*setUp)(pWork3);
+							}
+							delete pWork4;
+							pWork3 = (pWork3->*pRight)();
+						}
+						pWork2 = (pWork2->*pOut)();
+					}
+				}
+			}
+			else if (c > 0) {
+				for (int i = 0; i < c-1; i++) {
+					pWork1 = (pWork1->*pRight)();
+				}
+				node* pWork2 = pWork1;
+				node* pWork3 = pWork1;
+				node* pWork4 = pWork1;
+				for (int i = 0; i < start + end; i++) {
+					pWork2 = pWork1;
+					while (pWork2) {
+						pWork3 = pWork2;
+						while (pWork3) {
+							pWork4 = (pWork3->*pRight)();
+							pWork3->setData(pWork3->getData() + pWork4->getData());
+							(pWork3->*setRight)((pWork4->*pRight)());
+							if ((pWork4->*pRight)()) {
+								((pWork4->*pRight)()->*setLeft)(pWork3);
+							}
+							delete pWork4;
+							pWork3 = (pWork3->*pDown)();
+						}
+						pWork2 = (pWork2->*pOut)();
+					}
+				}
+			}
+			else if (r > 0) {
+				for (int i = 0; i < r-1; i++) {
+					pWork1 = (pWork1->*pOut)();
+				}
+				node* pWork2 = pWork1;
+				node* pWork3 = pWork1;
+				node* pWork4 = pWork1;
+				for (int i = 0; i < start + end; i++) {
+					pWork2 = pWork1;
+					while (pWork2) {
+						pWork3 = pWork2;
+						while (pWork3) {
+							pWork4 = (pWork3->*pOut)();
+							pWork3->setData(pWork3->getData() + pWork4->getData());
+							(pWork3->*setOut)((pWork4->*pOut)());
+							if ((pWork4->*pOut)()) {
+								((pWork4->*pOut)()->*setIn)(pWork3);
+							}
+							delete pWork4;
+							pWork3 = (pWork3->*pRight)();
+						}
+						pWork2 = (pWork2->*pDown)();
+					}
+				}
+			}
+			pTemp->setData(pTemp->getData()->getUp());
+			cube_1D* pTemp_next = pTemp->getNext();
+			for (int i = 0; i < start + end; i++) {
+				pTemp->setNext(pTemp_next->getNext());
+				delete pTemp_next;
+				pTemp_next = pTemp->getNext();
+				if (pTemp_next == nullptr) {
+					pTemp->setNext(nullptr);
+					break;
+				}
+				pTemp_next->setPrev(pTemp);
+			}
+		}
+	}
+	else {
+		return false;
+	}
+	if (low_number == 1) {
+		node* pWork1 = pHead;
+		node* pWork2 = pWork1;
+		node* pWork3 = pWork1;
+		node* pWork4 = pWork1;
+		while (pTemp->getPrev()) {
+			pTemp = pTemp->getPrev();
+		}
+		cnt = 0;
+		while (pTemp->getNext()) {
+			cnt++;
+			pTemp = pTemp->getNext();
+		}
+		while (pTemp->getPrev()) {
+			pTemp = pTemp->getPrev();
+		}
+		if (h > 0) {
+			for (int i = 0; i < cnt; i++) {
+				pWork2 = pWork1;
+				while (pWork2) {
+					pWork3 = pWork2;
+					while (pWork3) {
+						pWork4 = (pWork3->*pDown)();
+						pWork3->setData(pWork3->getData() + pWork4->getData());
+						(pWork3->*setDown)((pWork4->*pDown)());
+						if ((pWork4->*pDown)()) {
+							((pWork4->*pDown)()->*setUp)(pWork3);
+						}
+						delete pWork4;
+						pWork3 = (pWork3->*pRight)();
+					}
+					pWork2 = (pWork2->*pOut)();
+				}
+			}
+		}
+		else if (c > 0) {
+			for (int i = 0; i < cnt; i++) {
+				pWork2 = pWork1;
+				while (pWork2) {
+					pWork3 = pWork2;
+					while (pWork3) {
+						pWork4 = (pWork3->*pRight)();
+						pWork3->setData(pWork3->getData() + pWork4->getData());
+						(pWork3->*setRight)((pWork4->*pRight)());
+						if ((pWork4->*pRight)()) {
+							((pWork4->*pRight)()->*setLeft)(pWork3);
+						}
+						delete pWork4;
+						pWork3 = (pWork3->*pDown)();
+					}
+					pWork2 = (pWork2->*pOut)();
+				}
+			}
+		}
+		else if (r > 0) {
+			for (int i = 0; i < cnt;i++) {
+				pWork2 = pWork1;
+				while (pWork2) {
+					pWork3 = pWork2;
+					while (pWork3) {
+						pWork4 = (pWork3->*pOut)();
+						pWork3->setData(pWork3->getData() + pWork4->getData());
+						(pWork3->*setOut)((pWork4->*pOut)());
+						if ((pWork4->*pOut)()) {
+							((pWork4->*pOut)()->*setIn)(pWork3);
+						}
+						delete pWork4;
+						pWork3 = (pWork3->*pRight)();
+					}
+					pWork2 = (pWork2->*pDown)();
+				}
+			}
+		}
+		cube_1D* pTemp_next = pTemp->getNext();
+		for (int i = 0; i < cnt; i++) {
+			pTemp->setNext(pTemp_next->getNext());
+			delete pTemp_next;
+			pTemp_next = pTemp->getNext();
+			if (pTemp_next == nullptr) {
+				pTemp->setNext(nullptr);
+				break;
+			}
+			pTemp_next->setPrev(pTemp);
+		}
+		tree_node* temp_tree = pTemp->getData();
+		while (temp_tree->getUp()) {
+			temp_tree = temp_tree->getUp();
+		}
+		pTemp->setData(temp_tree);
+	}
+	return true;
 }
 
 void cube::delete_cube() {
@@ -700,4 +948,464 @@ void cube::delete_cube() {
 		delete pTemp;
 		pTemp = Height;
 	}
+}
+
+bool cube::slice(char* command) {
+	bool find = false;
+	int h = 0;
+	int r = 0;
+	int c = 0;
+	int cnt = 0;
+	int end = 0;
+	int start = 0;
+	cube_1D* pTemp = (this->*pRow)();
+	while (!find) {
+		while (pTemp) {
+			if (strcmp(pTemp->getData()->getData(), command) == 0) {
+				cnt++;
+				r = cnt;
+				find = true;
+				break;
+			}
+			pTemp = pTemp->getNext();
+			cnt++;
+		}
+		if (find)
+			break;
+		pTemp = (this->*pColumn)();
+		cnt = 0;
+		while (pTemp) {
+			if (strcmp(pTemp->getData()->getData(), command) == 0) {
+				cnt++;
+				c = cnt;
+				find = true;
+				break;
+			}
+			pTemp = pTemp->getNext();
+			cnt++;
+		}
+		if (find)
+			break;
+		pTemp = (this->*pHeight)();
+		cnt = 0;
+		while (pTemp) {
+			if (strcmp(pTemp->getData()->getData(), command) == 0) {
+				cnt++;
+				h = cnt;
+				find = true;
+				break;
+			}
+			pTemp = pTemp->getNext();
+			cnt++;
+		}
+		break;
+	}
+	if (find == true) {
+		if (!pTemp->getData()->getUp()) {
+			return false;
+		}
+		else {
+			cube_1D* pCount = pTemp->getNext();
+			node* pWork1 = pHead;
+			while (pCount) {
+				end++;
+				pCount = pCount->getNext();
+			}
+			pCount = pTemp->getPrev();
+			while (pCount) {
+				start++;
+				pCount = pCount->getPrev();
+			}
+			pWork1 = pHead;
+			if (h > 0) {
+				node* Copy_Work1 = pWork1;
+				for (int i = 0; i < h - 1; i++) {
+					Copy_Work1 = (Copy_Work1->*pDown)();
+				}
+				pHead = Copy_Work1;
+				pWork1 = Copy_Work1;
+				node* pWork2 = pWork1;
+				node* pWork3 = pWork1;
+				node* pWork4 = pWork1;
+				for (int i = 0; i < end; i++) {
+					pWork2 = pWork1;
+					while (pWork2) {
+						pWork3 = pWork2;
+						while (pWork3) {
+							pWork4 = (pWork3->*pDown)();
+							(pWork3->*setDown)((pWork4->*pDown)());
+							if ((pWork4->*pDown)()) {
+								((pWork4->*pDown)()->*setUp)(pWork3);
+							}
+							delete pWork4;
+							pWork3 = (pWork3->*pRight)();
+						}
+						pWork2 = (pWork2->*pOut)();
+					}
+				}
+				pWork1 = Copy_Work1;
+				pWork2 = pWork1;
+				pWork3 = pWork1;
+				pWork4 = pWork1;
+				for (int i = 0; i < start; i++) {
+					pWork2 = pWork1;
+					while (pWork2) {
+						pWork3 = pWork2;
+						while (pWork3) {
+							pWork4 = (pWork3->*pUp)();
+							(pWork3->*setUp)((pWork4->*pUp)());
+							if ((pWork4->*pUp)()) {
+								((pWork4->*pUp)()->*setDown)(pWork3);
+							}
+							delete pWork4;
+							pWork3 = (pWork3->*pRight)();
+						}
+						pWork2 = (pWork2->*pOut)();
+					}
+				}
+			}
+			else if (c > 0) {
+				node* Copy_Work1 = pHead;
+				for (int i = 0; i < c - 1; i++) {
+					Copy_Work1 = (Copy_Work1->*pRight)();
+				}
+				pHead = Copy_Work1;
+				pWork1 = Copy_Work1;
+				node* pWork2 = pWork1;
+				node* pWork3 = pWork1;
+				node* pWork4 = pWork1;
+				for (int i = 0; i < end; i++) {
+					pWork2 = pWork1;
+					while (pWork2) {
+						pWork3 = pWork2;
+						while (pWork3) {
+							pWork4 = (pWork3->*pRight)();
+							(pWork3->*setRight)((pWork4->*pRight)());
+							if ((pWork4->*pRight)()) {
+								((pWork4->*pRight)()->*setLeft)(pWork3);
+							}
+							delete pWork4;
+							pWork3 = (pWork3->*pDown)();
+						}
+						pWork2 = (pWork2->*pOut)();
+					}
+				}
+				pWork1 = Copy_Work1;
+				pWork2 = pWork1;
+				pWork3 = pWork1;
+				pWork4 = pWork1;
+				for (int i = 0; i < start; i++) {
+					pWork2 = pWork1;
+					while (pWork2) {
+						pWork3 = pWork2;
+						while (pWork3) {
+							pWork4 = (pWork3->*pLeft)();
+							(pWork3->*setLeft)((pWork4->*pLeft)());
+							if ((pWork4->*pLeft)()) {
+								((pWork4->*pLeft)()->*setRight)(pWork3);
+							}
+							delete pWork4;
+							pWork3 = (pWork3->*pDown)();
+						}
+						pWork2 = (pWork2->*pOut)();
+					}
+				}
+			}
+			else if (r > 0) {
+				node* Copy_Work1 = pHead;
+				for (int i = 0; i < r - 1; i++) {
+					Copy_Work1 = (Copy_Work1->*pOut)();
+				}
+				pHead = Copy_Work1;
+				pWork1 = Copy_Work1;
+				node* pWork2 = pWork1;
+				node* pWork3 = pWork1;
+				node* pWork4 = pWork1;
+				for (int i = 0; i < end; i++) {
+					pWork2 = pWork1;
+					while (pWork2) {
+						pWork3 = pWork2;
+						while (pWork3) {
+							pWork4 = (pWork3->*pOut)();
+							(pWork3->*setOut)((pWork4->*pOut)());
+							if ((pWork4->*pOut)()) {
+								((pWork4->*pOut)()->*setIn)(pWork3);
+							}
+							delete pWork4;
+							pWork3 = (pWork3->*pRight)();
+						}
+						pWork2 = (pWork2->*pDown)();
+					}
+				}
+				pWork1 = Copy_Work1;
+				pWork2 = pWork1;
+				pWork3 = pWork1;
+				pWork4 = pWork1;
+				for (int i = 0; i < start; i++) {
+					pWork2 = pWork1;
+					while (pWork2) {
+						pWork3 = pWork2;
+						while (pWork3) {
+							pWork4 = (pWork3->*pIn)();
+							(pWork3->*setIn)((pWork4->*pIn)());
+							if ((pWork4->*pIn)()) {
+								((pWork4->*pIn)()->*setOut)(pWork3);
+							}
+							delete pWork4;
+							pWork3 = (pWork3->*pRight)();
+						}
+						pWork2 = (pWork2->*pDown)();
+					}
+				}
+
+			}
+			cube_1D* pTemp_next = pTemp->getNext();
+			cube_1D* pTemp_prev = pTemp->getPrev();
+			for (int i = 0; i < end; i++) {
+				pTemp->setNext(pTemp_next->getNext());
+				delete pTemp_next;
+				pTemp_next = pTemp->getNext();
+				if (pTemp_next == nullptr) {
+					pTemp->setNext(nullptr);
+					break;
+				}
+				pTemp_next->setPrev(pTemp);
+			}
+			for (int i = 0; i < start; i++) {
+				pTemp->setPrev(pTemp_prev->getPrev());
+				delete pTemp_prev;
+				pTemp_prev = pTemp->getPrev();
+				if (pTemp_prev == nullptr) {
+					pTemp->setPrev(nullptr);
+					break;
+				}
+			}
+			if (h > 0) {
+				(this->*pHeight_set)(pTemp);
+			}
+			else if (c > 0) {
+				(this->*pColumn_set)(pTemp);
+			}
+			else if (r > 0) {
+				(this->*pRow_set)(pTemp);
+			}
+		}
+	}
+	else {
+		return false;
+	}
+
+}
+
+/*bool cube::DrillDown(char* command,cube* raw) {
+	bool find = false;
+	int h = 0;
+	int r = 0;
+	int c = 0;
+	int cnt = 0;
+	int raw_cnt = 0;
+	int tree_end = 0;
+	int low_number = 0;
+	cube_1D* pTemp = (this->*pRow)();
+	while (!find) {
+		while (pTemp) {
+			if (strcmp(pTemp->getData()->getData(), command) == 0) {
+				cnt++;
+				r = cnt;
+				find = true;
+				break;
+			}
+			pTemp = pTemp->getNext();
+			cnt++;
+		}
+		if (find)
+			break;
+		pTemp = (this->*pColumn)();
+		cnt = 0;
+		while (pTemp) {
+			if (strcmp(pTemp->getData()->getData(), command) == 0) {
+				cnt++;
+				c = cnt;
+				find = true;
+				break;
+			}
+			pTemp = pTemp->getNext();
+			cnt++;
+		}
+		if (find)
+			break;
+		pTemp = (this->*pHeight)();
+		cnt = 0;
+		while (pTemp) {
+			if (strcmp(pTemp->getData()->getData(), command) == 0) {
+				cnt++;
+				h = cnt;
+				find = true;
+				break;
+			}
+			pTemp = pTemp->getNext();
+			cnt++;
+		}
+		break;
+	}
+	if (find == true) {
+		if (!pTemp->getData()->getDown()) {
+			return false;
+		}
+		else {
+			low_number = pTemp->getData()->getLow();
+			node* pWork1 = pHead;
+			if (low_number == 2) {
+				tree_node* pCount = pTemp->getData()->getDown();
+				while (pCount->getNext()) {
+					tree_end++;
+					pCount = pCount->getNext();
+				}
+				pCount = pTemp->getData()->getDown();
+				node* pWork_Copy = raw->getHead();
+				node* pWork1 = pHead;
+				node* pWork2 = pWork1;
+				node* pWork3 = pWork1;
+				node* pWork4 = pWork1;
+				if (h > 0) {
+					cube_1D* raw_tree = (raw->*pHeight)();
+					while (pWork_Copy) {
+						if (strcmp(raw_tree->getData()->getData(), pCount->getData()) == 0)
+							break;
+						pWork_Copy = (pWork_Copy->*pDown)();
+					}
+					for (int i = 0; i < h - 1; i++) {
+						pWork1 = (pWork1->*pDown)();
+					}
+					for (int i = 0; i < tree_end; i++) {
+						
+					}
+				}
+				else if (c > 0) {
+
+				}
+				else if (r > 0) {
+
+				}
+			}
+			while (pCount) {
+				end++;
+				pCount = pCount->getNext();
+			}
+			pCount = pTemp->getData()->getPrev();
+			while (pCount) {
+				start++;
+				pCount = pCount->getPrev();
+			}
+			if (!pTemp->getData()->getUp()->getDown()->getNext()) {
+				pTemp->setData(pTemp->getData()->getUp());
+				return true;
+			}
+			for (int i = 0; i < start; i++) {
+				pTemp = pTemp->getPrev();
+				r--;
+				h--;
+				c--;
+			}
+			if (h > 0) {
+				for (int i = 0; i < h - 1; i++) {
+					pWork1 = (pWork1->*pDown)();
+				}
+				node* pWork2 = pWork1;
+				node* pWork3 = pWork1;
+				node* pWork4 = pWork1;
+				for (int i = 0; i < start + end; i++) {
+					pWork2 = pWork1;
+					while (pWork2) {
+						pWork3 = pWork2;
+						while (pWork3) {
+							pWork4 = (pWork3->*pDown)();
+							pWork3->setData(pWork3->getData() + pWork4->getData());
+							(pWork3->*setDown)((pWork4->*pDown)());
+							if ((pWork4->*pDown)()) {
+								((pWork4->*pDown)()->*setUp)(pWork3);
+							}
+							delete pWork4;
+							pWork3 = (pWork3->*pRight)();
+						}
+						pWork2 = (pWork2->*pOut)();
+					}
+				}
+			}
+			else if (c > 0) {
+				for (int i = 0; i < c - 1; i++) {
+					pWork1 = (pWork1->*pRight)();
+				}
+				node* pWork2 = pWork1;
+				node* pWork3 = pWork1;
+				node* pWork4 = pWork1;
+				for (int i = 0; i < start + end; i++) {
+					pWork2 = pWork1;
+					while (pWork2) {
+						pWork3 = pWork2;
+						while (pWork3) {
+							pWork4 = (pWork3->*pRight)();
+							pWork3->setData(pWork3->getData() + pWork4->getData());
+							(pWork3->*setRight)((pWork4->*pRight)());
+							if ((pWork4->*pRight)()) {
+								((pWork4->*pRight)()->*setLeft)(pWork3);
+							}
+							delete pWork4;
+							pWork3 = (pWork3->*pDown)();
+						}
+						pWork2 = (pWork2->*pOut)();
+					}
+				}
+			}
+			else if (r > 0) {
+				for (int i = 0; i < r - 1; i++) {
+					pWork1 = (pWork1->*pOut)();
+				}
+				node* pWork2 = pWork1;
+				node* pWork3 = pWork1;
+				node* pWork4 = pWork1;
+				for (int i = 0; i < start + end; i++) {
+					pWork2 = pWork1;
+					while (pWork2) {
+						pWork3 = pWork2;
+						while (pWork3) {
+							pWork4 = (pWork3->*pOut)();
+							pWork3->setData(pWork3->getData() + pWork4->getData());
+							(pWork3->*setOut)((pWork4->*pOut)());
+							if ((pWork4->*pOut)()) {
+								((pWork4->*pOut)()->*setIn)(pWork3);
+							}
+							delete pWork4;
+							pWork3 = (pWork3->*pRight)();
+						}
+						pWork2 = (pWork2->*pDown)();
+					}
+				}
+			}
+			pTemp->setData(pTemp->getData()->getUp());
+			cube_1D* pTemp_next = pTemp->getNext();
+			for (int i = 0; i < start + end; i++) {
+				pTemp->setNext(pTemp_next->getNext());
+				delete pTemp_next;
+				pTemp_next = pTemp->getNext();
+				if (pTemp_next == nullptr) {
+					pTemp->setNext(nullptr);
+					break;
+				}
+				pTemp_next->setPrev(pTemp);
+			}
+		}
+	}
+	else {
+		return false;
+	}
+	return true;
+}*/
+
+void cube::WriteError(char* command) {
+	ofstream log;
+	log.open("log.txt", ios::app);
+	log << "[" << command << "]" << endl;
+	log << "ERROR" << '\n' << '\n';
+	log.close();
 }

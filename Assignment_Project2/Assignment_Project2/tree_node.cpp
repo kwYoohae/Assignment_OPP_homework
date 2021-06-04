@@ -8,6 +8,7 @@ tree_node::tree_node() {
 	pNext = nullptr;
 	pPrev = nullptr;
 	count = 0;
+	low = 0;
 }
 
 tree_node::~tree_node() {
@@ -26,8 +27,14 @@ char* tree_node::getData() {
 int tree_node::getCount() {
 	return count;
 }
+int tree_node::getLow() {
+	return low;
+}
 
 
+void tree_node::setLow(int temp) {
+	low = temp;
+}
 void tree_node::setUp(tree_node* pTemp) {
 	pUp = pTemp;
 }

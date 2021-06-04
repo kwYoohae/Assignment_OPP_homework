@@ -1,8 +1,16 @@
 LOAD
 ROTATE clockwise
 ROTATE left
+SLICE Korea
+ROLLUP September
+SLICE Q2 Q4
+SLICE Q3
+ROLLUP Q2
+ROLLUP Q2
+ROLLUP time
+VIEW
+ROLLUP Korea
+ROLLUP meat
 ROTATE up
-ROTATE down
-ROTATE right
-ROTATE c_clockwise
+ROTATE up
 EXIT

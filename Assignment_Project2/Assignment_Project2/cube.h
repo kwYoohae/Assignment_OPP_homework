@@ -9,12 +9,6 @@ private:
 	cube_1D* Row;
 	cube_1D* Column;
 	cube_1D* Height;
-	int Rev_r;
-	int Rev_c;
-	int Rev_h;
-	int rotate_LR;
-	int rotate_C_CL;
-	int rotate_UD;
 public:
 	cube();
 	~cube();
@@ -62,7 +56,7 @@ public:
 
 	bool Roll_up(char* command);
 	bool slice(char* command);
-	bool DrillDown(char* command, cube* raw);
+	//bool DrillDown(char* command, cube* raw);
 	void delete_cube();
 
 };

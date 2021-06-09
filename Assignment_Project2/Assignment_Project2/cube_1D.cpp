@@ -1,68 +1,40 @@
 #include "cube_1D.h"
 #include <iostream>
 
-cube_1D::cube_1D() {
-	pHead = nullptr;
-	pTail = nullptr;
+cube_1D::cube_1D() { // 생성자(초기화)
 	pNext = nullptr;
 	pPrev = nullptr;
-	memset(name, NULL, 100);
 	pData = nullptr;
-	pNode = nullptr;
 }
 
-cube_1D::~cube_1D() {
+cube_1D::~cube_1D() { // 소멸자
 
 }
 
-tree_node* cube_1D::getData() {
+tree_node* cube_1D::getData() { // 값을 반환하는 매소드
 	return pData;
 }
-node* cube_1D::getHead() {
-	return pHead;
-}
-node* cube_1D::getTail() {
-	return pTail;
-}
-char* cube_1D::getName() {
-	return name;
-}
-cube_1D* cube_1D::getNext() {
+cube_1D* cube_1D::getNext() {// 값을 반환하는 매소드
 	return pNext;
 }
-cube_1D* cube_1D::getPrev() {
+cube_1D* cube_1D::getPrev() {// 값을 반환하는 매소드
 	return pPrev;
 }
-node* cube_1D::getNode() {
-	return pNode;
-}
-int cube_1D::getRev() {
+int cube_1D::getRev() {// 값을 반환하는 매소드
 	return Rev_number;
 }
 
-void cube_1D::setRev(int temp) {
+void cube_1D::setRev(int temp) {// 값을 변경하는 매소드
 	Rev_number = temp;
 }
-void cube_1D::setNode(node* pTemp) {
-	pNode = pTemp;
-}
-void cube_1D::setData(tree_node* pTemp) {
+void cube_1D::setData(tree_node* pTemp) {// 값을 변경하는 매소드
 	pData = pTemp;
 }
-void cube_1D::setHead(node* pTemp) {
-	pHead = pTemp;
-}
-void cube_1D::setTail(node* pTemp) {
-	pTail = pTemp;
-}
-void cube_1D::setName(char* pTemp) {
-	strcpy_s(name, pTemp);
-}
 
-void cube_1D::setNext(cube_1D* pTemp) {
+void cube_1D::setNext(cube_1D* pTemp) {// 값을 변경하는 매소드
 	pNext = pTemp;
 }
-void cube_1D::setPrev(cube_1D* pTemp) {
+void cube_1D::setPrev(cube_1D* pTemp) {// 값을 변경하는 매소드
 	pPrev = pTemp;
 }
 

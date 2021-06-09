@@ -352,7 +352,7 @@ void insert_data(cube* Cube, char* product, char* location, char* time, int data
 	pNode->setData(data);
 }
 
-int count_down(tree* Tree) {
+int count_down(tree* Tree) { // 
 	int cnt = 0;
 	tree_node* pTemp = Tree->getRoot();
 	while (pTemp) {

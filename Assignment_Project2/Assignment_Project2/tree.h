@@ -12,8 +12,6 @@ public:
 	tree_node* getRoot();
 
 	void setRoot(tree_node* pTemp);
-	tree_node* search_child(char* data);
-	int cnt_chiled(char* data);
 
 	void delete_tree(tree_node* Node);
 };

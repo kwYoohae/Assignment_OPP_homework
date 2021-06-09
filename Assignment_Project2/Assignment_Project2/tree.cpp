@@ -1,64 +1,25 @@
 #include "tree.h"
 #include <iostream>
-tree::tree() {
+tree::tree() { // 생성자
 	pRoot = nullptr;
 }
-tree::~tree() {
-	delete_tree(pRoot);
+tree::~tree() { // 소멸자
+	delete_tree(pRoot); // tree를 삭제해주는 매소드 호출
 	pRoot = nullptr;
 }
 
-tree_node* tree::getRoot() {
+tree_node* tree::getRoot() {// 값을 반환하는 매소드
 	return pRoot;
 }
 
-void tree::setRoot(tree_node* pTemp) {
+void tree::setRoot(tree_node* pTemp) { // 값을 변경하는 매소드
 	pRoot = pTemp;
 }
 
-tree_node* tree::search_child(char* data) {
-	tree_node* pTemp = pRoot;
-	tree_node* pParent = pTemp;
-	while(pParent) {
-		if (strcmp(data, pTemp->getData()) == 0) {
-			if (!pTemp->getDown())
-				return nullptr;
-			else {
-				return pTemp;
-			}
-		}
-		if (!pTemp) {
-			pParent = pParent->getDown();
-			pTemp = pParent;
-		}
-		else {
-			pTemp = pTemp->getNext();
-			if (!pTemp) {
-				pParent = pParent->getDown();
-				pTemp = pParent;
-			}
-		}
-	}
-	return nullptr;
-}
-
-int tree::cnt_chiled(char* data) {
-	tree_node* pTemp = search_child(data);
-	if (pTemp == nullptr)
-		return 0;
-	int cnt = 0;
-	pTemp = pTemp->getDown();
-	while (pTemp) {
-		cnt++;
-		pTemp = pTemp->getNext();
-	}
-	return cnt;
-}
-
-void tree::delete_tree(tree_node* pNode) {
-	if (!pNode) {
-		delete_tree(pNode->getDown());
-		delete_tree(pNode->getNext());
+void tree::delete_tree(tree_node* pNode) { // tree를 삭제하는 매소드
+	if (!pNode) { // 재귀적으로 삭제
+		delete_tree(pNode->getDown()); // 제일 밑 계층 방문 
+		delete_tree(pNode->getNext()); // 자매노드 삭제
 		delete pNode;
 	}
 }

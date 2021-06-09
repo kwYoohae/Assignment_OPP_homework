@@ -19,3 +19,38 @@ fruit	1057		75		36		36
 vegetable	36		36		85		36		
 
 
+[LOAD]
+Q1	Korea	Japan	USA	Canada	
+meat	138		36		36		36		
+fruit	1057		75		36		36		
+vegetable	36		36		85		36		
+
+
+[ROTATE]
+Korea	Q4	Q3	Q2	Q1	
+meat	66		57		48		138		
+fruit	36		36		36		1057		
+vegetable	36		36		36		36		
+
+
+[ROTATE]
+Q1	Korea	Japan	USA	Canada	
+meat	138		36		36		36		
+fruit	1057		75		36		36		
+vegetable	36		36		85		36		
+
+
+[LOAD]
+Q1	Korea	Japan	USA	Canada	
+meat	138		36		36		36		
+fruit	1057		75		36		36		
+vegetable	36		36		85		36		
+
+
+[ROTATE]
+Korea	Q4	Q3	Q2	Q1	
+meat	66		57		48		138		
+fruit	36		36		36		1057		
+vegetable	36		36		36		36		
+
+

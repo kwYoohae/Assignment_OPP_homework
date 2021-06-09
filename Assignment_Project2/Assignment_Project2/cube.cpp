@@ -4,45 +4,39 @@
 #include <fstream>
 using namespace std;
 
-cube::cube() {
+cube::cube() { // 생성자(초기화)
 	pHead = nullptr;
 	Row = nullptr;
 	Column = nullptr;
 	Height = nullptr;
-	Rev_c = 0;
-	Rev_h = 0;
-	Rev_r = 0;
-	rotate_LR = 0;
-	rotate_C_CL = 0;
-	rotate_UD = 0;
 }
 
 cube::~cube() {
 }
 
-cube_1D* cube::getRow() {
+cube_1D* cube::getRow() {// 값을 반환하는 매소드
 	return Row;
 }
-cube_1D* cube::getColumn() {
+cube_1D* cube::getColumn() {// 값을 반환하는 매소드
 	return Column;
 }
-cube_1D* cube::getHeight() {
+cube_1D* cube::getHeight() {// 값을 반환하는 매소드
 	return Height;
 }
-node* cube::getHead() {
+node* cube::getHead() {// 값을 반환하는 매소드
 	return pHead;
 }
 
-void cube::setRow(cube_1D* pTemp) {
+void cube::setRow(cube_1D* pTemp) { // 값을 변경하는 매소드
 	Row = pTemp;
 }
-void cube::setColumn(cube_1D* pTemp) {
+void cube::setColumn(cube_1D* pTemp) {// 값을 변경하는 매소드
 	Column = pTemp;
 }
-void cube::setHeight(cube_1D* pTemp) {
+void cube::setHeight(cube_1D* pTemp) {// 값을 변경하는 매소드
 	Height = pTemp;
 }
-void cube::setHead(node* pTemp) {
+void cube::setHead(node* pTemp) {// 값을 변경하는 매소드
 	pHead = pTemp;
 }
 
@@ -125,7 +119,6 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) { //
 			cube_1D* pNew = new cube_1D;
 			if (!Height) {
 				Height = pNew;
-				pNew->setName(pTemp->getData());
 				pNew->setData(pTemp);
 			}
 			else {

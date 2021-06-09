@@ -40,10 +40,69 @@ void cube::setHead(node* pTemp) {// 값을 변경하는 매소드
 	pHead = pTemp;
 }
 
-void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) { // 트리를 만드는 매소드
+void cube::WriteLog(char* command) {//log에 결과값을 작성하는 매소드
+	ofstream log;
+	cube_1D* Rev_temp = (this->*pRow)();
+	log.open("log.txt", ios::app); // log.txt파일을 열고 ios::app방식으로 기존 텍스트에 이어쓴다.
+	log << '[' << command << ']' << '\n';//무슨 커맨드를 작동한 결과인지 결과를 입력한다. 
+	if (Rev_temp->getRev() % 2 == 0) {
+		log << (this->*pRow)()->getData()->getData() << '\t'; // Row값을 먼저 출력한다.
+	}
+	else {
+		while (Rev_temp->getNext()) { //Rev_temp를 거꾸로 출력하기 위해 제일 뒤쪽 값으로 보낸다.
+			Rev_temp = Rev_temp->getNext();
+		}
+		log << Rev_temp->getData()->getData() << '\t'; // Row값을 먼저 출력한다.
+	}
+	Rev_temp = (this->*pColumn)(); // Column값을 모두 출력한다.
+	if (Rev_temp->getRev() % 2 == 0) { // Rev값이 % 2를해서 0 일때는 정상적으로 출력한다.
+		while (Rev_temp) { // Rev_temp를 정상적으로 출력해준다.
+			log << Rev_temp->getData()->getData() << '\t';
+			Rev_temp = Rev_temp->getNext();
+		}
+	}
+	else { // 거꾸로 출력하기 위한 조건문
+		while (Rev_temp->getNext()) { // 맨끝값으로 이동
+			Rev_temp = Rev_temp->getNext();
+		}
+		while (Rev_temp) { // 이전값으로 이동하면서 거구ㅗ 출력
+			log << Rev_temp->getData()->getData() << '\t';
+			Rev_temp = Rev_temp->getPrev();
+		}
+	}
+	log << '\n';
+	cube_1D* pTemp = (this->*pHeight)(); //pHeight값을 출력하기 위해서 할당
+	Rev_temp = (this->*pHeight)();
+	while (Rev_temp->getNext()) { // 제일 뒤쪽값으로 이동
+		Rev_temp = Rev_temp->getNext();
+	}
+	node* pWork1 = pHead;
+	node* pWork2 = pWork1;
+	while (pWork2) {
+		if (pTemp->getRev() % 2 == 0) { // Rev값이 % 2 를 했을 때 0이면 원래 순서대로 출력
+			log << pTemp->getData()->getData() << '\t'; // Height의 데이터중 하나를 출력한다/
+			pTemp = pTemp->getNext();
+		}
+		else {
+			log << Rev_temp->getData()->getData() << '\t'; // Height의 데이터중 하나를 출력한다/
+			Rev_temp = Rev_temp->getPrev();
+		}
+		while (pWork1) {
+			log << pWork1->getData() << '\t' << '\t'; // 노드의 데이터를 출력한다.
+			pWork1 = (pWork1->*pRight)(); // 다음 값으로 이동
+		}
+		log << '\n';
+		pWork2 = (pWork2->*pDown)(); // 모든 Right값을 돌았을 때 밑으로 Down으로 이동
+		pWork1 = pWork2;
+	}
+	log << '\n' << '\n';
+	log.close();
+}
+
+void cube::Make_tree(tree* Time, tree* Location, tree* Product, int product_number,int location_number, int time_number) { // 트리를 만드는 매소드
 	tree_node* pTemp = Time->getRoot(); // time부터 트리생성
 	tree_node* pParent = pTemp;
-	for (int i = 1; i < number; i++) { // time의 입력한 계층만큼 밑으로 내려감
+	for (int i = 1; i < time_number; i++) { // time의 입력한 계층만큼 밑으로 내려감
 		pParent = pTemp;
 		pTemp = pTemp->getDown();
 		if (!pTemp->getDown()) {
@@ -75,7 +134,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) { //
 
 	pTemp = Location->getRoot(); //위와 똑같은 방식으로 Location의 자식의 자매노드를 계속 탐색해서 tree를 생성해준다
 	pParent = pTemp;
-	for (int i = 1; i < number; i++) {
+	for (int i = 1; i < location_number; i++) {
 		pParent = pTemp;
 		pTemp = pTemp->getDown();
 		if (!pTemp->getDown()) {
@@ -107,7 +166,7 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) { //
 
 	pTemp = Product->getRoot();//위와 똑같은 방식으로 Time의 자식의 자매노드를 계속 탐색해서 tree를 생성해준다
 	pParent = pTemp;
-	for (int i = 1; i < number; i++) {
+	for (int i = 1; i < product_number; i++) {
 		pParent = pTemp;
 		pTemp = pTemp->getDown();
 		if (!pTemp->getDown()) {
@@ -139,7 +198,6 @@ void cube::Make_tree(tree* Time, tree* Location, tree* Product, int number) { //
 }
 
 void cube::Make_Cube(int p, int l, int t) { //cube를 만드는 매소드 
-	int cnt = 1;
 	node* pWork1 = nullptr;
 	node* pWork2 = nullptr;
 	node* pWork3 = nullptr;
@@ -183,8 +241,6 @@ void cube::Make_Cube(int p, int l, int t) { //cube를 만드는 매소드
 					pWork3->setCnext(pNew); // 새로생긴 location의 next,prev값 설정
 					pNew->setCprev(pWork3);
 				}
-				pNew->setData(cnt);
-				//cnt++;
 			}
 			if (j != 0) { // j(product)가 2개이상일때 서로의 product줄을 서로 이어주는 매소드
 				pWork1 = pHead;
@@ -226,46 +282,6 @@ void cube::Make_Cube(int p, int l, int t) { //cube를 만드는 매소드
 	}
 }
 
-void cube::Print() {
-	cout.setf(ios::left);
-	int R = 0;
-	int C = 0;
-	int H = 0;
-	cube_1D* pTemp = (this->*pRow)();
-	while (pTemp) {
-		R++;
-		pTemp = pTemp->getNext();
-	}
-	pTemp = (this->*pColumn)();
-	while (pTemp) {
-		C++;
-		pTemp = pTemp->getNext();
-	}
-	pTemp = (this->*pHeight)();
-	while (pTemp) {
-		H++;
-		pTemp = pTemp->getNext();
-	}
-	node* pWork1 = pHead;
-	node* pWork2 = pHead;
-	node* pWork3 = pHead;
-	for (int i = 0; i < R; i++) {
-		for (int j = 0; j < H; j++) {
-			for (int k = 0; k < C;k++) {
-				cout << pWork3->getData() << '\t';
-				pWork3 = (pWork3->*pRight)();
-			}
-			cout << '\n';
-			pWork2 = (pWork2->*pDown)();
-			pWork3 = pWork2;
-		}
-		cout << '\n' << '\n';
-		pWork1 = (pWork1->*pOut)();
-		pWork2 = pWork1;
-		pWork3 = pWork1;
-	}
-}
-
 void cube::Make_View(tree* Time, tree* Location, tree* Product) { //view큐브의 초기생성을 하는 매소드(row,column,height를 3계층에서 2게층으로 rollup하는 방법
 	int number = 0;
 	node* pWork1 = pHead;
@@ -276,9 +292,11 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) { //view큐브의 �
 	tree_node* tree_temp = Height->getData();
 	tree_node* tree_down = tree_temp->getDown();
 	pTemp = tree_temp;
-	while (tree_down->getNext()) { // hight의 계층을 찾고 원하는 트리노드가 있는 곳까지 이동
-		tree_down = tree_down->getNext();
-		number++;
+	if (tree_down) { // high의 자식노드가 비어있지 않을때
+		while (tree_down->getNext()) { // 원하는 계층까지 이동
+			tree_down = tree_down->getNext();
+			number++;
+		}
 	}
 	while (tree_temp) { // tree_temp가 마지막 자매노드까지 방문했을 때까지 반복
 		for (int i = 0; i < number; i++) { // 자식노드의 개수만큼 반복 rollup을 해줌
@@ -291,6 +309,7 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) { //view큐브의 �
 					pWork3->setHnext(pWork4->getHnext()); // 삭제할데이터의 다음값과 합치는 값의 다음값을 결정해줌
 					if (pWork4->getHnext()) { // pWork4의 다음값이 비어있지 않을때(마지막 값이 아닐때)
 						pWork4->getHnext()->setHprev(pWork3); // 그다음 값의 이전값을 설정해줌
+						//break;
 					}
 					delete pWork4; //노드삭제
 					pWork3 = pWork3->getCnext(); // 그다음 노드로 이동 Column값
@@ -315,9 +334,11 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) { //view큐브의 �
 	pWork1 = pHead;
 	number = 0;
 	tree_down = tree_temp->getDown();
-	while (tree_down->getNext()) {
-		tree_down = tree_down->getNext();
-		number++;
+	if (tree_down) {
+		while (tree_down->getNext()) {
+			tree_down = tree_down->getNext();
+			number++;
+		}
 	}
 	while (tree_temp) {
 		for (int i = 0; i < number; i++) {
@@ -330,6 +351,7 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) { //view큐브의 �
 					pWork3->setRnext(pWork4->getRnext());
 					if (pWork4->getRnext()) {
 						pWork4->getRnext()->setRprev(pWork3);
+						//break;
 					}
 					delete pWork4;
 					pWork3 = pWork3->getCnext();
@@ -354,9 +376,11 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) { //view큐브의 �
 	pWork1 = pHead;
 	number = 0;
 	tree_down = tree_temp->getDown();
-	while (tree_down->getNext()) {
-		tree_down = tree_down->getNext();
-		number++;
+	if (tree_down) {
+		while (tree_down->getNext()) {
+			tree_down = tree_down->getNext();
+			number++;
+		}
 	}
 	while (tree_temp) {
 		for (int i = 0; i < number; i++) {
@@ -369,6 +393,7 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) { //view큐브의 �
 					pWork3->setCnext(pWork4->getCnext());
 					if (pWork4->getCnext()) {
 						pWork4->getCnext()->setCprev(pWork3);
+						//break;
 					}
 					delete pWork4;
 					pWork3 = pWork3->getHnext();
@@ -389,64 +414,6 @@ void cube::Make_View(tree* Time, tree* Location, tree* Product) { //view큐브의 �
 	}
 }
 
-void cube::WriteLog(char* command) {//log에 결과값을 작성하는 매소드
-	ofstream log;
-	cube_1D* Rev_temp = (this->*pRow)();
-	log.open("log.txt", ios::app); // log.txt파일을 열고 ios::app방식으로 기존 텍스트에 이어쓴다.
-	log << '[' << command << ']' <<'\n';//무슨 커맨드를 작동한 결과인지 결과를 입력한다. 
-	if (Rev_temp->getRev() % 2 == 0) {
-		log << (this->*pRow)()->getData()->getData() << '\t'; // Row값을 먼저 출력한다.
-	}
-	else {
-		while (Rev_temp->getNext()) { //Rev_temp를 거꾸로 출력하기 위해 제일 뒤쪽 값으로 보낸다.
-			Rev_temp = Rev_temp->getNext();
-		}
-		log << Rev_temp->getData()->getData() << '\t'; // Row값을 먼저 출력한다.
-	}
-	Rev_temp = (this->*pColumn)(); // Column값을 모두 출력한다.
-	if (Rev_temp->getRev() % 2 == 0) { // Rev값이 % 2를해서 0 일때는 정상적으로 출력한다.
-		while (Rev_temp) { // Rev_temp를 정상적으로 출력해준다.
-			log << Rev_temp->getData()->getData() << '\t';
-			Rev_temp = Rev_temp->getNext();
-		}
-	}
-	else { // 거꾸로 출력하기 위한 조건문
-		while (Rev_temp->getNext()) { // 맨끝값으로 이동
-			Rev_temp = Rev_temp->getNext();
-		}
-		while (Rev_temp) { // 이전값으로 이동하면서 거구ㅗ 출력
-			log << Rev_temp->getData()->getData() << '\t';
-			Rev_temp = Rev_temp->getPrev();
-		}
-	}
-	log << '\n';
-	cube_1D* pTemp = (this->*pHeight)(); //pHeight값을 출력하기 위해서 할당
-	Rev_temp = (this->*pHeight)(); 
-	while (Rev_temp->getNext()) { // 제일 뒤쪽값으로 이동
-		Rev_temp = Rev_temp->getNext();
-	}
-	node* pWork1 = pHead;
-	node* pWork2 = pWork1;
-	while (pWork2) {
-		if (pTemp->getRev() % 2 == 0) { // Rev값이 % 2 를 했을 때 0이면 원래 순서대로 출력
-			log << pTemp->getData()->getData() << '\t'; // Height의 데이터중 하나를 출력한다/
-			pTemp = pTemp->getNext();
-		}
-		else {
-			log << Rev_temp->getData()->getData() << '\t'; // Height의 데이터중 하나를 출력한다/
-			Rev_temp = Rev_temp->getPrev();
-		}
-		while (pWork1) {
-			log << pWork1->getData() << '\t' << '\t'; // 노드의 데이터를 출력한다.
-			pWork1 = (pWork1->*pRight)(); // 다음 값으로 이동
-		}
-		log << '\n';
-		pWork2 = (pWork2->*pDown)(); // 모든 Right값을 돌았을 때 밑으로 Down으로 이동
-		pWork1 = pWork2;
-	}
-	log << '\n' << '\n';
-	log.close();
-}
 
 void cube::copyData(cube* raw) { // raw큐브의 데이터를 복사해서 가져오는 매소드
 	node* pWork1 = raw->getHead();  // raw큐브의값
@@ -606,113 +573,6 @@ bool cube::Rotate(char* command) {
 		return false;
 	}
 	return true;
-}
-
-void cube::check() {
-	cube_1D* pTemp = (this->*pRow)();
-	cout << "Row :";
-	while (pTemp) {
-		cout << pTemp->getData()->getData() << '\t';
-		pTemp = pTemp->getNext();
-	}
-	cout << '\n';
-	pTemp = (this->*pColumn)();
-	cout << "pColumn :";
-	while (pTemp) {
-		cout << pTemp->getData()->getData() << '\t';
-		pTemp = pTemp->getNext();
-	}
-	cout << '\n';
-	pTemp = (this->*pHeight)();
-	cout << "pHeight :";
-	while (pTemp) {
-		cout << pTemp->getData()->getData() << '\t';
-		pTemp = pTemp->getNext();
-	}
-	cout << '\n';
-}
-
-void cube::Reverse(cube_1D* pCube) { 
-	cube_1D* pHead = pCube;
-	cube_1D* pTemp1 = pHead;
-	cube_1D* pPrev = nullptr;
-	cube_1D* pNode = pHead;
-	cube_1D* pTemp2 = nullptr;
-	int cnt = 0;
-
-	if (!pHead->getNext())
-		return;
-	while (pNode->getNext()) {
-		pNode = pNode->getNext();
-		cnt++;
-	}
-	pPrev = pNode->getPrev();
-	pHead = pNode;
-	while (pPrev->getPrev()) {
-		pNode->setNext(pPrev);
-		pNode = pNode->getPrev();
-		pPrev = pPrev->getPrev();
-		if (!pPrev->getPrev()) {
-			pNode->setNext(pPrev);
-			pPrev->setNext(nullptr);
-			break;
-		}
-	}
-	pHead->setPrev(nullptr);
-	pNode = pHead;
-	pPrev = pNode->getNext();
-	while (pPrev->getNext()) {
-		pPrev->setPrev(pNode);
-		pNode = pNode->getNext();
-		pPrev = pPrev->getNext();
-		if (!pPrev->getNext()) {
-			pPrev->setPrev(pNode);
-			break;
-		}
-	}
-	
-	/*int cnt = 0;
-	if (!pHead->getNext())
-		return;
-	while (pNode->getNext()) {
-		pNode = pNode->getNext();
-		cnt++;
-	}
-	pTemp1 = pNode;
-	while (cnt != 0) {
-		pNode = pHead;
-		for (int i = 0; i < cnt; i++) {
-			pPrev = pNode;
-			pNode = pNode->getNext();
-		}
-		pNode->setNext(pPrev);
-		cnt--;
-	}
-	pPrev->setNext(nullptr);
-	pHead->setPrev(nullptr);
-	pPrev = pHead->getNext();
-	while (pPrev) {
-		pPrev->setPrev(pHead);
-		pHead = pHead->getNext();
-		pPrev = pPrev->getNext();
-	}*/
-	if (pCube == Row)
-		Row = pHead;
-	else if (pCube == Column)
-		Column = pHead;
-	else if (pCube == Height)
-		Height = pHead;
-	pTemp1 = pHead;
-	while (pTemp1) {
-		cout << pTemp1->getData()->getData() << '\t';
-		pTemp1 = pTemp1->getNext();
-	}
-	cout << "\n";
-	pTemp2 = pPrev;
-	while (pTemp2) {
-		cout << pTemp2->getData()->getData() << '\t';
-		pTemp2 = pTemp2->getPrev();
-	}
 }
 
 bool cube::Roll_up(char* command) { // ROLLUP을 하는 매소드
@@ -1269,215 +1129,14 @@ bool cube::slice(char* command) { //slice하는 매소드
 
 }
 
-/*bool cube::DrillDown(char* command,cube* raw) {
-	bool find = false;
-	int h = 0;
-	int r = 0;
-	int c = 0;
-	int cnt = 0;
-	int raw_cnt = 0;
-	int tree_end = 0;
-	int low_number = 0;
-	cube_1D* pTemp = (this->*pRow)();
-	while (!find) {
-		while (pTemp) {
-			if (strcmp(pTemp->getData()->getData(), command) == 0) {
-				cnt++;
-				r = cnt;
-				find = true;
-				break;
-			}
-			pTemp = pTemp->getNext();
-			cnt++;
-		}
-		if (find)
-			break;
-		pTemp = (this->*pColumn)();
-		cnt = 0;
-		while (pTemp) {
-			if (strcmp(pTemp->getData()->getData(), command) == 0) {
-				cnt++;
-				c = cnt;
-				find = true;
-				break;
-			}
-			pTemp = pTemp->getNext();
-			cnt++;
-		}
-		if (find)
-			break;
-		pTemp = (this->*pHeight)();
-		cnt = 0;
-		while (pTemp) {
-			if (strcmp(pTemp->getData()->getData(), command) == 0) {
-				cnt++;
-				h = cnt;
-				find = true;
-				break;
-			}
-			pTemp = pTemp->getNext();
-			cnt++;
-		}
-		break;
-	}
-	if (find == true) {
-		if (!pTemp->getData()->getDown()) {
-			return false;
-		}
-		else {
-			low_number = pTemp->getData()->getLow();
-			node* pWork1 = pHead;
-			if (low_number == 2) {
-				tree_node* pCount = pTemp->getData()->getDown();
-				while (pCount->getNext()) {
-					tree_end++;
-					pCount = pCount->getNext();
-				}
-				pCount = pTemp->getData()->getDown();
-				node* pWork_Copy = raw->getHead();
-				node* pWork1 = pHead;
-				node* pWork2 = pWork1;
-				node* pWork3 = pWork1;
-				node* pWork4 = pWork1;
-				if (h > 0) {
-					cube_1D* raw_tree = (raw->*pHeight)();
-					while (pWork_Copy) {
-						if (strcmp(raw_tree->getData()->getData(), pCount->getData()) == 0)
-							break;
-						pWork_Copy = (pWork_Copy->*pDown)();
-					}
-					for (int i = 0; i < h - 1; i++) {
-						pWork1 = (pWork1->*pDown)();
-					}
-					for (int i = 0; i < tree_end; i++) {
-						
-					}
-				}
-				else if (c > 0) {
-
-				}
-				else if (r > 0) {
-
-				}
-			}
-			while (pCount) {
-				end++;
-				pCount = pCount->getNext();
-			}
-			pCount = pTemp->getData()->getPrev();
-			while (pCount) {
-				start++;
-				pCount = pCount->getPrev();
-			}
-			if (!pTemp->getData()->getUp()->getDown()->getNext()) {
-				pTemp->setData(pTemp->getData()->getUp());
-				return true;
-			}
-			for (int i = 0; i < start; i++) {
-				pTemp = pTemp->getPrev();
-				r--;
-				h--;
-				c--;
-			}
-			if (h > 0) {
-				for (int i = 0; i < h - 1; i++) {
-					pWork1 = (pWork1->*pDown)();
-				}
-				node* pWork2 = pWork1;
-				node* pWork3 = pWork1;
-				node* pWork4 = pWork1;
-				for (int i = 0; i < start + end; i++) {
-					pWork2 = pWork1;
-					while (pWork2) {
-						pWork3 = pWork2;
-						while (pWork3) {
-							pWork4 = (pWork3->*pDown)();
-							pWork3->setData(pWork3->getData() + pWork4->getData());
-							(pWork3->*setDown)((pWork4->*pDown)());
-							if ((pWork4->*pDown)()) {
-								((pWork4->*pDown)()->*setUp)(pWork3);
-							}
-							delete pWork4;
-							pWork3 = (pWork3->*pRight)();
-						}
-						pWork2 = (pWork2->*pOut)();
-					}
-				}
-			}
-			else if (c > 0) {
-				for (int i = 0; i < c - 1; i++) {
-					pWork1 = (pWork1->*pRight)();
-				}
-				node* pWork2 = pWork1;
-				node* pWork3 = pWork1;
-				node* pWork4 = pWork1;
-				for (int i = 0; i < start + end; i++) {
-					pWork2 = pWork1;
-					while (pWork2) {
-						pWork3 = pWork2;
-						while (pWork3) {
-							pWork4 = (pWork3->*pRight)();
-							pWork3->setData(pWork3->getData() + pWork4->getData());
-							(pWork3->*setRight)((pWork4->*pRight)());
-							if ((pWork4->*pRight)()) {
-								((pWork4->*pRight)()->*setLeft)(pWork3);
-							}
-							delete pWork4;
-							pWork3 = (pWork3->*pDown)();
-						}
-						pWork2 = (pWork2->*pOut)();
-					}
-				}
-			}
-			else if (r > 0) {
-				for (int i = 0; i < r - 1; i++) {
-					pWork1 = (pWork1->*pOut)();
-				}
-				node* pWork2 = pWork1;
-				node* pWork3 = pWork1;
-				node* pWork4 = pWork1;
-				for (int i = 0; i < start + end; i++) {
-					pWork2 = pWork1;
-					while (pWork2) {
-						pWork3 = pWork2;
-						while (pWork3) {
-							pWork4 = (pWork3->*pOut)();
-							pWork3->setData(pWork3->getData() + pWork4->getData());
-							(pWork3->*setOut)((pWork4->*pOut)());
-							if ((pWork4->*pOut)()) {
-								((pWork4->*pOut)()->*setIn)(pWork3);
-							}
-							delete pWork4;
-							pWork3 = (pWork3->*pRight)();
-						}
-						pWork2 = (pWork2->*pDown)();
-					}
-				}
-			}
-			pTemp->setData(pTemp->getData()->getUp());
-			cube_1D* pTemp_next = pTemp->getNext();
-			for (int i = 0; i < start + end; i++) {
-				pTemp->setNext(pTemp_next->getNext());
-				delete pTemp_next;
-				pTemp_next = pTemp->getNext();
-				if (pTemp_next == nullptr) {
-					pTemp->setNext(nullptr);
-					break;
-				}
-				pTemp_next->setPrev(pTemp);
-			}
-		}
-	}
-	else {
-		return false;
-	}
-	return true;
+/*(bool cube::DrillDown(char* command ) {
+	//조교님 사랑합니다...
 }*/
 
-void cube::WriteError(char* command) {
+void cube::WriteError(char* command) { // 에러 log를 남기는 매소드
 	ofstream log;
-	log.open("log.txt", ios::app);
-	log << "[" << command << "]" << endl;
+	log.open("log.txt", ios::app); // log.txt파일을 연다
+	log << "[" << command << "]" << endl; // 값저장
 	log << "ERROR" << '\n' << '\n';
-	log.close();
-}
+	log.close(); // 파일닫기
+} 

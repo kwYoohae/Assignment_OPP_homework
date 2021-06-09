@@ -1,31 +1,27 @@
 #pragma once
 class tree_node {
 private:
-	int count;
-	char data[100];
-	int low;
-	tree_node* pUp;
-	tree_node* pDown;
-	tree_node* pNext;
-	tree_node* pPrev;
+	char data[100]; // 데이터 값
+	int low; // 계층값
+	tree_node* pUp; // 윗값
+	tree_node* pDown; // 아랫값
+	tree_node* pNext; // 다음값
+	tree_node* pPrev; // 이전값
 public:
-	tree_node();
-	~tree_node();
+	tree_node(); // 생성자
+	~tree_node(); // 소멸자
 
-	int getLow();
-	tree_node* getUp();
-	tree_node* getDown();
-	char* getData();
-	int getCount();
-	tree_node* getNext();
-	tree_node* getPrev();
+	int getLow(); //값을 반환해주는 매소드
+	tree_node* getUp();//값을 반환해주는 매소드
+	tree_node* getDown();//값을 반환해주는 매소드
+	char* getData();//값을 반환해주는 매소드
+	tree_node* getNext();//값을 반환해주는 매소드
+	tree_node* getPrev();//값을 반환해주는 매소드
 
-	void setLow(int temp);
-	void setUp(tree_node* pTemp);
-	void setDown(tree_node* pTemp);
-	void setData(char* pTemp);
-	void setCount(int temp);
-	void setNew();
-	void setNext(tree_node* pTemp);
-	void setPrev(tree_node* pTemp);
+	void setLow(int temp); // 값을 변경하는 매소드
+	void setUp(tree_node* pTemp);// 값을 변경하는 매소드
+	void setDown(tree_node* pTemp);// 값을 변경하는 매소드
+	void setData(char* pTemp);// 값을 변경하는 매소드
+	void setNext(tree_node* pTemp);// 값을 변경하는 매소드
+	void setPrev(tree_node* pTemp);// 값을 변경하는 매소드
 };

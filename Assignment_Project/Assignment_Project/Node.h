@@ -1,32 +1,32 @@
 #pragma once
-class Node
+class node
 {
 private:
-	int data;
-	Node* pLeft;
-	Node* pRight;
-	Node* pDown;
-	Node* pUp;
-	Node* pHigh;
-	Node* pLow;
+	int data; // data값
+	node* rNext; //row의 nect
+	node* rPrev; // row의 prev
+	node* cNext; // column의 next
+	node* cPrev; // column의 prev
+	node* hNext; // height의 next
+	node* hPrev; // height의  prev
 public:
-	Node();
-	~Node();
+	node(); // 생성자
+	~node(); // 소멸자
 
-	Node* getLow();
-	Node* getHigh();
-	Node* getLeft();
-	Node* getRight();
-	Node* getDown();
-	Node* getUp();
-	int getData();
+	node* getRnext(); //값을 반환하는 매소드
+	node* getRprev();//값을 반환하는 매소드
+	node* getCnext();//값을 반환하는 매소드
+	node* getCprev();//값을 반환하는 매소드
+	node* getHprev();//값을 반환하는 매소드
+	node* getHnext();//값을 반환하는 매소드
+	int getData();//값을 반환하는 매소드
 
-	void setLow(Node* pTemp);
-	void setHigh(Node* pTemp);
-	void setLeft(Node* pTemp);
-	void setRight(Node* pTemp);
-	void setDown(Node* pTemp);
-	void setUp(Node* pTemp);
-	void setData(int temp);
+	void setRnext(node* pTemp); // 값을 변경하는 매소드
+	void setRprev(node* pTemp);// 값을 변경하는 매소드
+	void setCnext(node* pTemp);// 값을 변경하는 매소드
+	void setCprev(node* pTemp);// 값을 변경하는 매소드
+	void setHprev(node* pTemp);// 값을 변경하는 매소드
+	void setHnext(node* pTemp);// 값을 변경하는 매소드
+	void setData(int temp);// 값을 변경하는 매소드
 };
 

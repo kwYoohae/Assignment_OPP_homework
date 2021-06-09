@@ -1,4 +1,5 @@
 LOAD
-ROTATE right
 ROTATE left
+SLICE Korea
+ROLLUP Q4
 EXIT

@@ -5,6 +5,7 @@ cube_1D::cube_1D() { // 생성자(초기화)
 	pNext = nullptr;
 	pPrev = nullptr;
 	pData = nullptr;
+	Rev_number = 0;
 }
 
 cube_1D::~cube_1D() { // 소멸자

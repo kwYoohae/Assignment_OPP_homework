@@ -1,58 +1,58 @@
-#include "Node.h"
+#include "node.h"
 
-Node::Node() {
-	pRight = nullptr;
-	pLeft = nullptr;
-	pUp = nullptr;
-	pDown = nullptr;
-	pHigh = nullptr;
-	pLow = nullptr;
+node::node() { // 생성자 (값을 초기화)
+	rNext = nullptr;
+	rPrev = nullptr;
+	cPrev = nullptr;
+	cNext = nullptr;
+	hNext = nullptr;
+	hPrev = nullptr;
 	data = 0;
 }
-Node::~Node() {
+node::~node() { // 소멸자
 
 }
 
-Node* Node::getHigh() {
-	return pHigh;
+node* node::getHnext() { // 값을 반환하는 매소드
+	return hNext;
 }
-Node* Node::getLow() {
-	return pLow;
+node* node::getHprev() {// 값을 반환하는 매소드
+	return hPrev;
 }
-Node* Node::getLeft() {
-	return pLeft;
+node* node::getCnext() {// 값을 반환하는 매소드
+	return cNext;
 }
-Node* Node::getRight() {
-	return pRight;
+node* node::getCprev() {// 값을 반환하는 매소드
+	return cPrev;
 }
-Node* Node::getDown() {
-	return pDown;
+node* node::getRnext() {// 값을 반환하는 매소드
+	return rNext;
 }
-Node* Node::getUp() {
-	return pUp;
+node* node::getRprev() {// 값을 반환하는 매소드
+	return rPrev;
 }
-int Node::getData() {
+int node::getData() {// 값을 반환하는 매소드
 	return data;
 }
 
-void Node::setLow(Node* pTemp) {
-	pLow = pTemp;
+void node::setCnext(node* pTemp) { // 값을 변경하는 매소드
+	cNext = pTemp;
 }
-void Node::setHigh(Node* pTemp) {
-	pHigh = pTemp;
+void node::setCprev(node* pTemp) {// 값을 변경하는 매소드
+	cPrev = pTemp;
 }
-void Node::setLeft(Node* pTemp) {
-	pLeft = pTemp;
+void node::setHprev(node* pTemp) {// 값을 변경하는 매소드
+	hPrev = pTemp;
 }
-void Node::setRight(Node* pTemp) {
-	pRight = pTemp;
+void node::setHnext(node* pTemp) {// 값을 변경하는 매소드
+	hNext = pTemp;
 }
-void Node::setDown(Node* pTemp) {
-	pDown = pTemp;
+void node::setRnext(node* pTemp) {// 값을 변경하는 매소드
+	rNext = pTemp;
 }
-void Node::setUp(Node* pTemp) {
-	pUp = pTemp;
+void node::setRprev(node* pTemp) {// 값을 변경하는 매소드
+	rPrev = pTemp;
 }
-void Node::setData(int temp) {
+void node::setData(int temp) {// 값을 변경하는 매소드
 	data = temp;
 }

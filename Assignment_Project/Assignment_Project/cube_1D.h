@@ -1,32 +1,27 @@
 #pragma once
-#include "Node.h"
-#include "tree.h"
+#include "node.h"
+#include "tree_node.h"
 
 class cube_1D
 {
 private:
-	Node* pHead;
-	Node* pTail;
-	cube_1D* pNext;
-	cube_1D* pPrev;
-	char name[100];
+	cube_1D* pNext; // 다음값
+	cube_1D* pPrev; //이전값
+	tree_node* pData; // 가지고있는 tree의 data
+	int Rev_number; // 거꾸로 출력하는지 확인하는 변수
 public:
-	cube_1D();
-	~cube_1D();
+	cube_1D(); // 생성자
+	~cube_1D(); // 소멸자
 
-	Node* getHead();
-	Node* getTail();
-	char* getName();
-	cube_1D* getNext();
-	cube_1D* getPrev();
+	int getRev(); //값을 반환하는 매소드
+	tree_node* getData(); //값을 반환하는 매소드
+	cube_1D* getNext(); //값을 반환하는 매소드
+	cube_1D* getPrev(); //값을 반환하는 매소드
 
-	void setNext(cube_1D* pTemp);
-	void setPrev(cube_1D* pTemp);
-	void setTail(Node* pTemp);
-	void setHead(Node* pTemp);
-	void setName(char* pTemp);
+	void setRev(int temp);// 값을 변경하는 매소드
+	void setData(tree_node* pTemp);// 값을 변경하는 매소드
+	void setNext(cube_1D* pTemp);// 값을 변경하는 매소드
+	void setPrev(cube_1D* pTemp);// 값을 변경하는 매소드
 
-	void make_raw(tree* Tree);
-	void delete_node();
 };
 

@@ -1,56 +1,67 @@
 [LOAD]
-Q1	Korea	Japan	USA	Canada	
-meat	138		36		36		36		
-fruit	1057		75		36		36		
-vegetable	36		36		85		36		
+Q1	Seoul	Busan	Incheon	Tokyo	Kyoto	Sapporo	NY	LA	WDC	Toronto	Vancouver	Calgary	
+product	0		0		0		0		0		0		0		0		0		0		0		0		
+
+
+[LOAD]
+time	Korea	Japan	USA	Canada	
+product	0		0		0		0		
 
 
 [ROTATE]
-Korea	Q4	Q3	Q2	Q1	
-meat	66		57		48		138		
-fruit	36		36		36		1057		
-vegetable	36		36		36		36		
+Canada	time	
+product	0		
 
 
-[ROTATE]
-Q1	Korea	Japan	USA	Canada	
-meat	138		36		36		36		
-fruit	1057		75		36		36		
-vegetable	36		36		85		36		
+[SLICE]
+Korea	time	
+product	0		
+
+
+[ROLLUP]
+ERROR
+
+[LOAD]
+January	Seoul	Busan	Incheon	Tokyo	Kyoto	Sapporo	NY	LA	WDC	Toronto	Vancouver	Calgary	
+pork	1		0		0		0		0		0		0		0		0		0		0		0		
+beef	100		0		0		0		0		0		0		0		0		0		0		0		
+chicken	0		0		0		0		0		0		0		0		0		0		0		0		
+duck	0		0		0		0		0		0		0		0		0		0		0		0		
+apple	1022		0		0		13		0		0		0		0		0		0		0		0		
+pear	0		0		0		0		0		0		0		0		0		0		0		0		
+kiwi	0		0		0		0		0		0		0		0		0		0		0		0		
+grape	0		0		0		0		0		0		0		0		0		0		0		0		
+onion	0		0		0		0		0		0		25		0		0		0		0		0		
+carrot	0		0		0		0		0		0		0		0		0		0		0		0		
+lettuce	0		0		0		0		0		0		0		0		0		0		0		0		
+cabbage	0		0		0		0		0		0		0		0		0		0		0		0		
 
 
 [LOAD]
 Q1	Korea	Japan	USA	Canada	
-meat	138		36		36		36		
-fruit	1057		75		36		36		
-vegetable	36		36		85		36		
+meat	106		0		0		0		
+fruit	1022		42		0		0		
+vegetable	0		0		51		0		
 
 
 [ROTATE]
-Korea	Q4	Q3	Q2	Q1	
-meat	66		57		48		138		
-fruit	36		36		36		1057		
-vegetable	36		36		36		36		
+Canada	Q1	Q2	Q3	Q4	
+meat	0		0		0		0		
+fruit	0		0		0		0		
+vegetable	0		0		0		0		
 
 
-[ROTATE]
-Q1	Korea	Japan	USA	Canada	
-meat	138		36		36		36		
-fruit	1057		75		36		36		
-vegetable	36		36		85		36		
+[SLICE]
+Korea	Q1	Q2	Q3	Q4	
+meat	0		0		0		0		
+fruit	0		0		0		0		
+vegetable	0		0		0		0		
 
 
-[LOAD]
-Q1	Korea	Japan	USA	Canada	
-meat	138		36		36		36		
-fruit	1057		75		36		36		
-vegetable	36		36		85		36		
-
-
-[ROTATE]
-Korea	Q4	Q3	Q2	Q1	
-meat	66		57		48		138		
-fruit	36		36		36		1057		
-vegetable	36		36		36		36		
+[ROLLUP]
+Korea	time	
+meat	0		
+fruit	0		
+vegetable	0		
 
 

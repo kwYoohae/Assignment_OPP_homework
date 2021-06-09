@@ -1,0 +1,79 @@
+[LOAD]
+Q1	Korea	Japan	USA	Canada	
+meat	106		0		0		0		
+fruit	1022		42		0		0		
+vegetable	0		0		51		0		
+
+
+[ROTATE]
+Q1	vegetable	fruit	meat	
+Korea	0		1022		106		
+Japan	0		42		0		
+USA	51		0		0		
+Canada	0		0		0		
+
+
+[ROTATE]
+meat	Q1	Q2	Q3	Q4	
+Korea	106		15		24		33		
+Japan	0		0		0		0		
+USA	0		0		0		0		
+Canada	0		0		0		0		
+
+
+[SLICE]
+meat	Q1	Q2	Q3	Q4	
+Korea	106		15		24		33		
+
+
+[SLICE]
+meat	Q2	
+Korea	15		
+
+
+[SLICE]
+ERROR
+
+[ROLLUP]
+meat	time	
+Korea	15		
+
+
+[ROLLUP]
+ERROR
+
+[ROLLUP]
+ERROR
+
+[VIEW]
+Q1	Korea	Japan	USA	Canada	
+meat	106		0		0		0		
+fruit	1022		42		0		0		
+vegetable	0		0		51		0		
+
+
+[ROLLUP]
+Q1	location	
+meat	106		
+fruit	1064		
+vegetable	51		
+
+
+[ROLLUP]
+Q1	location	
+product	1221		
+
+
+[ROTATE]
+product	location	
+Q1	1221		
+Q2	153		
+Q3	180		
+Q4	207		
+
+
+[ROTATE]
+Q4	location	
+product	207		
+
+

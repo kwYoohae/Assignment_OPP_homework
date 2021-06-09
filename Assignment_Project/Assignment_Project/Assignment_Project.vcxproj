@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{dd01bfcf-25b0-4ad3-b09d-78d46037f705}</ProjectGuid>
+    <ProjectGuid>{24bbc394-07c7-407e-96ae-65beb7d87a17}</ProjectGuid>
     <RootNamespace>AssignmentProject</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -139,21 +139,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cube_1D.cpp" />
-    <ClCompile Include="cube_2D.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Node.cpp" />
-    <ClCompile Include="cube.cpp" />
-    <ClCompile Include="tree_node.cpp" />
-    <ClCompile Include="tree.cpp" />
+    <ClInclude Include="cube.h" />
+    <ClInclude Include="cube_1D.h" />
+    <ClInclude Include="node.h" />
+    <ClInclude Include="tree.h" />
+    <ClInclude Include="tree_node.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cube_1D.h" />
-    <ClInclude Include="cube_2D.h" />
-    <ClInclude Include="Node.h" />
-    <ClInclude Include="cube.h" />
-    <ClInclude Include="tree_node.h" />
-    <ClInclude Include="tree.h" />
+    <ClCompile Include="cube.cpp" />
+    <ClCompile Include="cube_1D.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="node.cpp" />
+    <ClCompile Include="tree.cpp" />
+    <ClCompile Include="tree_node.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

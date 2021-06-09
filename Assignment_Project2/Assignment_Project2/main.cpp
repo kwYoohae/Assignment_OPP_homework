@@ -55,7 +55,7 @@ int main() {
 				Down_number = count_down(&Time);
 				raw_cube.Make_Cube(count_low(&Product, Down_number), count_low(&Location, Down_number), count_low(&Time, Down_number)); //cube를 만드는 매소드 호출
 				raw_cube.Make_tree(&Time, &Location, &Product, Down_number); //cube의 쓰이는 tree를 만드는 매소드 호출
-				//Load_sales(&raw_cube); // sales.txt에 저장한 값들을 저장하는 매소드 호출
+				Load_sales(&raw_cube); // sales.txt에 저장한 값들을 저장하는 매소드 호출
 				if (Down_number == 1) {
 					view_cube.Make_Cube(count_low(&Product, 1), count_low(&Location, Down_number), (&Time, 1)); // cube를 만드는 매소드 호출
 					view_cube.Make_tree(&Time, &Location, &Product, 1); // cube에 쓰이는 tree를 만드는 매소드 호출(뒤의 숫자는 계층을 표시)
@@ -70,8 +70,12 @@ int main() {
 				view_cube.WriteLog(command); // log를 작성하는 매소드 호출
 			}
 			else if (strcmp(command, "ROTATE") == 0) {
-				view_cube.Rotate(command_list); // rotate를 실행하는 매소드 호출
-				view_cube.WriteLog(command); // 로그를 작성하는 매소드 호출
+				if (!view_cube.Rotate(command_list)) {// rotate를 실행하는 매소드 호출
+					view_cube.WriteError(command);
+				}
+				else {
+					view_cube.WriteLog(command); // 로그를 작성하는 매소드 호출
+				}
 			}
 			else if (strcmp(command, "ROLLUP") == 0) {
 				if (!view_cube.Roll_up(command_list))
@@ -164,6 +168,7 @@ void Open_Category(tree* type_Data, const char* text_file) { // 파일을 읽어 트리
 	if (!readFile.is_open()) { // 만약 txt파일이 없을 때
 		cout << "Error" << endl;
 		readFile.close();
+		return;
 	}
 	tree_node* pParent = type_Data->getRoot(); // prent라는 노드는 root를 가져옴
 	char temp[100];

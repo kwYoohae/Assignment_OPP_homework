@@ -9,6 +9,12 @@ private:
 	cube_1D* Row;
 	cube_1D* Column;
 	cube_1D* Height;
+	int Rev_r;
+	int Rev_c;
+	int Rev_h;
+	int rotate_LR;
+	int rotate_C_CL;
+	int rotate_UD;
 public:
 	cube();
 	~cube();
@@ -29,7 +35,7 @@ public:
 	void copyData(cube* raw);
 	void WriteLog(char* command);
 	void WriteError(char* command);
-	void Rotate(char* command);
+	bool Rotate(char* command);
 	void check();
 
 	node* (node::*pRight)() = &node::getCnext;
